@@ -34,7 +34,8 @@ describe("openPathInDefaultApp", () => {
     openPathInDefaultApp("C:\\tmp\\preview.html")
     expect(execFile).toHaveBeenCalled()
     if (process.platform === "win32") {
-      expect(vi.mocked(execFile).mock.calls[0][0]).toBe("cmd")
+      const first = vi.mocked(execFile).mock.calls[0]
+      expect(first?.[0]).toBe("cmd")
     }
   })
 })

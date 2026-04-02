@@ -156,13 +156,16 @@ describe("resolveLogoDataUrl", () => {
     )
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => ({
-        ok: true,
-        arrayBuffer: async () => new Uint8Array(png).buffer,
-        headers: {
-          get: (name: string) => (name.toLowerCase() === "content-type" ? "image/png" : null),
-        },
-      })) as typeof fetch,
+      vi.fn(
+        async (): Promise<Response> =>
+          ({
+            ok: true,
+            arrayBuffer: async () => new Uint8Array(png).buffer,
+            headers: {
+              get: (name: string) => (name.toLowerCase() === "content-type" ? "image/png" : null),
+            },
+          }) as Response,
+      ) as typeof fetch,
     )
     const urlHttps = await resolveLogoDataUrl("https://example.com/logo.png")
     expect(urlHttps).toMatch(/^data:image\/png;base64,/)
@@ -173,11 +176,14 @@ describe("resolveLogoDataUrl", () => {
   it("throws when fetch returns non-OK", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => ({
-        ok: false,
-        status: 404,
-        statusText: "Nope",
-      })) as typeof fetch,
+      vi.fn(
+        async (): Promise<Response> =>
+          ({
+            ok: false,
+            status: 404,
+            statusText: "Nope",
+          }) as Response,
+      ) as typeof fetch,
     )
     await expect(resolveLogoDataUrl("https://example.com/missing.png")).rejects.toThrow(/404/)
   })
