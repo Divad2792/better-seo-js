@@ -36,7 +36,7 @@
     }
   },
   "scripts": {
-    "build": "npm exec -- tsup",
+    "build": "node ../../scripts/run-tsup.mjs",
     "test": "npm exec -- vitest run",
     "test:coverage": "npm exec -- vitest run --coverage",
     "lint": "npm exec -- eslint .",
@@ -52,6 +52,8 @@
   "devDependencies": {
     "@types/react": "^19.0.8",
     "@vitest/coverage-v8": "^3.0.6",
+    "next": "16.2.2",
+    "react": "^19.0.0",
     "tsup": "^8.3.6",
     "typescript": "^5.7.3",
     "vitest": "^3.0.6"

@@ -25,7 +25,7 @@
   ],
   "dependencies": {},
   "scripts": {
-    "build": "npm exec -- tsup",
+    "build": "node ../../scripts/run-tsup.mjs",
     "test": "npm exec -- vitest run",
     "test:coverage": "npm exec -- vitest run --coverage",
     "lint": "npm exec -- eslint .",
