@@ -37,7 +37,6 @@
     "node": ">=20"
   },
   "publishConfig": {
-    "provenance": true,
     "access": "public"
   },
   "devDependencies": {

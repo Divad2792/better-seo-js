@@ -24,7 +24,7 @@
     "dist"
   ],
   "dependencies": {
-    "@better-seo/core": "file:../core"
+    "@better-seo/core": "0.0.1"
   },
   "peerDependencies": {
     "next": ">=14.2.0",
@@ -44,7 +44,6 @@
     "audit": "npm audit --audit-level=high"
   },
   "publishConfig": {
-    "provenance": true,
     "access": "public"
   },
   "engines": {

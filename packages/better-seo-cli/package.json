@@ -5,8 +5,8 @@
   "license": "MIT",
   "type": "module",
   "bin": {
-    "better-seo": "./dist/cli.cjs",
-    "better-seo-cli": "./dist/cli.cjs"
+    "better-seo": "dist/cli.cjs",
+    "better-seo-cli": "dist/cli.cjs"
   },
   "main": "./dist/run-cli.cjs",
   "types": "./dist/run-cli.d.ts",
@@ -21,7 +21,7 @@
     "dist"
   ],
   "dependencies": {
-    "@better-seo/assets": "file:../better-seo-assets"
+    "@better-seo/assets": "0.0.1"
   },
   "scripts": {
     "build": "tsup",
@@ -34,7 +34,6 @@
     "node": ">=20"
   },
   "publishConfig": {
-    "provenance": true,
     "access": "public"
   },
   "devDependencies": {

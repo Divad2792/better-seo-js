@@ -39,6 +39,10 @@ jobs:
       - name: Build packages (release step also runs full CI via npm run publish)
         run: npm run build
 
+      # Provenance requires GitHub OIDC + id-token: write; local `changeset publish` must not set publishConfig.provenance.
+      - name: Enable npm publish provenance (GitHub Actions only)
+        run: npm config set provenance true
+
       # Creates or updates "Version Packages" PR when .changeset/*.md exist;
       # After that PR is merged (no pending changesets), runs publish (same as local: npm run publish).
       - name: Changesets — version PR + npm publish

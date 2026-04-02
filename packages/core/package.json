@@ -29,7 +29,6 @@
     "audit": "npm audit --audit-level=high"
   },
   "publishConfig": {
-    "provenance": true,
     "access": "public"
   },
   "size-limit": [
