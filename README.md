@@ -6,7 +6,22 @@
 [![Core runtime dependencies](https://img.shields.io/badge/core%20runtime%20deps-0-success?style=flat-square)](./internal-docs/ARCHITECTURE.md)
 [![Security](https://img.shields.io/badge/security-audited-success?style=flat-square)](./SECURITY_COMPLETE_SUMMARY.md)
 [![ESM + CJS](https://img.shields.io/badge/modules-ESM%20%2B%20CJS-646CFF?style=flat-square)](./PACKAGE.md)
-[![Playwright E2E](https://img.shields.io/badge/E2E-Playwright-2EAD33?style=flat-square)](./examples/nextjs-app)
+
+**CI & quality**
+
+[![CI](https://github.com/0xMilord/better-seo-js/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/0xMilord/better-seo-js/actions/workflows/ci.yml)
+[![Commitlint](https://github.com/0xMilord/better-seo-js/actions/workflows/commitlint.yml/badge.svg?branch=main)](https://github.com/0xMilord/better-seo-js/actions/workflows/commitlint.yml)
+[![Security workflow](https://github.com/0xMilord/better-seo-js/actions/workflows/security.yml/badge.svg?branch=main)](https://github.com/0xMilord/better-seo-js/actions/workflows/security.yml)
+[![Release](https://github.com/0xMilord/better-seo-js/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/0xMilord/better-seo-js/actions/workflows/release.yml)
+
+**Tests & coverage**
+
+[![Vitest](https://img.shields.io/badge/unit%20tests-Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev/)
+[![Playwright E2E](https://img.shields.io/badge/E2E-Playwright-2EAD33?style=flat-square&logo=playwright&logoColor=white)](./examples/nextjs-app)
+[![Coverage — core](https://img.shields.io/badge/coverage-@better--seo%2Fcore%20≥90%25%20lines-informational?style=flat-square)](./packages/core/README.md#coverage)
+[![Coverage — next](https://img.shields.io/badge/coverage-@better--seo%2Fnext%20≥82%25%20lines-informational?style=flat-square)](./packages/next/README.md#coverage)
+[![Coverage — assets](https://img.shields.io/badge/coverage-@better--seo%2Fassets%20≥85%25%20lines-informational?style=flat-square)](./packages/better-seo-assets/README.md#coverage)
+[![Coverage — cli](https://img.shields.io/badge/coverage-@better--seo%2Fcli%20≥80%25%20lines-informational?style=flat-square)](./packages/better-seo-cli/README.md#coverage)
 
 **One place to describe how a page should look to Google, social apps, and structured-data consumers—then map that description to your framework without inventing five parallel sources of truth.**
 
@@ -166,16 +181,16 @@ flowchart LR
   CLI -.-> ASSETS
 ```
 
-| Location                           | Role                                                                                                                                                                              |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`packages/core`**                | npm **`@better-seo/core`**: `createSEO`, `mergeSEO`, `withSEO`, schema builders, `serializeJSONLD`, `renderTags`, validation hooks, adapter registry, plugins, rules, `SEOError`. |
-| **`packages/next`**                | **`@better-seo/next`**: `seo`, `prepareNextSeo`, `withSEO`, `toNextMetadata`, **`@better-seo/next/json-ld`** (`NextJsonLd`). Registers the `"next"` adapter on import.            |
-| **`examples/nextjs-app`**          | Production-shaped **App Router** app; **Playwright** tests guard the golden path.                                                                                                 |
-| **`packages/better-seo-assets`**   | npm **`@better-seo/assets`**: **`generateOG`** (built-in + **custom `.mjs` template**), **`generateIcons`**, manifest helpers.                                                    |
-| **`packages/better-seo-cli`**      | npm **`@better-seo/cli`**: **`og`** / **`icons`** bins (**L2**).                                                                                                                  |
-| **`examples/vanilla-render-tags`** | **D7** — **`createSEO` + `renderTags`** in plain Node (**no React**).                                                                                                             |
-| **`docs/recipes/`**                | Copy-paste recipes (e.g. **N5** layout/page merge, **N6** async `generateMetadata`, **OG**).                                                                                      |
-| **`internal-docs/`**               | PRD, architecture, features, roadmap, **PROGRESS** tracker, **USAGE** (install + error codes).                                                                                    |
+| Location                           | Role                                                                                                                |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **`packages/core`**                | npm **`@better-seo/core`** — overview **[`packages/core/README.md`](./packages/core/README.md)**                    |
+| **`packages/next`**                | **`@better-seo/next`** — overview **[`packages/next/README.md`](./packages/next/README.md)**                        |
+| **`examples/nextjs-app`**          | Production-shaped **App Router** app; **Playwright** tests guard the golden path.                                   |
+| **`packages/better-seo-assets`**   | npm **`@better-seo/assets`** — **[`packages/better-seo-assets/README.md`](./packages/better-seo-assets/README.md)** |
+| **`packages/better-seo-cli`**      | npm **`@better-seo/cli`** — **[`packages/better-seo-cli/README.md`](./packages/better-seo-cli/README.md)**          |
+| **`examples/vanilla-render-tags`** | **D7** — **`createSEO` + `renderTags`** in plain Node (**no React**).                                               |
+| **`docs/recipes/`**                | Copy-paste recipes (e.g. **N5** layout/page merge, **N6** async `generateMetadata`, **OG**).                        |
+| **`internal-docs/`**               | PRD, architecture, features, roadmap, **PROGRESS** tracker, **USAGE** (install + error codes).                      |
 
 Dependency rule: **adapters always depend on core; core never depends on adapters.** If you only need JSON-LD in a non-Next stack, you can consume **`@better-seo/core`** and feed `serializeJSONLD` yourself—no Next required.
 
@@ -228,6 +243,26 @@ From the repository root:
 npm run check    # build, format, lint, typecheck, unit coverage
 npm run ci       # check + Playwright e2e + core size-limit
 ```
+
+### CI pipelines ([`.github/workflows`](./.github/workflows))
+
+| Workflow                                                   | When it runs        | What it gates                                                                                                                                                                                  |
+| ---------------------------------------------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[`ci.yml`](./.github/workflows/ci.yml)**                 | PR + push to `main` | `npm audit` (artifact), **`npm run check`** (build, format, lint, typecheck, **Vitest + coverage thresholds**), Playwright **`examples/nextjs-app`**, **`npm run size`** on `@better-seo/core` |
+| **[`commitlint.yml`](./.github/workflows/commitlint.yml)** | Pull requests       | Conventional Commits on every commit in the PR                                                                                                                                                 |
+| **[`security.yml`](./.github/workflows/security.yml)**     | Push to `main`      | Security / supply-chain checks (see workflow)                                                                                                                                                  |
+| **[`release.yml`](./.github/workflows/release.yml)**       | Maintainers         | Changesets versioning / publish when configured                                                                                                                                                |
+
+Coverage **LCov** is uploaded from **`@better-seo/core`** and **`@better-seo/next`** as CI artifacts (`coverage`); thresholds are enforced in each package’s **`vitest.config.ts`** (see per-package READMEs below).
+
+### Package test & coverage targets
+
+| Package                  | README                                                                 | Unit tests         | Coverage focus (minimum lines / branches)  |
+| ------------------------ | ---------------------------------------------------------------------- | ------------------ | ------------------------------------------ |
+| **`@better-seo/core`**   | [`packages/core`](./packages/core/README.md)                           | Vitest             | **90%** / **80%** (see package README)     |
+| **`@better-seo/next`**   | [`packages/next`](./packages/next/README.md)                           | Vitest             | **82%** / **72%** on `to-next-metadata.ts` |
+| **`@better-seo/assets`** | [`packages/better-seo-assets`](./packages/better-seo-assets/README.md) | Vitest             | **85%** / **75%**                          |
+| **`@better-seo/cli`**    | [`packages/better-seo-cli`](./packages/better-seo-cli/README.md)       | Vitest + bin smoke | **80%** / **65%**                          |
 
 Core has a **size budget** (see **`packages/core/package.json`** and `npm run size`). E2E lives under **`examples/nextjs-app/e2e`**.
 

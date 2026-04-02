@@ -10,7 +10,7 @@ Thanks for helping improve **better-seo.js**. Product direction and architecture
 ## Getting started
 
 ```bash
-git clone https://github.com/OWNER/better-seo-js.git
+git clone https://github.com/0xMilord/better-seo-js.git
 cd better-seo-js
 npm ci
 npm run build
