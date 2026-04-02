@@ -2,7 +2,7 @@
   "name": "better-seo-cli",
   "version": "0.0.0",
   "private": true,
-  "description": "CLI for better-seo.js (OG images, icons, …) — Wave 2: `og` command",
+  "description": "CLI for better-seo.js — Wave 2: `og`, Wave 3: `icons` (+ manifest)",
   "license": "MIT",
   "type": "module",
   "bin": {

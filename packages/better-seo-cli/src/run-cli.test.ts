@@ -1,4 +1,4 @@
-import { readFileSync, unlinkSync } from "node:fs"
+import { mkdirSync, readFileSync, rmdirSync, unlinkSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { afterEach, describe, expect, it, vi } from "vitest"
@@ -6,8 +6,11 @@ import { imageSize } from "image-size"
 import { OG_IMAGE_SIZE } from "better-seo-assets"
 import { runCli } from "./run-cli.js"
 
+const SAMPLE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><rect width="32" height="32" fill="#111"/></svg>`
+
 describe("runCli", () => {
   const created: string[] = []
+  const createdDirs: string[] = []
   afterEach(() => {
     for (const p of created) {
       try {
@@ -17,6 +20,14 @@ describe("runCli", () => {
       }
     }
     created.length = 0
+    for (const d of createdDirs) {
+      try {
+        rmdirSync(d, { recursive: true })
+      } catch {
+        /* ignore */
+      }
+    }
+    createdDirs.length = 0
   })
 
   it("og: writes PNG and exits 0", async () => {
@@ -87,5 +98,56 @@ describe("runCli", () => {
     } finally {
       log.mockRestore()
     }
+  })
+
+  it("icons: writes assets and exits 0", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    const src = join(tmpdir(), `cli-icons-src-${Date.now()}.svg`)
+    const outDir = join(tmpdir(), `cli-icons-out-${Date.now()}`)
+    created.push(src)
+    createdDirs.push(outDir)
+    writeFileSync(src, SAMPLE_SVG, "utf8")
+    mkdirSync(outDir, { recursive: true })
+    try {
+      expect(
+        await runCli([
+          "node",
+          "cli",
+          "icons",
+          src,
+          "--output",
+          outDir,
+          "--no-manifest",
+          "--name",
+          "X",
+        ]),
+      ).toBe(0)
+      const ico = readFileSync(join(outDir, "favicon.ico"))
+      expect(ico[2]).toBe(1)
+      expect(ico[3]).toBe(0)
+    } finally {
+      log.mockRestore()
+    }
+  })
+
+  it("icons: requires source", async () => {
+    const err = vi.spyOn(console, "error").mockImplementation(() => {})
+    expect(await runCli(["node", "cli", "icons"])).toBe(1)
+    err.mockRestore()
+  })
+
+  it("icons: rejects invalid --display", async () => {
+    const err = vi.spyOn(console, "error").mockImplementation(() => {})
+    const src = join(tmpdir(), `cli-icons-bad-${Date.now()}.svg`)
+    created.push(src)
+    writeFileSync(src, SAMPLE_SVG, "utf8")
+    expect(await runCli(["node", "cli", "icons", src, "--display", "nope"])).toBe(1)
+    err.mockRestore()
+  })
+
+  it("accepts icons --help", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    expect(await runCli(["node", "cli", "icons", "--help"])).toBe(0)
+    log.mockRestore()
   })
 })

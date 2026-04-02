@@ -72,8 +72,9 @@ Until the repo is scaffolded, treat this as the **contract** root `package.json`
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test:e2e": "npm run test:e2e -w examples/nextjs-app",
     "changeset": "changeset",
+    "release": "node scripts/release-menu.mjs",
     "release:version": "changeset version",
-    "release:publish": "npm run build && changeset publish",
+    "release:publish": "npm run ci && changeset publish",
     "ci": "npm run lint && npm run typecheck && npm run test && npm run test:e2e"
   },
   "devDependencies": {
@@ -82,8 +83,9 @@ Until the repo is scaffolded, treat this as the **contract** root `package.json`
 }
 ```
 
+- **`release`**: interactive **Node** menu — run CI, add changeset, version, or publish (`scripts/release-menu.mjs`).
 - **`release:version`**: bumps **semver** in all changed packages and updates **`CHANGELOG.md`** from accumulated Changesets (see §5).
-- **`release:publish`**: builds then publishes to npm (CI uses this on `main` after version PR merges).
+- **`release:publish`**: runs **`npm run ci`** (full gate + E2E + size) then **`changeset publish`** (CI uses this when publishing on `main`).
 
 You can rename scripts (e.g. **`npm run version-packages`**) as long as **GitHub Actions** call the same names.
 
@@ -107,6 +109,10 @@ You can rename scripts (e.g. **`npm run version-packages`**) as long as **GitHub
 | `npm run commit`               | Interactive Conventional Commit (cz-git); Husky still validates plain `git commit` |
 | `npm run commitlint:last`      | Lint the latest commit (`--last`)                                                  |
 | `npm run commitlint:since-tag` | Lint commits since the last git tag (fails if there is no tag yet)                 |
+| `npm run changeset`            | Interactive: add a **`.changeset/*.md`** (semver + summary) for release            |
+| `npm run release`              | Interactive menu: **CI**, **changeset**, **version**, **publish**, or guided chain |
+| `npm run release:version`      | Apply changesets → bump **`package.json`** + **CHANGELOG(s)** (no npm publish)     |
+| `npm run release:publish`      | **`npm run ci`** then **`changeset publish`** (all publishable workspaces)         |
 
 **Per-package** (`packages/core`, etc.): each has its own **`package.json`** with **`exports`**, **`types`**, **`files`** (publish allowlist), and **`build`** producing `dist/` (or publish `src/` only if policy allows—prefer `dist` for clear API surfaces).
 
@@ -115,6 +121,12 @@ You can rename scripts (e.g. **`npm run version-packages`**) as long as **GitHub
 ## 5. Semver & changelog (Changesets)
 
 We use **[Changesets](https://github.com/changesets/changesets)** so version bumps stay **reviewable** and **`CHANGELOG.md`** stays **derived** from the same source as npm versions.
+
+**Config:** [`.changeset/config.json`](./.changeset/config.json) — `access: public`, `baseBranch: main`, **`ignore`: `nextjs-app`** (example app is never versioned). GitHub [**`release.yml`**](.github/workflows/release.yml) runs **`release:version`** / **`release:publish`** via [changesets/action](https://github.com/changesets/action); **`workflow_dispatch`** allows manual runs.
+
+### First-time npm publish
+
+Packages must not be **`"private": true"`** if you want **`changeset publish`** to ship them. Today the leaf packages are private until you intentionally flip them and own the **`better-seo.js`** / **`@better-seo/*`** names on npm. Keep **`examples/nextjs-app`** private.
 
 ### Contributor flow
 
@@ -131,7 +143,11 @@ We use **[Changesets](https://github.com/changesets/changesets)** so version bum
    - bumps **`version`** in each affected `packages/*/package.json`,
    - updates **`CHANGELOG.md`** (per package or aggregated, per `.changeset/config.json`),
    - deletes consumed changeset files.
-3. **Merge** the Version PR → workflow runs **`changeset publish`** (or your **`npm run release:publish`**) → **npm publish** for public packages.
+3. **Merge** the Version PR → workflow runs **`npm run release:publish`** → full **`ci`** then **`changeset publish`** → **npm publish** for non-private packages (needs **`NPM_TOKEN`**).
+
+### Interactive menu (`npm run release`)
+
+Same actions as above, from one terminal prompt: run **`npm run release`** and choose **1–5**. Option **5** runs **add changeset → version** and prints exact **git** commands for the version commit.
 
 ### Custom `npm run` + changelog
 
@@ -198,6 +214,7 @@ Triggers: **pull_request** to `main` (full history via `fetch-depth: 0`).
 Pattern: **official [Changesets + GitHub](https://github.com/changesets/action)** flow.
 
 1. **On push to `main`:**
+
    - If there are **new `.changeset/*.md` files**, the action creates or updates a PR **`chore: version packages`** (title configurable) that runs **`changeset version`**.
    - That PR updates versions + changelogs; **merge it** when ready (this is the “**merge version branch with main**” step).
 

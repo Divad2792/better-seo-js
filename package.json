@@ -26,8 +26,9 @@
     "commitlint:last": "commitlint --last --verbose",
     "commitlint:since-tag": "commitlint --from-last-tag --to HEAD --verbose",
     "changeset": "changeset",
+    "release": "node scripts/release-menu.mjs",
     "release:version": "changeset version",
-    "release:publish": "npm run build && changeset publish",
+    "release:publish": "npm run ci && changeset publish",
     "prepare": "husky",
     "size": "npm run size -w better-seo.js"
   },

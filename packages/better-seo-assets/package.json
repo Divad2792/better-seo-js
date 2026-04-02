@@ -2,7 +2,7 @@
   "name": "better-seo-assets",
   "version": "0.0.0",
   "private": true,
-  "description": "Optional OG images and PWA assets for better-seo.js — see internal-docs/Roadmap.md Wave 2+",
+  "description": "Optional OG images and PWA assets for better-seo.js — Roadmap Wave 2 (OG) + Wave 3 (icons)",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -23,7 +23,9 @@
     "@fontsource/inter": "^5.2.8",
     "@resvg/resvg-js": "^2.6.2",
     "react": "^19.0.0",
-    "satori": "^0.26.0"
+    "satori": "^0.26.0",
+    "sharp": "^0.34.5",
+    "to-ico": "^1.1.5"
   },
   "scripts": {
     "build": "tsup",

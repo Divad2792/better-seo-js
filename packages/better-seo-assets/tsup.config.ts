@@ -11,5 +11,5 @@ export default defineConfig({
   esbuildOptions(options) {
     options.jsx = "automatic"
   },
-  external: ["satori", "@resvg/resvg-js", "react", "@fontsource/inter"],
+  external: ["satori", "@resvg/resvg-js", "react", "@fontsource/inter", "sharp", "to-ico"],
 })
