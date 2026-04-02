@@ -1,5 +1,9 @@
 package-lock.json
 dist
+
+# Next.js rewrites these on build/dev; formatting then disagrees with Prettier.
+**/next-env.d.ts
+
 .next
 node_modules
 coverage

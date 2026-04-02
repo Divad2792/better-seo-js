@@ -94,6 +94,23 @@ describe("generateIcons", () => {
       generateIcons({ source: join(tmpdir(), "nope.svg"), outputDir: join(tmpdir(), "x") }),
     ).rejects.toThrow(/not found/)
   })
+
+  it("re-rasterizes 16 and 32 for favicon when sizes omit them", async () => {
+    const src = join(tmpdir(), `icon-src-sz-${Date.now()}.svg`)
+    files.push(src)
+    await writeFile(src, FIXTURE_SVG, "utf8")
+
+    const out = join(tmpdir(), `icon-out-sz-${Date.now()}`)
+    dirs.push(out)
+
+    const result = await generateIcons({
+      source: src,
+      outputDir: out,
+      sizes: [192, 512],
+    })
+
+    expect(new Set(result.map((r) => r.fileName)).has("favicon.ico")).toBe(true)
+  })
 })
 
 describe("buildWebAppManifest", () => {

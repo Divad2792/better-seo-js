@@ -466,6 +466,70 @@ describe("runCli", () => {
     log.mockRestore()
   })
 
+  it("template preview writes html via --out", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    const html = join(tmpdir(), `tpl-prev-${Date.now()}.html`)
+    created.push(html)
+    expect(await runCli(["node", "cli", "template", "preview", "saas", "--out", html])).toBe(0)
+    expect(readFileSync(html, "utf8")).toContain("<!DOCTYPE")
+    log.mockRestore()
+  })
+
+  it("template print without id exits 1", async () => {
+    const err = vi.spyOn(console, "error").mockImplementation(() => {})
+    expect(await runCli(["node", "cli", "template", "print"])).toBe(1)
+    err.mockRestore()
+  })
+
+  it("template unknown subcommand exits 1", async () => {
+    const err = vi.spyOn(console, "error").mockImplementation(() => {})
+    expect(await runCli(["node", "cli", "template", "nope"])).toBe(1)
+    err.mockRestore()
+  })
+
+  it("content --help exits 0", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    expect(await runCli(["node", "cli", "content", "--help"])).toBe(0)
+    log.mockRestore()
+  })
+
+  it("content without from-mdx exits 1", async () => {
+    const err = vi.spyOn(console, "error").mockImplementation(() => {})
+    expect(await runCli(["node", "cli", "content", "nope"])).toBe(1)
+    err.mockRestore()
+  })
+
+  it("content from-mdx requires --input and --out", async () => {
+    const err = vi.spyOn(console, "error").mockImplementation(() => {})
+    expect(await runCli(["node", "cli", "content", "from-mdx", "--input", "x"])).toBe(1)
+    err.mockRestore()
+  })
+
+  it("content from-mdx exits 1 when input is missing", async () => {
+    const err = vi.spyOn(console, "error").mockImplementation(() => {})
+    const out = join(tmpdir(), `mdx-miss-${Date.now()}.json`)
+    created.push(out)
+    expect(
+      await runCli([
+        "node",
+        "cli",
+        "content",
+        "from-mdx",
+        "--input",
+        join(tmpdir(), `nope-${Date.now()}.mdx`),
+        "--out",
+        out,
+      ]),
+    ).toBe(1)
+    err.mockRestore()
+  })
+
+  it("template preview requires id", async () => {
+    const err = vi.spyOn(console, "error").mockImplementation(() => {})
+    expect(await runCli(["node", "cli", "template", "preview"])).toBe(1)
+    err.mockRestore()
+  })
+
   it("content from-mdx writes seo json", async () => {
     const log = vi.spyOn(console, "log").mockImplementation(() => {})
     const md = join(tmpdir(), `cmdx-${Date.now()}.md`)

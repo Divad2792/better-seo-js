@@ -2,9 +2,9 @@ import { mkdirSync, unlinkSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { fileURLToPath } from "node:url"
-import { afterEach, describe, expect, it } from "vitest"
+import { afterEach, describe, expect, it, vi } from "vitest"
 import { imageSize } from "image-size"
-import { generateOG } from "./og/generate-og.js"
+import { generateOG, resolveLogoDataUrl } from "./og/generate-og.js"
 import { OG_IMAGE_SIZE } from "./types.js"
 
 describe("generateOG", () => {
@@ -51,6 +51,19 @@ describe("generateOG", () => {
     await expect(generateOG({ title: "   ", siteName: "X" })).rejects.toThrow(/title/)
   })
 
+  it("rejects empty siteName", async () => {
+    await expect(generateOG({ title: "T", siteName: "   " })).rejects.toThrow(/siteName/)
+  })
+
+  it("supports explicit light theme", async () => {
+    const buf = await generateOG({
+      title: "Light",
+      siteName: "S",
+      theme: "light",
+    })
+    expect(imageSize(buf).width).toBe(OG_IMAGE_SIZE.width)
+  })
+
   it("rejects non-js template extension", async () => {
     await expect(
       generateOG({
@@ -90,5 +103,82 @@ describe("generateOG", () => {
       logo: logoPath,
     })
     expect(imageSize(buf).width).toBe(OG_IMAGE_SIZE.width)
+  })
+})
+
+describe("resolveLogoDataUrl", () => {
+  const tmpFiles: string[] = []
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    for (const f of tmpFiles) {
+      try {
+        unlinkSync(f)
+      } catch {
+        /* ignore */
+      }
+    }
+    tmpFiles.length = 0
+  })
+
+  it("returns undefined for blank input", async () => {
+    expect(await resolveLogoDataUrl(undefined)).toBeUndefined()
+    expect(await resolveLogoDataUrl("  ")).toBeUndefined()
+  })
+
+  it("uses image/jpeg mime for .jpg paths", async () => {
+    const p = join(tmpdir(), `og-logo-${Date.now()}.jpg`)
+    writeFileSync(p, Buffer.from([1, 2, 3]))
+    tmpFiles.push(p)
+    const url = await resolveLogoDataUrl(p)
+    expect(url).toMatch(/^data:image\/jpeg;base64,/)
+  })
+
+  it("uses image/webp mime for .webp paths", async () => {
+    const p = join(tmpdir(), `og-logo-${Date.now()}.webp`)
+    writeFileSync(p, Buffer.from([4, 5, 6]))
+    tmpFiles.push(p)
+    const url = await resolveLogoDataUrl(p)
+    expect(url).toMatch(/^data:image\/webp;base64,/)
+  })
+
+  it("uses octet-stream for unknown logo extension", async () => {
+    const p = join(tmpdir(), `og-logo-${Date.now()}.bin`)
+    writeFileSync(p, Buffer.from([0, 1, 2]))
+    tmpFiles.push(p)
+    const url = await resolveLogoDataUrl(p)
+    expect(url).toMatch(/^data:application\/octet-stream;base64,/)
+  })
+
+  it("fetches http(s) logos", async () => {
+    const png = Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+      "base64",
+    )
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({
+        ok: true,
+        arrayBuffer: async () => new Uint8Array(png).buffer,
+        headers: {
+          get: (name: string) => (name.toLowerCase() === "content-type" ? "image/png" : null),
+        },
+      })) as typeof fetch,
+    )
+    const urlHttps = await resolveLogoDataUrl("https://example.com/logo.png")
+    expect(urlHttps).toMatch(/^data:image\/png;base64,/)
+    const urlHttp = await resolveLogoDataUrl("http://example.com/logo.png")
+    expect(urlHttp).toMatch(/^data:image\/png;base64,/)
+  })
+
+  it("throws when fetch returns non-OK", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({
+        ok: false,
+        status: 404,
+        statusText: "Nope",
+      })) as typeof fetch,
+    )
+    await expect(resolveLogoDataUrl("https://example.com/missing.png")).rejects.toThrow(/404/)
   })
 })
