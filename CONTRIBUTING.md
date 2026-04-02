@@ -11,11 +11,13 @@ Thanks for helping improve **better-seo.js**. Packaging and release flow: [**PAC
 
 ### Install Node 24 (Windows — winget)
 
-Use the **OpenJS Node.js LTS** manifest (tracks current LTS, **24.x**):
+Use the **OpenJS Node.js LTS** manifest (**24.x** as of 2026; `winget search OpenJS.NodeJS` shows **LTS** vs **Current**).
 
 ```powershell
 winget install -e --id OpenJS.NodeJS.LTS
 ```
+
+Do **not** use bare `OpenJS.NodeJS` for this repo: that manifest is **Current** (newer major, e.g. **25.x**) and will not match **`engines`: `>=24`**.
 
 Close and reopen the terminal, then confirm:
 
