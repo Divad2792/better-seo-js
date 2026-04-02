@@ -1,8 +1,18 @@
-import { mkdir, writeFile } from "node:fs/promises"
+import { mkdir, readFile, writeFile } from "node:fs/promises"
 import { dirname } from "node:path"
 import { parseArgs } from "node:util"
 import type { IconManifestConfig, OGTheme, PwaDisplay } from "@better-seo/assets"
-import { renderRobotsTxt, renderSitemapXml } from "better-seo-crawl"
+import {
+  renderAtomFeed,
+  renderLlmsTxt,
+  renderRobotsTxt,
+  renderRssXml,
+  renderSitemapIndexXml,
+  renderSitemapXml,
+  type AtomEntry,
+  type RssItem,
+} from "@better-seo/crawl"
+import { runAnalyze, runPreview, runSnapshot } from "./cli-devtools.js"
 import { executeIcons, executeOg, parseDisplayString, parseThemeString } from "./cli-execute.js"
 import { runDoctor, runInit, runMigrate } from "./cli-subcommands.js"
 import { runInteractiveLauncher, shouldOfferTui } from "./launch-interactive.js"
@@ -17,8 +27,11 @@ Non-interactive: subcommands and flags. Use --no-interactive / -y before the sub
 Commands:
   og <title>              Generate a 1200×630 Open Graph PNG
   icons <file>            Generate favicon / PWA icons (+ optional manifest.json)
-  crawl robots|sitemap    Write robots.txt / sitemap.xml (better-seo-crawl)
-  doctor                  Basic environment check (--json)
+  crawl robots|sitemap|rss|atom|llms|sitemap-index   Crawl / syndication helpers (@better-seo/crawl)
+  snapshot                Tag snapshot + compare (Wave 8)
+  preview                 HTML head preview (Wave 8)
+  analyze                 validateSEO gate (Wave 10)
+  doctor                  Environment + package.json adapter hints (--json)
   init                    Print install + starter snippet (--framework next|react)
   migrate                 Migration hints (e.g. from-next-seo)
 
@@ -60,7 +73,7 @@ Examples:
 }
 
 function printIconsHelp(): void {
-  console.log(`Generate favicons, PWA icons, and optional manifest.json (Wave 3).
+  console.log(`Generate favicon and PWA icon files, and optional manifest.json (Wave 3).
 
 Usage:
   better-seo icons <source.{svg,png,...}> [options]
@@ -83,11 +96,15 @@ Examples:
 }
 
 function printCrawlHelp(): void {
-  console.log(`Crawl helpers (better-seo-crawl) — write strings to disk.
+  console.log(`Crawl helpers (@better-seo/crawl) — write strings to disk.
 
 Usage:
   better-seo crawl robots [options]
   better-seo crawl sitemap [options]
+  better-seo crawl rss [options]
+  better-seo crawl atom [options]
+  better-seo crawl llms [options]
+  better-seo crawl sitemap-index [options]
 
 robots options:
   --out, -o           Output path (default: public/robots.txt)
@@ -100,10 +117,42 @@ sitemap options:
   --loc               Page URL (repeatable, required)
   --help, -h
 
+rss options:
+  --out, -o           (default: public/rss.xml)
+  --title, --link     Channel (required)
+  --description       Optional channel description
+  --language          e.g. en-us
+  --items             Path to JSON { "items": [ { title, link, description?, pubDate? } ] }
+  --help, -h
+
+atom options:
+  --out, -o           (default: public/atom.xml)
+  --title, --link, --id, --updated   Feed metadata (required)
+  --entries           Path to JSON { "entries": [ { title, link, id, updated, summary? } ] }
+  --help, -h
+
+llms options:
+  --out, -o           (default: public/llms.txt)
+  --title             H1 (required)
+  --summary           Optional blockquote
+  --url               Repeatable → bullet list under “Optional”
+  --help, -h
+
+sitemap-index options:
+  --out, -o           (default: public/sitemap-index.xml)
+  --sitemap           Child sitemap URL (repeatable, required)
+  --help, -h
+
 Examples:
   better-seo crawl robots -o public/robots.txt --sitemap https://example.com/sitemap.xml
   better-seo crawl sitemap --loc https://example.com/ --loc https://example.com/about
+  better-seo crawl llms --title "Example" --url https://example.com/docs
 `)
+}
+
+async function readJson<T>(path: string): Promise<T> {
+  const raw = await readFile(path, "utf8")
+  return JSON.parse(raw) as T
 }
 
 const ogCommandOptions = {
@@ -339,6 +388,176 @@ async function runCrawlSitemap(rest: string[]): Promise<number> {
   }
 }
 
+async function runCrawlRss(rest: string[]): Promise<number> {
+  try {
+    const { values } = parseArgs({
+      args: rest,
+      options: {
+        out: { type: "string" as const, short: "o", default: "public/rss.xml" },
+        title: { type: "string" as const },
+        link: { type: "string" as const },
+        description: { type: "string" as const },
+        language: { type: "string" as const },
+        items: { type: "string" as const },
+        help: { type: "boolean" as const, short: "h", default: false },
+      },
+      allowPositionals: false,
+    })
+    if (values.help) {
+      printCrawlHelp()
+      return 0
+    }
+    if (!values.title?.trim() || !values.link?.trim()) {
+      console.error("crawl rss: --title and --link are required")
+      return 1
+    }
+    let items: readonly RssItem[] = []
+    if (values.items?.trim()) {
+      const j = await readJson<{ items?: RssItem[] }>(values.items.trim())
+      items = j.items ?? []
+    }
+    const xml = renderRssXml({
+      title: values.title.trim(),
+      link: values.link.trim(),
+      ...(values.description?.trim() ? { description: values.description.trim() } : {}),
+      ...(values.language?.trim() ? { language: values.language.trim() } : {}),
+      items,
+    })
+    const out = values.out ?? "public/rss.xml"
+    await mkdir(dirname(out), { recursive: true })
+    await writeFile(out, xml, "utf8")
+    console.log(`Wrote ${out} (${xml.length} chars)`)
+    return 0
+  } catch (e) {
+    console.error(e instanceof Error ? e.message : e)
+    return 1
+  }
+}
+
+async function runCrawlAtom(rest: string[]): Promise<number> {
+  try {
+    const { values } = parseArgs({
+      args: rest,
+      options: {
+        out: { type: "string" as const, short: "o", default: "public/atom.xml" },
+        title: { type: "string" as const },
+        link: { type: "string" as const },
+        id: { type: "string" as const },
+        updated: { type: "string" as const },
+        entries: { type: "string" as const },
+        help: { type: "boolean" as const, short: "h", default: false },
+      },
+      allowPositionals: false,
+    })
+    if (values.help) {
+      printCrawlHelp()
+      return 0
+    }
+    if (
+      !values.title?.trim() ||
+      !values.link?.trim() ||
+      !values.id?.trim() ||
+      !values.updated?.trim()
+    ) {
+      console.error("crawl atom: --title, --link, --id, --updated are required")
+      return 1
+    }
+    let entries: readonly AtomEntry[] = []
+    if (values.entries?.trim()) {
+      const j = await readJson<{ entries?: AtomEntry[] }>(values.entries.trim())
+      entries = j.entries ?? []
+    }
+    const xml = renderAtomFeed({
+      title: values.title.trim(),
+      link: values.link.trim(),
+      id: values.id.trim(),
+      updated: values.updated.trim(),
+      entries,
+    })
+    const out = values.out ?? "public/atom.xml"
+    await mkdir(dirname(out), { recursive: true })
+    await writeFile(out, xml, "utf8")
+    console.log(`Wrote ${out} (${xml.length} chars)`)
+    return 0
+  } catch (e) {
+    console.error(e instanceof Error ? e.message : e)
+    return 1
+  }
+}
+
+async function runCrawlLlms(rest: string[]): Promise<number> {
+  try {
+    const { values } = parseArgs({
+      args: rest,
+      options: {
+        out: { type: "string" as const, short: "o", default: "public/llms.txt" },
+        title: { type: "string" as const },
+        summary: { type: "string" as const },
+        url: { type: "string" as const, multiple: true },
+        help: { type: "boolean" as const, short: "h", default: false },
+      },
+      allowPositionals: false,
+    })
+    if (values.help) {
+      printCrawlHelp()
+      return 0
+    }
+    if (!values.title?.trim()) {
+      console.error("crawl llms: --title is required")
+      return 1
+    }
+    const urls = (Array.isArray(values.url) ? values.url : values.url ? [values.url] : [])
+      .map((u) => u.trim())
+      .filter(Boolean)
+    const txt = renderLlmsTxt({
+      title: values.title.trim(),
+      ...(values.summary?.trim() ? { summary: values.summary.trim() } : {}),
+      ...(urls.length ? { blocks: [{ heading: "Optional", lines: urls }] } : { blocks: undefined }),
+    })
+    const out = values.out ?? "public/llms.txt"
+    await mkdir(dirname(out), { recursive: true })
+    await writeFile(out, txt, "utf8")
+    console.log(`Wrote ${out} (${txt.length} chars)`)
+    return 0
+  } catch (e) {
+    console.error(e instanceof Error ? e.message : e)
+    return 1
+  }
+}
+
+async function runCrawlSitemapIndex(rest: string[]): Promise<number> {
+  try {
+    const { values } = parseArgs({
+      args: rest,
+      options: {
+        out: { type: "string" as const, short: "o", default: "public/sitemap-index.xml" },
+        sitemap: { type: "string" as const, multiple: true },
+        help: { type: "boolean" as const, short: "h", default: false },
+      },
+      allowPositionals: false,
+    })
+    if (values.help) {
+      printCrawlHelp()
+      return 0
+    }
+    const list = asStringArray(values.sitemap) ?? []
+    const trimmed = list.map((u) => u.trim()).filter(Boolean)
+    if (!trimmed.length) {
+      console.error("crawl sitemap-index: need at least one --sitemap URL")
+      return 1
+    }
+    const xml = renderSitemapIndexXml(trimmed)
+    const out = values.out ?? "public/sitemap-index.xml"
+    await mkdir(dirname(out), { recursive: true })
+    await writeFile(out, xml, "utf8")
+    console.log(`Wrote ${out} (${xml.length} chars)`)
+    return 0
+  } catch (e) {
+    console.error(e instanceof Error ? e.message : e)
+    return 1
+  }
+}
+
 async function runCrawl(rest: string[]): Promise<number> {
   const sub = rest[0]
   const tail = rest.slice(1)
@@ -348,7 +567,13 @@ async function runCrawl(rest: string[]): Promise<number> {
   }
   if (sub === "robots") return runCrawlRobots(tail)
   if (sub === "sitemap") return runCrawlSitemap(tail)
-  console.error(`Unknown crawl subcommand "${sub}". Use: robots | sitemap`)
+  if (sub === "rss") return runCrawlRss(tail)
+  if (sub === "atom") return runCrawlAtom(tail)
+  if (sub === "llms") return runCrawlLlms(tail)
+  if (sub === "sitemap-index") return runCrawlSitemapIndex(tail)
+  console.error(
+    `Unknown crawl subcommand "${sub}". Use: robots | sitemap | rss | atom | llms | sitemap-index`,
+  )
   return 1
 }
 
@@ -357,7 +582,7 @@ export { runDoctor, runInit, runMigrate }
 
 function printUnknown(program: string): void {
   console.error(
-    `Unknown command "${program}". Expected: og | icons | crawl | doctor | init | migrate  (better-seo --help)`,
+    `Unknown command "${program}". Expected: og | icons | crawl | snapshot | preview | analyze | doctor | init | migrate  (better-seo --help)`,
   )
 }
 
@@ -391,6 +616,18 @@ export async function runCli(argv: readonly string[]): Promise<number> {
 
   if (program === "crawl") {
     return runCrawl(rest.slice(1))
+  }
+
+  if (program === "snapshot") {
+    return runSnapshot(rest.slice(1))
+  }
+
+  if (program === "preview") {
+    return runPreview(rest.slice(1))
+  }
+
+  if (program === "analyze") {
+    return runAnalyze(rest.slice(1))
   }
 
   if (program === "doctor") {

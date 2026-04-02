@@ -268,4 +268,179 @@ describe("runCli", () => {
     log.mockRestore()
     err.mockRestore()
   })
+
+  it("crawl rss writes feed xml", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    const out = join(tmpdir(), `rss-${Date.now()}.xml`)
+    created.push(out)
+    expect(
+      await runCli([
+        "node",
+        "cli",
+        "crawl",
+        "rss",
+        "--out",
+        out,
+        "--title",
+        "Blog",
+        "--link",
+        "https://example.com/",
+        "--description",
+        "Posts",
+      ]),
+    ).toBe(0)
+    const xml = readFileSync(out, "utf8")
+    expect(xml).toContain("<rss")
+    expect(xml).toContain("<title>Blog</title>")
+    log.mockRestore()
+  })
+
+  it("crawl atom writes feed xml", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    const out = join(tmpdir(), `atom-${Date.now()}.xml`)
+    created.push(out)
+    expect(
+      await runCli([
+        "node",
+        "cli",
+        "crawl",
+        "atom",
+        "--out",
+        out,
+        "--title",
+        "Blog",
+        "--link",
+        "https://example.com/",
+        "--id",
+        "https://example.com/atom.xml",
+        "--updated",
+        "2026-01-01T00:00:00Z",
+      ]),
+    ).toBe(0)
+    const xml = readFileSync(out, "utf8")
+    expect(xml).toContain('xmlns="http://www.w3.org/2005/Atom"')
+    expect(xml).toContain("<title>Blog</title>")
+    log.mockRestore()
+  })
+
+  it("crawl llms writes llms.txt", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    const out = join(tmpdir(), `llms-${Date.now()}.txt`)
+    created.push(out)
+    expect(
+      await runCli([
+        "node",
+        "cli",
+        "crawl",
+        "llms",
+        "--out",
+        out,
+        "--title",
+        "Example docs",
+        "--summary",
+        "API reference",
+        "--url",
+        "https://example.com/docs",
+      ]),
+    ).toBe(0)
+    const txt = readFileSync(out, "utf8")
+    expect(txt).toContain("Example docs")
+    expect(txt).toContain("https://example.com/docs")
+    log.mockRestore()
+  })
+
+  it("crawl sitemap-index writes index xml", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    const out = join(tmpdir(), `smidx-${Date.now()}.xml`)
+    created.push(out)
+    expect(
+      await runCli([
+        "node",
+        "cli",
+        "crawl",
+        "sitemap-index",
+        "--out",
+        out,
+        "--sitemap",
+        "https://example.com/sitemap-1.xml",
+        "--sitemap",
+        "https://example.com/sitemap-2.xml",
+      ]),
+    ).toBe(0)
+    const xml = readFileSync(out, "utf8")
+    expect(xml).toContain("sitemapindex")
+    expect(xml).toContain("sitemap-1.xml")
+    log.mockRestore()
+  })
+
+  it("snapshot writes tags json", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    const input = join(tmpdir(), `snap-in-${Date.now()}.json`)
+    const out = join(tmpdir(), `snap-out-${Date.now()}.json`)
+    created.push(input, out)
+    writeFileSync(input, JSON.stringify({ title: "Hi", description: "There" }, null, 2), "utf8")
+    expect(await runCli(["node", "cli", "snapshot", "--input", input, "--out", out])).toBe(0)
+    const j = JSON.parse(readFileSync(out, "utf8")) as unknown[]
+    expect(Array.isArray(j)).toBe(true)
+    expect(JSON.stringify(j)).toContain("Hi")
+    log.mockRestore()
+  })
+
+  it("snapshot compare identical exits 0", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    const a = join(tmpdir(), `cmp-a-${Date.now()}.json`)
+    const b = join(tmpdir(), `cmp-b-${Date.now()}.json`)
+    created.push(a, b)
+    const body = JSON.stringify([{ kind: "meta", name: "description", content: "x" }], null, 2)
+    writeFileSync(a, `${body}\n`, "utf8")
+    writeFileSync(b, `${body}\n`, "utf8")
+    expect(await runCli(["node", "cli", "snapshot", "compare", a, b])).toBe(0)
+    log.mockRestore()
+  })
+
+  it("snapshot compare differ exits 1", async () => {
+    const err = vi.spyOn(console, "error").mockImplementation(() => {})
+    const a = join(tmpdir(), `cmp2-a-${Date.now()}.json`)
+    const b = join(tmpdir(), `cmp2-b-${Date.now()}.json`)
+    created.push(a, b)
+    writeFileSync(a, JSON.stringify([1]), "utf8")
+    writeFileSync(b, JSON.stringify([2]), "utf8")
+    expect(await runCli(["node", "cli", "snapshot", "compare", a, b])).toBe(1)
+    err.mockRestore()
+  })
+
+  it("preview writes html with head tags", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    const input = join(tmpdir(), `prev-in-${Date.now()}.json`)
+    const out = join(tmpdir(), `prev-out-${Date.now()}.html`)
+    created.push(input, out)
+    writeFileSync(input, JSON.stringify({ title: "Preview title", description: "Desc" }), "utf8")
+    expect(await runCli(["node", "cli", "preview", "--input", input, "--out", out])).toBe(0)
+    const html = readFileSync(out, "utf8")
+    expect(html).toContain("<!DOCTYPE html>")
+    expect(html).toContain("Preview title")
+    log.mockRestore()
+  })
+
+  it("analyze exits 0 for valid input", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    const input = join(tmpdir(), `an-in-${Date.now()}.json`)
+    created.push(input)
+    writeFileSync(
+      input,
+      JSON.stringify({ title: "Valid", description: "Enough text here for checks." }),
+      "utf8",
+    )
+    expect(await runCli(["node", "cli", "analyze", "--input", input])).toBe(0)
+    log.mockRestore()
+  })
+
+  it("analyze exits 1 when title empty", async () => {
+    const err = vi.spyOn(console, "error").mockImplementation(() => {})
+    const input = join(tmpdir(), `an-bad-${Date.now()}.json`)
+    created.push(input)
+    writeFileSync(input, JSON.stringify({ title: "", description: "x" }), "utf8")
+    expect(await runCli(["node", "cli", "analyze", "--input", input])).toBe(1)
+    err.mockRestore()
+  })
 })

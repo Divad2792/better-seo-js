@@ -1,11 +1,11 @@
-# Next.js App Router: `robots.ts` and `sitemap.ts` with `better-seo-crawl`
+# Next.js App Router: `robots.ts` and `sitemap.ts` with `@better-seo/crawl`
 
 Align **robots** and **sitemap** URLs with the same **`baseUrl`** you pass into `prepareNextSeo` / `createSEO` so crawl hints do not drift from canonical metadata.
 
 ## Install
 
 ```bash
-npm install better-seo-crawl
+npm install @better-seo/crawl
 ```
 
 ## Shared site URL
@@ -44,7 +44,7 @@ Build the same URL list your app serves (or export it from a shared module). Fee
 
 ```ts
 import type { MetadataRoute } from "next"
-import { renderSitemapXml } from "better-seo-crawl"
+import { renderSitemapXml } from "@better-seo/crawl"
 import { siteUrl } from "@/lib/site"
 
 const paths = ["/", "/about"]

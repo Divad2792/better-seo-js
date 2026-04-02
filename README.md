@@ -1,7 +1,7 @@
 # better-seo.js
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](./LICENSE)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D20-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D24-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Core runtime dependencies](https://img.shields.io/badge/core%20runtime%20deps-0-success?style=flat-square)](./packages/core/README.md)
 [![Security](https://img.shields.io/badge/security-audited-success?style=flat-square)](./SECURITY_COMPLETE_SUMMARY.md)
@@ -23,7 +23,7 @@
 [![Coverage — assets](https://img.shields.io/badge/coverage-@better--seo%2Fassets%20≥85%25%20lines-informational?style=flat-square)](./packages/better-seo-assets/README.md#coverage)
 [![Coverage — cli](https://img.shields.io/badge/coverage-@better--seo%2Fcli%20≥80%25%20lines-informational?style=flat-square)](./packages/better-seo-cli/README.md#coverage)
 [![Coverage — react](https://img.shields.io/badge/coverage-@better--seo%2Freact%20≥85%25%20lines-informational?style=flat-square)](./packages/react/README.md)
-[![Coverage — crawl](https://img.shields.io/badge/coverage-better--seo--crawl-Vitest-informational?style=flat-square)](./packages/better-seo-crawl/)
+[![Coverage — crawl](https://img.shields.io/badge/coverage-@better--seo%2Fcrawl-Vitest-informational?style=flat-square)](./packages/better-seo-crawl/)
 
 ### CI and test results (badges, tables, reports)
 
@@ -54,7 +54,7 @@ Shipping focus follows the internal roadmap; this table matches **[`internal-doc
 | **2–3**          | OG + icons                                                   | **Done** — **`@better-seo/assets`**, CLI **`og`** / **`icons`**, recipes                                                                                                                                       |
 | **5**            | React + validation depth                                     | **Done** — **`@better-seo/react`** (Helmet, **`useSEO`**, **`SEOProvider`**), **`renderTags`** parity, golden Next metadata tests, **`react-seo-vite`** E2E                                                    |
 | **9** (partial)  | Operations CLI                                               | **Partial** — **interactive `better-seo` TUI** (Clack); CLI **`crawl robots` / `crawl sitemap`**; **`doctor`**, **`init`**, **`migrate`** hints — industry **templates** / **`template switch`** not built yet |
-| **12** (partial) | Crawl + migrate                                              | **Partial** — **`better-seo-crawl`** (`renderRobotsTxt`, `renderSitemapXml`, …) + CLI wrappers; RSS / codemod **`migrate`** TBD                                                                                |
+| **12** (partial) | Crawl + migrate                                              | **Partial** — **`@better-seo/crawl`** (`renderRobotsTxt`, `renderSitemapXml`, …) + CLI wrappers; RSS / codemod **`migrate`** TBD                                                                               |
 | **6–8, 10–11**   | Rules scale, compiler, snapshot/preview, scan/fix, design OG | **Not started or early** — see PROGRESS                                                                                                                                                                        |
 
 Public guides: **[`docs/`](./docs/index.md)** (including **Nextra site** in **`apps/docs`**) · **[`docs/recipes/`](./docs/recipes/index.md)** · **[`docs/commands.md`](./docs/commands.md)** (CLI + TUI) · **[`docs/adapters/future-frameworks.md`](./docs/adapters/future-frameworks.md)** (Remix / Astro / Nuxt — future).
@@ -206,7 +206,7 @@ flowchart LR
     REACT["@better-seo/react\nHelmet, useSEO"]
     FUTURE["Future: remix, astro, …"]
     ASSETS["@better-seo/assets\nOG + icons"]
-    CRAWL["better-seo-crawl\nrobots + sitemap XML"]
+    CRAWL["@better-seo/crawl\nrobots + sitemap XML"]
     CLI["@better-seo/cli\nTUI, og, icons, crawl, doctor…"]
   end
 
@@ -227,7 +227,7 @@ flowchart LR
 | **`examples/react-seo-vite`**      | **Vite + React** + **`BetterSEOHelmet`**; **Playwright** checks document title / meta.                                                                                    |
 | **`packages/better-seo-assets`**   | npm **`@better-seo/assets`** — **[`packages/better-seo-assets/README.md`](./packages/better-seo-assets/README.md)**                                                       |
 | **`packages/better-seo-cli`**      | npm **`@better-seo/cli`** — TUI launcher, **`og`**, **`icons`**, **`crawl`**, **`doctor`**, **`init`**, **`migrate`** — **[README](./packages/better-seo-cli/README.md)** |
-| **`packages/better-seo-crawl`**    | **`better-seo-crawl`** — **`renderRobotsTxt`**, **`renderSitemapXml`** (optional **`@better-seo/core`** type helper) — use from CLI, recipes, or build scripts            |
+| **`packages/better-seo-crawl`**    | npm **`@better-seo/crawl`** — **`renderRobotsTxt`**, **`renderSitemapXml`** (optional **`@better-seo/core`** type helper) — use from CLI, recipes, or build scripts       |
 | **`examples/vanilla-render-tags`** | **`createSEO` + `renderTags`** in plain Node (**no React**).                                                                                                              |
 | **`docs/`** / **`apps/docs`**      | Canonical docs markdown + Nextra site (getting started, concepts, API, recipes).                                                                                          |
 | **`internal-docs/`** (clone only)  | Maintainer specs: PRD, architecture, features, roadmap — index in **CONTRIBUTING.md** (not part of published docs site).                                                  |

@@ -144,7 +144,7 @@ Target audience: Next.js/React developers building production apps who need comp
 | Auto-written page copy | Headless SEO model only; no generative content product in-repo   |
 | Visual marketing UI    | Headless engine; previews are **debug/CLI**, not a CMS           |
 
-**Note:** **Sitemaps, robots.txt, and RSS/Atom** are **in scope** as optional **modules** (`better-seo-crawl` or documented route recipes) so crawl/index behavior stays aligned with the same `SEO` model and `baseUrl` — they are not “someone else’s problem” at the infra layer.
+**Note:** **Sitemaps, robots.txt, and RSS/Atom** are **in scope** as optional **modules** (`@better-seo/crawl` or documented route recipes) so crawl/index behavior stays aligned with the same `SEO` model and `baseUrl` — they are not “someone else’s problem” at the infra layer.
 
 ### 2.3 Product Pyramid (Priority Order)
 
@@ -530,7 +530,7 @@ interface SEOPlugin {
 
 #### Crawl, robots, and syndication (optional module)
 
-**Package:** `better-seo-crawl` (optional; shares types with core)
+**Package:** `@better-seo/crawl` (optional; shares types with core)
 
 | Capability      | Description                                                                                                      |
 | --------------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -669,7 +669,7 @@ packages/@better-seo/next/   ← Next.js adapter (reference)
 packages/@better-seo/react/  ← React / Vite
 examples/nextjs-app/         ← Golden-path app + Playwright E2E
 
-better-seo-crawl/            ← optional: sitemap, robots, RSS, llms.txt
+packages/better-seo-crawl/   ← npm: @better-seo/crawl; sitemap, robots, RSS, llms.txt
   sitemap.ts
   robots.ts
   rss.ts
@@ -2061,11 +2061,11 @@ Waves are **sequenced for risk reduction**, not "MVP vs enterprise": **all capab
 
 ### Wave 12: Crawl module + migration + docs polish (Week 17+)
 
-| Task                   | Deliverable                                                                   |
-| ---------------------- | ----------------------------------------------------------------------------- |
-| **`better-seo-crawl`** | `robots.txt`, `sitemap.xml`, RSS/Atom helpers, optional `llms.txt`            |
-| Migration              | `fromNextSeo()` + `npx better-seo migrate` (codemods)                         |
-| Docs                   | API, schema reference, **Next-first** integration guides, per-adapter recipes |
+| Task                    | Deliverable                                                                   |
+| ----------------------- | ----------------------------------------------------------------------------- |
+| **`@better-seo/crawl`** | `robots.txt`, `sitemap.xml`, RSS/Atom helpers, optional `llms.txt`            |
+| Migration               | `fromNextSeo()` + `npx better-seo migrate` (codemods)                         |
+| Docs                    | API, schema reference, **Next-first** integration guides, per-adapter recipes |
 
 **Exit criteria:** **Next.js** migration path documented end-to-end; crawl outputs share **`baseUrl` / canonical** with core; a new adopter completes **next-seo → better-seo.js** in **≤10 minutes** using docs alone.
 
@@ -2332,14 +2332,14 @@ Ship list for **crawl + dedupe + plugins** lives in §3 and **Wave 12**. The fol
 
 ### 11.1 Naming
 
-| Package          | Name                                       | Import               |
-| ---------------- | ------------------------------------------ | -------------------- |
-| Core             | `@better-seo/core`                         | `@better-seo/core`   |
-| Adapters         | `@better-seo/next`, `@better-seo/react`, … | Scoped packages      |
-| Crawl (optional) | `better-seo-crawl`                         | Sitemap, robots, RSS |
-| Assets           | `better-seo-assets`                        | `better-seo-assets`  |
-| CLI              | `better-seo-cli`                           | N/A (CLI only)       |
-| GitHub repo      | `better-seo-js`                            | —                    |
+| Package          | Name                                       | Import                |
+| ---------------- | ------------------------------------------ | --------------------- |
+| Core             | `@better-seo/core`                         | `@better-seo/core`    |
+| Adapters         | `@better-seo/next`, `@better-seo/react`, … | Scoped packages       |
+| Crawl (optional) | `@better-seo/crawl`                        | `@better-seo/crawl`   |
+| Assets           | `@better-seo/assets`                       | `@better-seo/assets`  |
+| CLI              | `@better-seo/cli` (bin `better-seo`)       | `npx @better-seo/cli` |
+| GitHub repo      | `better-seo-js`                            | —                     |
 
 ### 11.2 License
 

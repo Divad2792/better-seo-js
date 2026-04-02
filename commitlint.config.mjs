@@ -26,7 +26,7 @@ export default {
       { value: "remix", name: "remix — @better-seo/remix adapter (planned)" },
       { value: "astro", name: "astro — @better-seo/astro adapter (planned)" },
       { value: "nuxt", name: "nuxt — @better-seo/nuxt adapter (planned)" },
-      { value: "crawl", name: "crawl — better-seo-crawl (sitemap/robots, planned)" },
+      { value: "crawl", name: "crawl — @better-seo/crawl (sitemap/robots, planned)" },
       { value: "examples-next", name: "examples-next — examples/nextjs-app (N10 E2E)" },
       { value: "examples-vanilla", name: "examples-vanilla — examples/vanilla-render-tags" },
       { value: "examples-react-vite", name: "examples-react-vite — examples/react-seo-vite" },

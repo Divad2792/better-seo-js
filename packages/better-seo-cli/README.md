@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](../../LICENSE)
 [![CI](https://github.com/0xMilord/better-seo-js/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/0xMilord/better-seo-js/actions/workflows/ci.yml)
 
-Command-line interface for Better SEO **asset** and **crawl-string** workflows: **OG** and **icons** via [**`@better-seo/assets`**](../better-seo-assets/README.md), **robots.txt** / **sitemap.xml** via [**`better-seo-crawl`**](../better-seo-crawl/). Binaries: **`better-seo`** and **`better-seo-cli`** (same entry).
+Command-line interface for Better SEO **asset** and **crawl-string** workflows: **OG** and **icons** via [**`@better-seo/assets`**](../better-seo-assets/README.md), **robots.txt** / **sitemap.xml** via [**`@better-seo/crawl`**](../better-seo-crawl/). Binaries: **`better-seo`** and **`better-seo-cli`** (same entry).
 
 **Docs:** [Monorepo README](../../README.md) · [**Commands reference**](../../docs/commands.md)
 
@@ -30,14 +30,14 @@ Or **`npx @better-seo/cli`** without a project install.
 
 ## Commands
 
-| Command       | Description                                                                                                     |
-| ------------- | --------------------------------------------------------------------------------------------------------------- |
-| **`og`**      | Generate **1200×630** OG PNG (built-in template or **`--template ./card.mjs`**)                                 |
-| **`icons`**   | Generate favicon + icon set from a logo; optional **`manifest.json`** (use **`--no-manifest`** to skip)         |
-| **`crawl`**   | **`crawl robots`** / **`crawl sitemap`** — write **`public/robots.txt`**-style files via **`better-seo-crawl`** |
-| **`doctor`**  | Basic environment check (`--json`)                                                                              |
-| **`init`**    | Print install + starter snippet (`--framework next\|react`)                                                     |
-| **`migrate`** | e.g. **`migrate from-next-seo`** — migration hints                                                              |
+| Command       | Description                                                                                                      |
+| ------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **`og`**      | Generate **1200×630** OG PNG (built-in template or **`--template ./card.mjs`**)                                  |
+| **`icons`**   | Generate favicon + icon set from a logo; optional **`manifest.json`** (use **`--no-manifest`** to skip)          |
+| **`crawl`**   | **`crawl robots`** / **`crawl sitemap`** — write **`public/robots.txt`**-style files via **`@better-seo/crawl`** |
+| **`doctor`**  | Basic environment check (`--json`)                                                                               |
+| **`init`**    | Print install + starter snippet (`--framework next\|react`)                                                      |
+| **`migrate`** | e.g. **`migrate from-next-seo`** — migration hints                                                               |
 
 **Next.js recipes:** [`docs/recipes/sitemap-robots-next.md`](../../docs/recipes/sitemap-robots-next.md) (shared **`baseUrl`**, `MetadataRoute`, CLI).
 

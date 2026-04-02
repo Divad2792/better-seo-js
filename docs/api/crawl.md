@@ -1,9 +1,9 @@
 ---
-title: better-seo-crawl
+title: "@better-seo/crawl"
 description: Robots.txt and sitemap XML builders aligned with your SEO model.
 ---
 
-# `better-seo-crawl`
+# `@better-seo/crawl`
 
 **What it does:** Builds **robots.txt** and **sitemap.xml** strings from configuration, sharing **`baseUrl`** / URL discipline with **`@better-seo/core`** where applicable.
 
@@ -22,4 +22,4 @@ Use CLI wrappers or import builders from the package — walkthrough:
 ## Notes
 
 - Deeper RSS/Atom / llms.txt: **Roadmap** Wave 12 — see **`internal-docs/PROGRESS.md`** for what shipped vs planned.
-- Package README: [`packages/better-seo-crawl/README.md`](../../packages/better-seo-crawl/README.md).
+- Source: [`packages/better-seo-crawl/`](../../packages/better-seo-crawl/) (npm **`@better-seo/crawl`**).

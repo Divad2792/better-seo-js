@@ -47,11 +47,11 @@ export function createSEO(input: SEOInput, config?: SEOConfig): SEO {
   const verification = mergedInput.meta?.verification
   const hasVer = Boolean(
     verification &&
-      (verification.google ||
-        verification.yahoo ||
-        verification.yandex ||
-        verification.me ||
-        (verification.other !== undefined && Object.keys(verification.other).length > 0)),
+    (verification.google ||
+      verification.yahoo ||
+      verification.yandex ||
+      verification.me ||
+      (verification.other !== undefined && Object.keys(verification.other).length > 0)),
   )
 
   const rawPag = mergedInput.meta?.pagination

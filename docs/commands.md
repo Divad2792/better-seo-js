@@ -1,6 +1,6 @@
 ---
 title: CLI commands
-description: better-seo CLI reference — TUI, og, icons, crawl, doctor, init, migrate.
+description: better-seo CLI reference — TUI, og, icons, crawl, snapshot, preview, analyze, doctor, init, migrate.
 ---
 
 # `better-seo` CLI — command reference & implementation matrix
@@ -51,15 +51,15 @@ CI=1 npx better-seo
 
 After a short **intro** and a **welcome note** (trying to detect **Next.js** vs **React** from the current **`package.json`**), you choose one row:
 
-| Menu item                        | Behavior                                                                                                                                                                                                       |
-| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Generate OG image**            | Prompts: title, optional site name, output path, theme (default / light / dark / auto) → runs the same **`generateOG`** path as **`better-seo og`**.                                                           |
-| **Generate favicon + PWA icons** | Prompts: source file, output directory, whether to write **`manifest.json`**, then manifest fields (name, short name, `start_url`, `display`, optional `theme_color`) → same as **`better-seo icons`**.        |
-| **Robots / sitemap**             | Does **not** write files in the TUI. Shows **copy-paste** commands for **`better-seo crawl robots`** / **`crawl sitemap`** and points to the [Next robots & sitemap recipe](./recipes/sitemap-robots-next.md). |
-| **Run environment doctor**       | Runs **`doctor`** (human-readable output in the TUI path). For CI, prefer **`better-seo doctor --json`** in a script.                                                                                          |
-| **Show install & snippet**       | Asks **Next** vs **React**, then prints **`init`** install lines + snippet (same as **`better-seo init --framework=…`**).                                                                                      |
-| **Migration hints (next-seo)**   | Prints the **from-next-seo** hint block (same as **`better-seo migrate from-next-seo`**).                                                                                                                      |
-| **Exit**                         | Closes with a short goodbye; exit code **0**.                                                                                                                                                                  |
+| Menu item                        | Behavior                                                                                                                                                                                                                                                          |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Generate OG image**            | Prompts: title, optional site name, output path, theme (default / light / dark / auto) → runs the same **`generateOG`** path as **`better-seo og`**.                                                                                                              |
+| **Generate favicon + PWA icons** | Prompts: source file, output directory, whether to write **`manifest.json`**, then manifest fields (name, short name, `start_url`, `display`, optional `theme_color`) → same as **`better-seo icons`**.                                                           |
+| **Robots / sitemap / feeds**     | Does **not** run **`crawl`** in the TUI. Shows **copy-paste** examples (**robots** through **sitemap-index**) + trust commands (**`snapshot`**, **`preview`**, **`analyze`**) and points here + [Next robots & sitemap recipe](./recipes/sitemap-robots-next.md). |
+| **Run environment doctor**       | Runs **`doctor`** (human-readable output in the TUI path). For CI, prefer **`better-seo doctor --json`** in a script.                                                                                                                                             |
+| **Show install & snippet**       | Asks **Next** vs **React**, then prints **`init`** install lines + snippet (same as **`better-seo init --framework=…`**).                                                                                                                                         |
+| **Migration hints (next-seo)**   | Prints the **from-next-seo** hint block (same as **`better-seo migrate from-next-seo`**).                                                                                                                                                                         |
+| **Exit**                         | Closes with a short goodbye; exit code **0**.                                                                                                                                                                                                                     |
 
 **Cancel:** follow **Clack** behavior (**Ctrl+C** / cancel) — the CLI exits with code **1** and shows a cancelled message.
 
@@ -76,16 +76,17 @@ After a successful action (except **Exit**), you’ll see a **Done.** outro. Fai
 
 ### 1.1 Recommended onboarding order (first hour → production)
 
-| Step | Action                                  | Typical surface                                                                 |
-| ---- | --------------------------------------- | ------------------------------------------------------------------------------- |
-| 1    | **Install core + adapter**              | `npm i @better-seo/core @better-seo/next` (or `@better-seo/react`)              |
-| 2    | **`init`** (install lines + snippet)    | `npx better-seo init --framework next` or TUI → Init                            |
-| 3    | **Wire `metadata` / Helmet**            | App code (`seo()`, `prepareNextSeo`, …) — not the CLI                           |
-| 4    | **Validate in dev/CI**                  | `validateSEO` (dev), **`doctor`**                                               |
-| 5    | **OG + icons (assets)**                 | **`og`**, **`icons`** → `@better-seo/assets`                                    |
-| 6    | **Crawl artifacts**                     | **`crawl robots` / `crawl sitemap`** or App Router recipes + `better-seo-crawl` |
-| 7    | **Migration** (if coming from next-seo) | **`migrate from-next-seo`** + core **`fromNextSeo`**                            |
-| 8    | **Automation** (roadmap)                | **`add` / `scan` / `fix`**, **`snapshot`**, **`preview`** — not shipped yet     |
+| Step | Action                                  | Typical surface                                                                                           |
+| ---- | --------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| 1    | **Install core + adapter**              | `npm i @better-seo/core @better-seo/next` (or `@better-seo/react`)                                        |
+| 2    | **`init`** (install lines + snippet)    | `npx better-seo init --framework next` or TUI → Init                                                      |
+| 3    | **Wire `metadata` / Helmet**            | App code (`seo()`, `prepareNextSeo`, …) — not the CLI                                                     |
+| 4    | **Validate in dev/CI**                  | `validateSEO` (dev), **`doctor`**                                                                         |
+| 5    | **OG + icons (assets)**                 | **`og`**, **`icons`** → `@better-seo/assets`                                                              |
+| 6    | **Crawl artifacts**                     | **`crawl`** (robots, sitemap, rss, atom, llms, sitemap-index) or App Router recipes + `@better-seo/crawl` |
+| 7    | **Trust / validation**                  | **`snapshot`**, **`preview`**, **`analyze`** ( **`validateSEO`** gate in CI )                             |
+| 8    | **Migration** (if coming from next-seo) | **`migrate from-next-seo`** + core **`fromNextSeo`**                                                      |
+| 9    | **Automation** (roadmap)                | **`add` / `scan` / `fix`** — not shipped yet                                                              |
 
 Heavy or repo-scanning work stays in **CLI or build-time** so **`@better-seo/core`** stays suitable for Edge bundles.
 
@@ -93,38 +94,45 @@ Heavy or repo-scanning work stays in **CLI or build-time** so **`@better-seo/cor
 
 Indicative ordering only; the matrix below reflects **what exists in this repo today**.
 
-| Phase | Theme                           | CLI-relevant notes                                       |
-| ----- | ------------------------------- | -------------------------------------------------------- |
-| Early | Core + Next + E2E               | Voilà is `seo()` in the app; CLI optional                |
-| Mid   | Assets                          | **`og`**, **`icons`**                                    |
-| Mid   | Distribution                    | npm, README, examples                                    |
-| Later | Snapshots / preview             | **`snapshot`**, **`preview`** — planned                  |
-| Later | TUI + **`init`** + **`doctor`** | Launcher, richer **`doctor`** — partial today            |
-| Later | Automation                      | **`add` / `scan` / `fix`** — planned                     |
-| Later | Crawl + migrate depth           | **`crawl`**, codemod-style **`migrate`** — partial today |
+| Phase | Theme                           | CLI-relevant notes                                              |
+| ----- | ------------------------------- | --------------------------------------------------------------- |
+| Early | Core + Next + E2E               | Voilà is `seo()` in the app; CLI optional                       |
+| Mid   | Assets                          | **`og`**, **`icons`**                                           |
+| Mid   | Distribution                    | npm, README, examples                                           |
+| Later | Snapshots / preview             | **`snapshot`**, **`preview`**, **`analyze`** — baseline shipped |
+| Later | TUI + **`init`** + **`doctor`** | Launcher, richer **`doctor`** — partial today                   |
+| Later | Automation                      | **`add` / `scan` / `fix`** — planned                            |
+| Later | Crawl + migrate depth           | **`crawl`**, codemod-style **`migrate`** — partial today        |
 
 ---
 
 ## 2. Command catalog
 
-| Command / surface                                                                                                    | What it does                            | How it works                                                    |
-| -------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | --------------------------------------------------------------- |
-| **(no subcommand, TTY)**                                                                                             | Interactive menu                        | **`@better-seo/cli`** + **@clack/prompts**. Does not load core. |
-| **`og <title>`**                                                                                                     | **1200×630** Open Graph PNG             | CLI → **`@better-seo/assets`** `generateOG` → file write.       |
-| **`icons <source>`**                                                                                                 | Favicons + optional **`manifest.json`** | CLI → **`generateIcons`**.                                      |
-| **`crawl robots`**                                                                                                   | **robots.txt** body                     | CLI → **`better-seo-crawl`** `renderRobotsTxt` → file write.    |
-| **`crawl sitemap`**                                                                                                  | **urlset** sitemap XML                  | CLI → **`renderSitemapXml`**; URLs from **`--loc`**.            |
-| **`doctor`**                                                                                                         | Environment check                       | Node + baseline message; **`--json`** for CI.                   |
-| **`init`**                                                                                                           | Install lines + snippet                 | **`--framework next\|react`**.                                  |
-| **`migrate from-next-seo`**                                                                                          | Migration hints                         | Points to **`fromNextSeo`**; not a full codemod yet.            |
-| **`splash`**, **`analyze`**, **`add`**, **`scan`**, **`fix`**, **`snapshot`**, **`preview`**, industry **templates** | Planned / PRD                           | **Not** in the CLI today.                                       |
+| Command / surface                                                      | What it does                            | How it works                                                                                                                     |
+| ---------------------------------------------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **(no subcommand, TTY)**                                               | Interactive menu                        | **`@better-seo/cli`** + **@clack/prompts**. OG/icons may load **`@better-seo/assets`**; trust commands are non-interactive only. |
+| **`og <title>`**                                                       | **1200×630** Open Graph PNG             | CLI → **`@better-seo/assets`** `generateOG` → file write.                                                                        |
+| **`icons <source>`**                                                   | Favicons + optional **`manifest.json`** | CLI → **`generateIcons`**.                                                                                                       |
+| **`crawl robots`**                                                     | **robots.txt** body                     | CLI → **`@better-seo/crawl`** `renderRobotsTxt` → file write.                                                                    |
+| **`crawl sitemap`**                                                    | **urlset** sitemap XML                  | CLI → **`renderSitemapXml`**; URLs from **`--loc`** (repeatable).                                                                |
+| **`crawl rss`**                                                        | **RSS 2.0** XML                         | CLI → **`renderRssXml`**; **`--title`**, **`--link`** required; optional **`--items`** JSON file.                                |
+| **`crawl atom`**                                                       | **Atom** XML                            | CLI → **`renderAtomFeed`**; **`--title`**, **`--link`**, **`--id`**, **`--updated`** required; optional **`--entries`** JSON.    |
+| **`crawl llms`**                                                       | **`llms.txt`** body                     | CLI → **`renderLlmsTxt`**; **`--title`** required; optional **`--summary`**, **`--url`** (repeatable).                           |
+| **`crawl sitemap-index`**                                              | **Sitemap index** XML                   | CLI → **`renderSitemapIndexXml`**; **`--sitemap`** URLs (repeatable).                                                            |
+| **`snapshot`**                                                         | **`renderTags`** JSON fixture           | CLI → **`@better-seo/core`** `createSEO` + `renderTags` → **`--out`**; **`snapshot compare a b`** compares two tag JSON files.   |
+| **`preview`**                                                          | Static **HTML** with `<head>` tags      | Same as snapshot; writes **`--out`** `.html` for local debugger use.                                                             |
+| **`analyze`**                                                          | **`validateSEO`** gate                  | Loads **`SEOInput`** from **`--input`**; exit **1** if any issue has severity **`error`**.                                       |
+| **`doctor`**                                                           | Environment + deps check                | Node version; reads **`package.json`** for **`@better-seo/core`** (etc.); **`--json`** for CI.                                   |
+| **`init`**                                                             | Install lines + snippet                 | **`--framework next\|react`**.                                                                                                   |
+| **`migrate from-next-seo`**                                            | Migration hints                         | Points to **`fromNextSeo`**; not a full codemod yet.                                                                             |
+| **`splash`**, **`add`**, **`scan`**, **`fix`**, industry **templates** | Planned / PRD                           | **Not** in the CLI today.                                                                                                        |
 
-### 2.1 Crawl library-only
+### 2.1 Crawl library-only (programmatic)
 
-| Capability                     | Status                                          |
-| ------------------------------ | ----------------------------------------------- |
-| **`defaultSitemapUrlFromSEO`** | In **`better-seo-crawl`** for programmatic use. |
-| **RSS / Atom**, **`llms.txt`** | Not in CLI; roadmap.                            |
+| Capability                     | Status                                                     |
+| ------------------------------ | ---------------------------------------------------------- |
+| **`defaultSitemapUrlFromSEO`** | In **`@better-seo/crawl`** for programmatic use.           |
+| **RSS / Atom / llms / index**  | Implemented in **`@better-seo/crawl`**; CLI mirrors above. |
 
 ---
 
@@ -142,16 +150,17 @@ Summary table; for **when the launcher runs**, **examples**, and **menu items**,
 
 ## 4. Implementation & TUI matrix
 
-| Command / surface              | Automated CLI tests | TUI                        |
-| ------------------------------ | ------------------- | -------------------------- |
-| Launcher (no args)             | Yes (mocked)        | Yes                        |
-| **`og`**                       | Yes                 | Yes (prompts)              |
-| **`icons`**                    | Yes                 | Yes (prompts)              |
-| **`crawl robots` / `sitemap`** | Yes                 | Stub (copy-paste commands) |
-| **`doctor`**                   | Yes                 | Yes                        |
-| **`init`**                     | Yes                 | Yes                        |
-| **`migrate from-next-seo`**    | Yes                 | Yes                        |
-| **Planned commands** (see §2)  | No                  | No                         |
+| Command / surface                      | Automated CLI tests | TUI                          |
+| -------------------------------------- | ------------------- | ---------------------------- |
+| Launcher (no args)                     | Yes (mocked)        | Yes                          |
+| **`og`**                               | Yes                 | Yes (prompts)                |
+| **`icons`**                            | Yes                 | Yes (prompts)                |
+| **`crawl`** (all subcommands)          | Yes                 | Stub (copy-paste + pointers) |
+| **`snapshot` / `preview` / `analyze`** | Yes                 | No (argv only)               |
+| **`doctor`**                           | Yes                 | Yes                          |
+| **`init`**                             | Yes                 | Yes                          |
+| **`migrate from-next-seo`**            | Yes                 | Yes                          |
+| **Planned commands** (see §2)          | No                  | No                           |
 
 **E2E** here means Vitest coverage and, where noted in the CLI README, smoke tests on the built **`dist/cli.cjs`**.
 

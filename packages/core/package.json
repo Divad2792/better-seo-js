@@ -43,13 +43,13 @@
     }
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=24.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.10.0",
-    "@vitest/coverage-v8": "^3.0.6",
-    "tsup": "^8.3.6",
-    "typescript": "^5.7.3",
-    "vitest": "^3.0.6"
+    "@types/node": "25.5.0",
+    "@vitest/coverage-v8": "4.1.2",
+    "tsup": "8.5.1",
+    "typescript": "6.0.2",
+    "vitest": "4.1.2"
   }
 }

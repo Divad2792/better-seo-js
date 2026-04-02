@@ -52,3 +52,5 @@ export { getGlobalSEOConfig, initSEO, resetSEOConfigForTests } from "./singleton
 export { seoForFramework, seoRoute, useSEO } from "./voila.js"
 export { applyRules, applyRulesToSEO, createSEOForRoute } from "./rules.js"
 export { fromNextSeo } from "./migrate.js"
+export type { FromContentOptions } from "./from-content.js"
+export { fromContent, fromMdxString } from "./from-content.js"

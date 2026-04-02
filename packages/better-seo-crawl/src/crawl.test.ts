@@ -2,7 +2,7 @@ import { createSEO } from "@better-seo/core"
 import { describe, expect, it } from "vitest"
 import { defaultSitemapUrlFromSEO, renderRobotsTxt, renderSitemapXml } from "./index.js"
 
-describe("better-seo-crawl", () => {
+describe("@better-seo/crawl", () => {
   it("renderRobotsTxt emits defaults and sitemap lines", () => {
     const body = renderRobotsTxt({
       sitemap: ["https://ex.test/sitemap.xml"],

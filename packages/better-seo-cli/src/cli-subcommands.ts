@@ -1,7 +1,11 @@
+import { readFile } from "node:fs/promises"
+import path from "node:path"
 import { parseArgs } from "node:util"
 
 function printDoctorHelp(): void {
-  console.log(`Usage: better-seo doctor [--json] [--help]`)
+  console.log(`Usage: better-seo doctor [--json] [--help]
+
+Checks Node and reads package.json for @better-seo/* adapters.`)
 }
 
 function printInitHelp(): void {
@@ -32,10 +36,42 @@ export async function runDoctor(rest: string[]): Promise<number> {
     const node = process.version
     const issues: string[] = []
     if (!node.startsWith("v")) issues.push("unexpected Node version string")
-    const out = { ok: issues.length === 0, node, issues }
+
+    let hasCore: boolean | undefined
+    let hasNext: boolean | undefined
+    let hasReact: boolean | undefined
+    let hasCli: boolean | undefined
+    try {
+      const raw = await readFile(path.join(process.cwd(), "package.json"), "utf8")
+      const pkg = JSON.parse(raw) as {
+        dependencies?: Readonly<Record<string, string>>
+        devDependencies?: Readonly<Record<string, string>>
+      }
+      const deps = { ...pkg.dependencies, ...pkg.devDependencies }
+      hasCore = "@better-seo/core" in deps
+      hasNext = "@better-seo/next" in deps
+      hasReact = "@better-seo/react" in deps
+      hasCli = "@better-seo/cli" in deps
+      if (!hasCore)
+        issues.push("package.json: @better-seo/core not listed in dependencies/devDependencies")
+    } catch {
+      issues.push("package.json: not found or unreadable in cwd")
+    }
+
+    const out = {
+      ok: issues.length === 0,
+      node,
+      issues,
+      packages: { hasCore, hasNext, hasReact, hasCli },
+    }
     if (values.json) console.log(JSON.stringify(out, null, 2))
     else {
       console.log(`Node ${node}`)
+      if (hasCore !== undefined) {
+        console.log(
+          `adapters: core=${hasCore} next=${Boolean(hasNext)} react=${Boolean(hasReact)} cli=${Boolean(hasCli)}`,
+        )
+      }
       if (issues.length) for (const i of issues) console.warn(i)
       else console.log("doctor: baseline OK.")
     }

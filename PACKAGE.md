@@ -37,7 +37,7 @@ better-seo-js/
 │   ├── react/                  # npm: @better-seo/react (Wave 5 — Helmet + useSEO)
 │   ├── assets/                 # npm: @better-seo/assets
 │   ├── cli/                    # npm: @better-seo/cli (bin)
-│   └── crawl/                  # npm: better-seo-crawl
+│   └── crawl/                  # npm: @better-seo/crawl
 ├── examples/
 │   ├── nextjs-app/             # Golden path + Playwright (Next)
 │   ├── react-seo-vite/         # Vite + @better-seo/react + Playwright (Wave 5)
@@ -229,7 +229,6 @@ Triggers: **pull_request** to `main` (full history via `fetch-depth: 0`).
 Pattern: **official [Changesets + GitHub](https://github.com/changesets/action)** flow.
 
 1. **On push to `main`:**
-
    - If there are **new `.changeset/*.md` files**, the action creates or updates a PR **`chore: version packages`** (title configurable) that runs **`changeset version`**.
    - That PR updates versions + changelogs; **merge it** when ready (this is the “**merge version branch with main**” step).
 

@@ -16,6 +16,6 @@ description: Packages in the monorepo and where each surface lives.
 | **`@better-seo/react`**  | Helmet / **`useSEO`** for SPAs                                                                          |
 | **`@better-seo/assets`** | OG PNG, icons, manifest (Node)                                                                          |
 | **`@better-seo/cli`**    | TUI, `og`, `icons`, `crawl`, `doctor`, …                                                                |
-| **`better-seo-crawl`**   | `renderRobotsTxt`, `renderSitemapXml` helpers                                                           |
+| **`@better-seo/crawl`**  | `renderRobotsTxt`, `renderSitemapXml` helpers                                                           |
 
 Deep dives: [Core](./core.md) · [Next](./next.md) · [React](./react.md) · [Crawl](./crawl.md)

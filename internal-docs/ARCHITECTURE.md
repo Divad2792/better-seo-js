@@ -46,7 +46,7 @@ flowchart LR
   subgraph optional [Optional packages]
     A["@better-seo/assets"]
     L["@better-seo/cli"]
-    W["better-seo-crawl"]
+    W["@better-seo/crawl"]
   end
 
   I1 --> C
@@ -86,7 +86,7 @@ Partial<SEO> + SEOConfig
 | **`@better-seo/remix`**, **`@better-seo/astro`**, **`@better-seo/nuxt`** | Same pattern: thin mapping + peers                                                                                            | Framework peers only                                                           |
 | **`@better-seo/assets`**                                                 | OG (Satori, etc.), Sharp-based icons — **heavy**                                                                              | Own deps OK; **not** imported by core                                          |
 | **`@better-seo/cli`**                                                    | **`og`**, **`icons`**, **`doctor`**, **`init`**, **`migrate`** (hints) + assets                                               | CLI deps OK; **not** imported by core                                          |
-| **`better-seo-crawl`**                                                   | Pure robots / sitemap XML builders (+ URL hint helper); RSS later                                                             | **`@better-seo/core`** only                                                    |
+| **`@better-seo/crawl`**                                                  | Pure robots / sitemap XML builders (+ URL hint helper); RSS later                                                             | **`@better-seo/core`** only                                                    |
 
 **Rule:** `@better-seo/core` MUST NOT import from `@better-seo/next`, `@better-seo/assets`, or `@better-seo/cli`. The dependency arrow is **always toward core**.
 

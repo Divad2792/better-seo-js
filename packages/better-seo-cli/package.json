@@ -22,8 +22,9 @@
   ],
   "dependencies": {
     "@better-seo/assets": "0.0.1",
-    "@clack/prompts": "^1.2.0",
-    "better-seo-crawl": "0.0.1"
+    "@better-seo/core": "0.0.1",
+    "@better-seo/crawl": "0.0.1",
+    "@clack/prompts": "1.2.0"
   },
   "scripts": {
     "build": "node ../../scripts/run-tsup.mjs",
@@ -33,17 +34,17 @@
     "typecheck": "npm exec -- tsc -p tsconfig.json --noEmit"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=24.0.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "@types/node": "^22.13.0",
-    "@vitest/coverage-v8": "^3.0.6",
-    "image-size": "^2.0.2",
-    "tsup": "^8.3.6",
-    "typescript": "^5.7.3",
-    "vitest": "^3.0.6"
+    "@types/node": "25.5.0",
+    "@vitest/coverage-v8": "4.1.2",
+    "image-size": "2.0.2",
+    "tsup": "8.5.1",
+    "typescript": "6.0.2",
+    "vitest": "4.1.2"
   }
 }

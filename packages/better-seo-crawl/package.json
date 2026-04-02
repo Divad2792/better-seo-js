@@ -1,7 +1,7 @@
 {
-  "name": "better-seo-crawl",
+  "name": "@better-seo/crawl",
   "version": "0.0.1",
-  "description": "Crawl/index helpers aligned with @better-seo/core: robots.txt and sitemap XML builders (pure strings, no network). Optional syndication depth in later roadmap waves.",
+  "description": "npm @better-seo/crawl — crawl/index helpers aligned with @better-seo/core: robots.txt and sitemap XML builders (pure strings, no network). Optional syndication depth in later roadmap waves.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -32,12 +32,12 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=24.0.0"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^3.0.6",
-    "tsup": "^8.3.6",
-    "typescript": "^5.7.3",
-    "vitest": "^3.0.6"
+    "@vitest/coverage-v8": "4.1.2",
+    "tsup": "8.5.1",
+    "typescript": "6.0.2",
+    "vitest": "4.1.2"
   }
 }

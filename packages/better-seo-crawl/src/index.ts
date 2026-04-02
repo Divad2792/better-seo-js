@@ -72,6 +72,20 @@ export function renderSitemapXml(entries: readonly SitemapUrlEntry[]): string {
   return `${lines.join("\n")}\n`
 }
 
+export type {
+  AtomEntry,
+  AtomFeedOptions,
+  LlmsBlock,
+  RssChannelOptions,
+  RssItem,
+} from "./syndication.js"
+export {
+  renderAtomFeed,
+  renderLlmsTxt,
+  renderRssXml,
+  renderSitemapIndexXml,
+} from "./syndication.js"
+
 /** Default **Sitemap:** URL from **`SEO.meta.canonical`** origin + **`/sitemap.xml`** when resolvable. */
 export function defaultSitemapUrlFromSEO(seo: SEO, baseUrl?: string): string | undefined {
   const c = seo.meta.canonical

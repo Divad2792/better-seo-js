@@ -156,14 +156,19 @@ async function flowIcons(): Promise<number> {
 async function flowCrawlStubs(): Promise<number> {
   clack.note(
     [
-      "Crawl builders live in better-seo-crawl (Wave W). Use non-interactive commands:",
+      "Crawl / syndication helpers: @better-seo/crawl. Examples:",
       "",
       "  better-seo crawl robots --out public/robots.txt --sitemap https://example.com/sitemap.xml",
       "  better-seo crawl sitemap --out public/sitemap.xml --loc https://example.com/",
+      "  better-seo crawl rss --out public/rss.xml --title Site --link https://example.com/",
+      "  better-seo crawl atom --out public/atom.xml --title Site --link … --id … --updated …",
+      "  better-seo crawl llms --out public/llms.txt --title Site",
+      "  better-seo crawl sitemap-index --out public/sitemap-index.xml --sitemap https://…/a.xml",
       "",
+      "Trust / debug: better-seo snapshot, preview, analyze (see docs/commands.md).",
       "See docs/recipes/sitemap-robots-next.md for App Router recipes.",
     ].join("\n"),
-    "Robots & sitemap",
+    "Robots, sitemap & feeds",
   )
   return 0
 }

@@ -10,8 +10,4 @@ const withNextra = nextra({
 export default withNextra({
   reactStrictMode: true,
   transpilePackages: ["@better-seo/core", "@better-seo/next"],
-  eslint: {
-    // Monorepo ESLint is rooted at the repo; the docs app has no local flat config yet.
-    ignoreDuringBuilds: true,
-  },
 })

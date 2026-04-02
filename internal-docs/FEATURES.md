@@ -14,7 +14,7 @@ This document lists **planned features**, **where they live** in the monorepo, a
 | **`@better-seo/remix`**, **`@better-seo/astro`**, **`@better-seo/nuxt`** | Same adapter pattern (P2 / as needed)                                                                                                                                               |
 | **`@better-seo/assets`**                                                 | OG, icons, splash, manifest (optional deps: Satori, Sharp, …)                                                                                                                       |
 | **`@better-seo/cli`**                                                    | `init`, `og`, `icons`, `add`, `scan`, `fix`, `snapshot`, `preview`, `migrate`, `doctor`, templates, TUI                                                                             |
-| **`better-seo-crawl`**                                                   | Sitemap, robots, RSS/Atom, optional `llms.txt`                                                                                                                                      |
+| **`@better-seo/crawl`**                                                  | Sitemap, robots, RSS/Atom, optional `llms.txt`                                                                                                                                      |
 | **`examples/*`**                                                         | Golden paths + **E2E** (especially `examples/nextjs-app`)                                                                                                                           |
 | **`docs/*`**                                                             | Distribution & onboarding (per PRD §8.6)                                                                                                                                            |
 
@@ -164,7 +164,7 @@ Each adapter: **fixture tests** (`SEO` in → framework output snapshot).
 
 ---
 
-## 9. `better-seo-crawl`
+## 9. `@better-seo/crawl`
 
 | ID  | Feature                 | Enterprise notes                                            |
 | --- | ----------------------- | ----------------------------------------------------------- |
@@ -200,7 +200,7 @@ Next app
        → @better-seo/core (createSEO, mergeSEO, serializeJSONLD, rules, plugins)
   → optional: @better-seo/cli (workflow)
   → optional: @better-seo/assets (OG/icons)
-  → optional: better-seo-crawl (sitemap/robots/RSS)
+  → optional: @better-seo/crawl (sitemap/robots/RSS)
 ```
 
 ---

@@ -37,7 +37,7 @@ Approximate **week labels** mirror [`PRD.md`](./PRD.md) §5; calendar is **indic
 | **VIII** | **9**       | TUI, `init`, templates, `doctor` | `@better-seo/cli`, D\* foundations                            |
 | **IX**   | **10**      | Automation                       | `add`, `scan`, `fix`                                          |
 | **X**    | **11**      | Design system + advanced assets  | A5, custom OG, splash depth                                   |
-| **XI**   | **12**      | Crawl + migration + docs finish  | `better-seo-crawl`, `migrate`, L7, docs                       |
+| **XI**   | **12**      | Crawl + migration + docs finish  | `@better-seo/crawl`, `migrate`, L7, docs                      |
 | **—**    | **Ongoing** | Ecosystem                        | P4 packaged plugins, D8 playground, NX2–NX7 depth             |
 
 ---
@@ -188,7 +188,7 @@ Approximate **week labels** mirror [`PRD.md`](./PRD.md) §5; calendar is **indic
 
 | Deliverable                                                                 | Feature IDs               |
 | --------------------------------------------------------------------------- | ------------------------- |
-| **`better-seo-crawl`**: robots, sitemap, RSS/Atom, optional `llms.txt`      | W1–W4                     |
+| **`@better-seo/crawl`**: robots, sitemap, RSS/Atom, optional `llms.txt`     | W1–W4                     |
 | **`fromNextSeo`**, **`npx better-seo migrate`**                             | C15, L7                   |
 | Docs: API, schema ref, **Next-first** + per-adapter recipes; **D6** compare | D3, D4, D6                |
 | Pages Router depth **NX2**, i18n **NX7** as prioritized                     | NX2, NX7                  |

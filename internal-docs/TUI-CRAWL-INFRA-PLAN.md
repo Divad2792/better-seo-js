@@ -29,11 +29,11 @@
 | `init`                       | Prints install lines + snippet (`--framework next\|react`) | No            |
 | `migrate`                    | `from-next-seo` hint text                                  | No            |
 | _(default, no args)_         | TTY + not CI → **Clack launcher**; else help, exit `1`     | **Yes (TTY)** |
-| `crawl` `robots` / `sitemap` | Writes files via **better-seo-crawl** `render*`            | No            |
+| `crawl` `robots` / `sitemap` | Writes files via **`@better-seo/crawl`** `render*`         | No            |
 
 **Gap (remaining):** Launcher could grow richer **project detection** / **doctor** depth; **sitemap index** and **hreflang** remain library roadmap items.
 
-### 1.3 `better-seo-crawl` (`packages/better-seo-crawl`)
+### 1.3 `@better-seo/crawl` (`packages/better-seo-crawl`)
 
 | Export                                    | Role                                                                                               |
 | ----------------------------------------- | -------------------------------------------------------------------------------------------------- |
@@ -70,11 +70,10 @@
 **Library surface (already / planned):**
 
 1. **Programmatic (Node / build):**  
-   `import { renderRobotsTxt, renderSitemapXml, defaultSitemapUrlFromSEO } from "better-seo-crawl"`  
+   `import { renderRobotsTxt, renderSitemapXml, defaultSitemapUrlFromSEO } from "@better-seo/crawl"`  
    Pass entries from: file glob of routes, CMS export, Next `getStaticPaths` output, etc.
 
 2. **Next.js App Router (recipe):**
-
    - `app/robots.ts` → `renderRobotsTxt({ sitemap: `${baseUrl}/sitemap.xml` })`
    - `app/sitemap.ts` (or static generation step) → build `SitemapUrlEntry[]` and return `renderSitemapXml` or use Next’s native `MetadataRoute.Sitemap` **fed from** the same entries your app uses for pages
 
@@ -118,7 +117,7 @@
 
 **Phase B**
 
-- **Crawl submenu:** “Generate robots.txt” / “Generate sitemap.xml” — optional dependency on `better-seo-crawl` (add as **optional** or **peer** on CLI if you want to avoid forcing crawl install for asset-only users; otherwise add `better-seo-crawl` as direct dep of CLI).
+- **Crawl submenu:** “Generate robots.txt” / “Generate sitemap.xml” — optional dependency on `@better-seo/crawl` (add as **optional** or **peer** on CLI if you want to avoid forcing crawl install for asset-only users; otherwise add `@better-seo/crawl` as direct dep of CLI).
 - **Write files** to `public/` with confirm path.
 
 **Phase C (PRD alignment)**
@@ -147,7 +146,7 @@ packages/better-seo-cli/src/
 
 ---
 
-## 4. `better-seo-crawl` roadmap (aligned with user delivery)
+## 4. `@better-seo/crawl` roadmap (aligned with user delivery)
 
 | Priority | Task                                                                                                         |
 | -------- | ------------------------------------------------------------------------------------------------------------ |
@@ -161,7 +160,7 @@ packages/better-seo-cli/src/
 ## 5. Changesets / publishing
 
 - TUI deps bump **`@better-seo/cli`** (patch/minor).
-- If CLI gains optional `better-seo-crawl` dependency, declare version in workspace and changeset both packages when APIs change.
+- If CLI gains optional `@better-seo/crawl` dependency, declare version in workspace and changeset both packages when APIs change.
 - **Never** add TUI deps to `@better-seo/core`.
 
 ---
@@ -181,7 +180,7 @@ packages/better-seo-cli/src/
 - [x] Global `--no-interactive` / `-y` / `--yes` + env `CI`, `BETTER_SEO_CI`, `BETTER_SEO_NO_TUI`
 - [x] Update `packages/better-seo-cli/README.md` + root README (CLI callout)
 - [x] Add recipe doc: `docs/recipes/sitemap-robots-next.md`
-- [x] Wire CLI `crawl` subcommands to `better-seo-crawl`
+- [x] Wire CLI `crawl` subcommands to `@better-seo/crawl`
 - [x] Vitest: TTY launcher (mocked Clack), crawl writes, built `dist/cli.cjs` crawl smoke
 
 ---
@@ -191,7 +190,7 @@ packages/better-seo-cli/src/
 | Question                    | Answer                                                                                                                                       |
 | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Sleek TUI “by default”?** | Yes, but **only in `@better-seo/cli`**, when no subcommand + TTY; core stays zero-dep.                                                       |
-| **Sitemap today?**          | **`better-seo-crawl`** exposes **string builders**; users wire them in **routes or build scripts**; no magic crawl in core.                  |
+| **Sitemap today?**          | **`@better-seo/crawl`** exposes **string builders**; users wire them in **routes or build scripts**; no magic crawl in core.                 |
 | **What’s missing?**         | Sitemap **index**, **hreflang**, RSS / **llms.txt** (later waves); deeper `doctor` checks. TUI + crawl CLI **shipped** in `@better-seo/cli`. |
 
 This file should be updated when the first TUI PR lands (checklist ticks + actual command names).
