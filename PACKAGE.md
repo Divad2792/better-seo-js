@@ -123,7 +123,9 @@ You can rename scripts (e.g. **`npm run version-packages`**) as long as **GitHub
 
 We use **[Changesets](https://github.com/changesets/changesets)** so version bumps stay **reviewable** and **`CHANGELOG.md`** stays **derived** from the same source as npm versions.
 
-**Config:** [`.changeset/config.json`](./.changeset/config.json) — `access: public`, `baseBranch: main`, **`ignore`: `nextjs-app`** (example app is never versioned). GitHub [**`release.yml`**](.github/workflows/release.yml) runs **`release:version`** / **`release:publish`** via [changesets/action](https://github.com/changesets/action); **`workflow_dispatch`** allows manual runs.
+**Config:** [`.changeset/config.json`](./.changeset/config.json) — `access: public`, `baseBranch: main`, **`ignore`**: **`nextjs-app`**, **`vanilla-render-tags-example`** (examples are never versioned). GitHub [**`release.yml`**](.github/workflows/release.yml) runs **`release:version`** / **`release:publish`** via [changesets/action](https://github.com/changesets/action); **`workflow_dispatch`** allows manual runs.
+
+**Internal workspace dependencies:** publishable packages and examples depend on **`@better-seo/*`** with the **same semver** as the workspace (e.g. **`"0.0.1"`**), not **`file:../…`**, so Changesets + `@manypkg` checks pass and `npm` still links to the local workspace copy.
 
 ### First-time npm publish
 
@@ -173,9 +175,19 @@ Per **PRD**: breaking changes require **`CHANGELOG.md`** entries and, when possi
 
 ### npm (default)
 
-1. **Org / account** on npm for **`@better-seo/*`** (scoped packages require the org to exist before first publish).
-2. **Automation:** GitHub **Actions** use **`NPM_TOKEN`** (granular **publish** token, **not** your password).
-3. **Provenance** (optional): `npm publish --provenance` on supported npm CLI + linked repo.
+1. **Create the npm organization `better-seo`** (the **`@better-seo`** scope). Scoped packages **cannot** be published until this org exists **and** your npm user (or CI token) is a **member with publish** rights. Create it at **[npm — Add Organization](https://www.npmjs.com/org/create)** (choose a unique org name; if `better-seo` is taken, you must either use that org as a member or **rename every package** in this repo to a scope you control—a large change).
+2. **Token:** GitHub **Actions** need **`NPM_TOKEN`** (granular **publish** token, **not** your password), also set as **`NODE_AUTH_TOKEN`** for `setup-node`. The token’s npm user must belong to **`@better-seo`** with permission to publish packages.
+3. **Provenance:** Do **not** set **`publishConfig.provenance`** in leaf packages—local **`changeset publish`** then fails with _Automatic provenance generation not supported for provider: null_ because only **GitHub Actions** (OIDC + **`id-token: write`**) can attach provenance. This repo enables it in **[`release.yml`](.github/workflows/release.yml)** via **`npm config set provenance true`** before publish.
+
+### Publish troubleshooting
+
+| Symptom                                                            | Likely cause                                                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`404 Not Found` — `Scope not found` on `PUT …/@better-seo/...`** | The **`@better-seo`** org **does not exist** on npm, or your account/token **is not a publisher** on that org. Create/join the org (see §6 above), then retry. This is **not** fixed by code changes in the repo.                                                    |
+| **`403 Forbidden` / `/-/npm/v1/user`**                             | **`NPM_TOKEN`** missing, expired, wrong registry, or token lacks **publish** for **`@better-seo/*`**. Use a [granular access token](https://docs.npmjs.com/about-access-tokens) with publish to the scope; ensure **2FA** mode allows automation tokens if required. |
+| **`Automatic provenance … provider: null`**                        | Publishing **locally** with **`publishConfig.provenance: true`**—remove it (as in this repo) and rely on **CI**, or run **`npm config set provenance false`** before a local publish.                                                                                |
+| **`Package "…" must depend on the current version … vs file:…`**   | Internal deps must use the **workspace version** (e.g. **`0.0.1`**) instead of **`file:`** paths.                                                                                                                                                                    |
+| **`npm info @better-seo/…` → 404**                                 | Expected **before** the first successful publish; Changesets only warns. After the org exists and packages are published once, these resolve.                                                                                                                        |
 
 ### Other registries
 
