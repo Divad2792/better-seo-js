@@ -75,8 +75,7 @@ jobs:
         with:
           name: coverage
           path: |
-            packages/core/coverage/lcov.info
-            packages/next/coverage/lcov.info
+            packages/*/coverage/lcov.info
           if-no-files-found: ignore
           retention-days: 30
 

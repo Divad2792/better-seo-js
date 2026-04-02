@@ -14,5 +14,11 @@ export default defineConfig({
   banner: {
     js: "#!/usr/bin/env node",
   },
-  external: ["@better-seo/assets", "@clack/prompts", "@better-seo/crawl"],
+  external: [
+    "@better-seo/assets",
+    "@better-seo/compiler",
+    "@better-seo/core",
+    "@better-seo/crawl",
+    "@clack/prompts",
+  ],
 })

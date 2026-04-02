@@ -13,11 +13,11 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "npm run build -w @better-seo/core && npm run build -w @better-seo/assets && npm run build -w @better-seo/crawl && npm run build -w @better-seo/cli && npm run build -w @better-seo/next && npm run build -w @better-seo/react && npm run build -w nextjs-app && npm run build -w react-seo-vite-example && npm run build -w better-seo-docs-site",
+    "build": "npm run build -w @better-seo/core && npm run build -w @better-seo/assets && npm run build -w @better-seo/compiler && npm run build -w @better-seo/crawl && npm run build -w @better-seo/cli && npm run build -w @better-seo/next && npm run build -w @better-seo/react && npm run build -w nextjs-app && npm run build -w react-seo-vite-example && npm run build -w better-seo-docs-site",
     "test": "npm run test --workspaces --if-present",
     "test:coverage": "npm run test:coverage --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
-    "typecheck": "npm run build -w @better-seo/core && npm run build -w @better-seo/assets && npm run build -w @better-seo/crawl && npm run build -w @better-seo/next && npm run build -w @better-seo/react && npm run typecheck --workspaces --if-present",
+    "typecheck": "npm run build -w @better-seo/core && npm run build -w @better-seo/assets && npm run build -w @better-seo/compiler && npm run build -w @better-seo/crawl && npm run build -w @better-seo/next && npm run build -w @better-seo/react && npm run typecheck --workspaces --if-present",
     "test:e2e": "npm run test:e2e --workspaces --if-present",
     "format": "npm exec -- prettier --write .",
     "format:check": "npm exec -- prettier --check .",

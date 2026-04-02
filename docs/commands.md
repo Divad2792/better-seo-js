@@ -5,6 +5,8 @@ description: better-seo CLI reference — TUI, og, icons, crawl, snapshot, previ
 
 # `better-seo` CLI — command reference & implementation matrix
 
+**Onboarding:** For what the CLI is for and how it maps to **`@better-seo/assets`** / **`@better-seo/crawl`**, start with [CLI overview](./cli/index.md).
+
 This document is the **published CLI reference** for the monorepo: commands that ship in [`@better-seo/cli`](../packages/better-seo-cli/), what they do, suggested onboarding order, and what is covered by automated tests vs interactive-only paths.
 
 **Related:** [`@better-seo/cli` README](../packages/better-seo-cli/README.md) · [Recipes](./recipes/index.md) · [Monorepo README](../README.md)

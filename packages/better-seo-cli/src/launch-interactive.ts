@@ -1,8 +1,11 @@
 import * as clack from "@clack/prompts"
 import type { IconManifestConfig } from "@better-seo/assets"
 import type { OGTheme, PwaDisplay } from "@better-seo/assets"
+import { runContent } from "./cli-content.js"
+import { runAnalyze, runPreview, runSnapshot } from "./cli-devtools.js"
 import { executeIcons, executeOg } from "./cli-execute.js"
 import { runDoctor, runInit, runMigrate } from "./cli-subcommands.js"
+import { runTemplate, TEMPLATE_IDS } from "./cli-templates.js"
 
 type FrameworkGuess = "next" | "react" | "unknown"
 
@@ -173,6 +176,104 @@ async function flowCrawlStubs(): Promise<number> {
   return 0
 }
 
+async function flowTrustTools(): Promise<number> {
+  const tool = await clack.select<"snapshot" | "preview" | "analyze">({
+    message: "Trust / debug tool",
+    options: [
+      { value: "snapshot", label: "Snapshot — write renderTags JSON", hint: "Wave 8" },
+      { value: "preview", label: "Preview — HTML head + social blocks", hint: "Wave 8" },
+      { value: "analyze", label: "Analyze — validateSEO (exit 1 on errors)", hint: "Wave 10" },
+    ],
+  })
+  if (clack.isCancel(tool)) {
+    clack.cancel("Cancelled")
+    return 1
+  }
+  const inputPath = await clack.text({
+    message: "Path to SEOInput JSON",
+    placeholder: "./seo.json",
+    validate: (v) => ((v ?? "").trim() ? undefined : "Path is required"),
+  })
+  if (clack.isCancel(inputPath)) {
+    clack.cancel("Cancelled")
+    return 1
+  }
+  const inp = inputPath.trim()
+  if (tool === "analyze") {
+    return runAnalyze(["--input", inp])
+  }
+  if (tool === "snapshot") {
+    const out = await clack.text({
+      message: "Output tags.json path",
+      initialValue: "./tags.json",
+      validate: (v) => ((v ?? "").trim() ? undefined : "Path is required"),
+    })
+    if (clack.isCancel(out)) {
+      clack.cancel("Cancelled")
+      return 1
+    }
+    return runSnapshot(["--input", inp, "--out", out.trim()])
+  }
+  const outHtml = await clack.text({
+    message: "Output preview.html path",
+    initialValue: "./preview.html",
+    validate: (v) => ((v ?? "").trim() ? undefined : "Path is required"),
+  })
+  if (clack.isCancel(outHtml)) {
+    clack.cancel("Cancelled")
+    return 1
+  }
+  const doOpen = await clack.confirm({
+    message: "Try to open in browser? (--open)",
+    initialValue: false,
+  })
+  if (clack.isCancel(doOpen)) {
+    clack.cancel("Cancelled")
+    return 1
+  }
+  return runPreview([`--input`, inp, `--out`, outHtml.trim(), ...(doOpen ? [`--open`] : [])])
+}
+
+async function flowTemplatePreset(): Promise<number> {
+  const id = await clack.select<(typeof TEMPLATE_IDS)[number] | "list">({
+    message: "Industry template (Wave 9 · L9)",
+    options: [
+      ...TEMPLATE_IDS.map((x) => ({ value: x, label: x, hint: "defineSEO preset" })),
+      { value: "list", label: "List ids only (stdout)", hint: "template list" },
+    ],
+  })
+  if (clack.isCancel(id)) {
+    clack.cancel("Cancelled")
+    return 1
+  }
+  if (id === "list") {
+    return runTemplate(["list"])
+  }
+  return runTemplate(["print", id])
+}
+
+async function flowContentFromMdx(): Promise<number> {
+  const inputPath = await clack.text({
+    message: "MDX or Markdown file (with optional frontmatter)",
+    placeholder: "./page.mdx",
+    validate: (v) => ((v ?? "").trim() ? undefined : "Path is required"),
+  })
+  if (clack.isCancel(inputPath)) {
+    clack.cancel("Cancelled")
+    return 1
+  }
+  const out = await clack.text({
+    message: "Output SEOInput JSON",
+    initialValue: "./seo-from-mdx.json",
+    validate: (v) => ((v ?? "").trim() ? undefined : "Path is required"),
+  })
+  if (clack.isCancel(out)) {
+    clack.cancel("Cancelled")
+    return 1
+  }
+  return runContent(["from-mdx", "--input", inputPath.trim(), "--out", out.trim()])
+}
+
 export function shouldOfferTui(forceNonInteractive: boolean): boolean {
   if (forceNonInteractive) return false
   if (process.env.CI === "true" || process.env.CI === "1") return false
@@ -204,12 +305,24 @@ export async function runInteractiveLauncher(): Promise<number> {
   )
 
   const action = await clack.select<
-    "og" | "icons" | "crawl" | "doctor" | "init" | "migrate" | "exit"
+    | "og"
+    | "icons"
+    | "trust"
+    | "content"
+    | "template"
+    | "crawl"
+    | "doctor"
+    | "init"
+    | "migrate"
+    | "exit"
   >({
     message: "What do you want to do?",
     options: [
       { value: "og", label: "Generate OG image (1200×630)", hint: "Wave L2" },
       { value: "icons", label: "Generate favicon + PWA icons", hint: "Wave L3" },
+      { value: "trust", label: "Snapshot / preview / analyze (trust tools)", hint: "Wave 8–10" },
+      { value: "content", label: "MDX → SEO JSON (@better-seo/compiler)", hint: "Wave 7 · C17" },
+      { value: "template", label: "Industry SEO preset (defineSEO snippet)", hint: "Wave 9 · L9" },
       { value: "crawl", label: "Robots / sitemap (commands + docs)", hint: "Wave 12 + CLI" },
       { value: "doctor", label: "Run environment doctor", hint: "Wave 9 · L8" },
       { value: "init", label: "Show install & snippet", hint: "Wave 9" },
@@ -231,6 +344,15 @@ export async function runInteractiveLauncher(): Promise<number> {
     case "icons":
       code = await flowIcons()
       break
+    case "trust":
+      code = await flowTrustTools()
+      break
+    case "content":
+      code = await flowContentFromMdx()
+      break
+    case "template":
+      code = await flowTemplatePreset()
+      break
     case "crawl":
       code = await flowCrawlStubs()
       break
@@ -240,10 +362,21 @@ export async function runInteractiveLauncher(): Promise<number> {
     case "init": {
       const fw = await clack.select<"next" | "react">({
         message: "Which adapter?",
-        options: [
-          { value: "next", label: "Next.js (@better-seo/next)" },
-          { value: "react", label: "React (@better-seo/react)" },
-        ],
+        options:
+          framework === "next"
+            ? [
+                { value: "next", label: "Next.js (@better-seo/next)", hint: "detected" },
+                { value: "react", label: "React (@better-seo/react)" },
+              ]
+            : framework === "react"
+              ? [
+                  { value: "react", label: "React (@better-seo/react)", hint: "detected" },
+                  { value: "next", label: "Next.js (@better-seo/next)" },
+                ]
+              : [
+                  { value: "next", label: "Next.js (@better-seo/next)" },
+                  { value: "react", label: "React (@better-seo/react)" },
+                ],
       })
       if (clack.isCancel(fw)) {
         clack.cancel("Cancelled")

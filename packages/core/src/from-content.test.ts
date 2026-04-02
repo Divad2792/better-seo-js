@@ -27,4 +27,15 @@ Hello world`)
     expect(input.title).toBe("Post")
     expect(input.description).toContain("Hello world")
   })
+
+  it("inferTitleFromBody false keeps first line for description", () => {
+    const input = fromContent(
+      `First paragraph.
+
+Second.`,
+      { inferTitleFromBody: false },
+    )
+    expect(input.title).toBeUndefined()
+    expect(input.description).toContain("First paragraph")
+  })
 })

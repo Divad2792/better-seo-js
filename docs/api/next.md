@@ -5,7 +5,7 @@ description: seo, prepareNextSeo, withSEO, toNextMetadata, route helpers, NextJs
 
 # `@better-seo/next`
 
-**What it does:** Maps **`SEO` → Next.js App Router `Metadata`** and exposes voilà helpers (`seo`, **`prepareNextSeo`**, **`withSEO`**, **`seoRoute`**, **`seoLayout`**, **`seoPage`**).
+**What it does:** Maps **`SEO` → Next.js App Router `Metadata`** and exposes voilà helpers: **`seo`**, **`prepareNextSeo`**, **`prepareNextSeoForRoute`**, **`withSEO`**, **`seoRoute`**, **`seoLayout`**, **`seoPage`**, plus **`mergeNextMetadataSource`** when you merge Better SEO output with existing Next **`Metadata`**. Subpath **`@better-seo/next/json-ld`** exports **`NextJsonLd`**.
 
 **When to use:** All App Router **`metadata`** / **`generateMetadata`** flows.
 

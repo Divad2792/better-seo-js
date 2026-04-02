@@ -36,6 +36,7 @@ better-seo-js/
 │   ├── next/                   # npm: @better-seo/next
 │   ├── react/                  # npm: @better-seo/react (Wave 5 — Helmet + useSEO)
 │   ├── assets/                 # npm: @better-seo/assets
+│   ├── better-seo-compiler/    # npm: @better-seo/compiler (fromMdx + gray-matter)
 │   ├── cli/                    # npm: @better-seo/cli (bin)
 │   └── crawl/                  # npm: @better-seo/crawl
 ├── examples/

@@ -1,6 +1,13 @@
-# Comparison stub: next-seo → better-seo (D6)
+---
+title: next-seo vs better-seo.js
+description: Model, JSON-LD, App Router adapter, assets — and how migration fits today.
+---
 
-**Status:** early **Wave 4** positioning page — expand before launch (tables, migration snippets, FAQs).
+# next-seo vs better-seo.js (D6)
+
+**What it does:** Honest positioning for teams comparing **next-seo** with the unified **`SEO`** model and **Next** adapter in this monorepo.
+
+**When to use:** Migration planning; proving JSON-LD + OG + rules story in a **single document**.
 
 | Topic           | next-seo (typical) | @better-seo / monorepo                                                    |
 | --------------- | ------------------ | ------------------------------------------------------------------------- |

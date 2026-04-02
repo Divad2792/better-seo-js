@@ -16,8 +16,9 @@ export default {
     title: "Assets",
     type: "page",
   },
+  cli: "CLI",
   commands: {
-    title: "CLI",
+    title: "CLI commands",
     type: "page",
   },
   compare: {

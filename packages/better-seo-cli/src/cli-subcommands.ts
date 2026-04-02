@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises"
 import path from "node:path"
 import { parseArgs } from "node:util"
+import { getTemplateSEOInput } from "./cli-templates.js"
 
 function printDoctorHelp(): void {
   console.log(`Usage: better-seo doctor [--json] [--help]
@@ -9,7 +10,27 @@ Checks Node and reads package.json for @better-seo/* adapters.`)
 }
 
 function printInitHelp(): void {
-  console.log(`Usage: better-seo init [--framework next|react] [--help]`)
+  console.log(`Usage: better-seo init [--framework next|react] [--preset blog|docs|saas|ecommerce|portfolio] [--help]
+
+--framework: optional; defaults from package.json (next if "next" dep, else react if "react", else next).
+--preset: append a defineSEO() snippet for an industry baseline (Wave 9 / L9).
+`)
+}
+
+async function detectFrameworkFromPackageJson(): Promise<"next" | "react"> {
+  try {
+    const raw = await readFile(path.join(process.cwd(), "package.json"), "utf8")
+    const pkg = JSON.parse(raw) as {
+      dependencies?: Readonly<Record<string, string>>
+      devDependencies?: Readonly<Record<string, string>>
+    }
+    const all = { ...pkg.dependencies, ...pkg.devDependencies }
+    if (all["next"]) return "next"
+    if (all["react"]) return "react"
+  } catch {
+    /* ignore */
+  }
+  return "next"
 }
 
 function printMigrateHelp(): void {
@@ -41,6 +62,7 @@ export async function runDoctor(rest: string[]): Promise<number> {
     let hasNext: boolean | undefined
     let hasReact: boolean | undefined
     let hasCli: boolean | undefined
+    let hasCompiler: boolean | undefined
     try {
       const raw = await readFile(path.join(process.cwd(), "package.json"), "utf8")
       const pkg = JSON.parse(raw) as {
@@ -52,6 +74,7 @@ export async function runDoctor(rest: string[]): Promise<number> {
       hasNext = "@better-seo/next" in deps
       hasReact = "@better-seo/react" in deps
       hasCli = "@better-seo/cli" in deps
+      hasCompiler = "@better-seo/compiler" in deps
       if (!hasCore)
         issues.push("package.json: @better-seo/core not listed in dependencies/devDependencies")
     } catch {
@@ -62,14 +85,14 @@ export async function runDoctor(rest: string[]): Promise<number> {
       ok: issues.length === 0,
       node,
       issues,
-      packages: { hasCore, hasNext, hasReact, hasCli },
+      packages: { hasCore, hasNext, hasReact, hasCli, hasCompiler },
     }
     if (values.json) console.log(JSON.stringify(out, null, 2))
     else {
       console.log(`Node ${node}`)
       if (hasCore !== undefined) {
         console.log(
-          `adapters: core=${hasCore} next=${Boolean(hasNext)} react=${Boolean(hasReact)} cli=${Boolean(hasCli)}`,
+          `adapters: core=${hasCore} next=${Boolean(hasNext)} react=${Boolean(hasReact)} cli=${Boolean(hasCli)} compiler=${Boolean(hasCompiler)}`,
         )
       }
       if (issues.length) for (const i of issues) console.warn(i)
@@ -87,7 +110,8 @@ export async function runInit(rest: string[]): Promise<number> {
     const { values } = parseArgs({
       args: rest,
       options: {
-        framework: { type: "string" as const, default: "next" },
+        framework: { type: "string" as const },
+        preset: { type: "string" as const },
         help: { type: "boolean" as const, short: "h", default: false },
       },
       allowPositionals: false,
@@ -96,11 +120,26 @@ export async function runInit(rest: string[]): Promise<number> {
       printInitHelp()
       return 0
     }
-    const fw = values.framework ?? "next"
-    if (fw !== "next" && fw !== "react") {
+    let fw = values.framework
+    if (fw !== undefined && fw !== "next" && fw !== "react") {
       console.error(`Invalid --framework "${fw}". Use next or react.`)
       return 1
     }
+    if (fw === undefined) {
+      fw = await detectFrameworkFromPackageJson()
+    }
+
+    let presetSeo: ReturnType<typeof getTemplateSEOInput> | undefined
+    if (values.preset !== undefined) {
+      presetSeo = getTemplateSEOInput(values.preset)
+      if (presetSeo === undefined) {
+        console.error(
+          `Invalid --preset "${values.preset}". Use blog, docs, saas, ecommerce, or portfolio.`,
+        )
+        return 1
+      }
+    }
+
     if (fw === "next") {
       console.log(`npm install @better-seo/core @better-seo/next
 
@@ -113,6 +152,12 @@ export const metadata = seo({ title: "Home" })
 
 Wrap the app with HelmetProvider, then use <BetterSEOHelmet seo={createSEO({ title: "Home" })} />.
 `)
+    }
+
+    if (presetSeo !== undefined && values.preset !== undefined) {
+      console.log(
+        `\nIndustry preset "${values.preset}" (defineSEO / Wave 9):\nimport { createSEO, defineSEO } from "@better-seo/core"\n\nconst base = defineSEO(${JSON.stringify(presetSeo, null, 2)} as const)\n\nexport const seo = createSEO(base, { baseUrl: "https://example.com" })\n`,
+      )
     }
     return 0
   } catch (e) {

@@ -22,6 +22,7 @@
   ],
   "dependencies": {
     "@better-seo/assets": "0.0.1",
+    "@better-seo/compiler": "0.0.1",
     "@better-seo/core": "0.0.1",
     "@better-seo/crawl": "0.0.1",
     "@clack/prompts": "1.2.0"

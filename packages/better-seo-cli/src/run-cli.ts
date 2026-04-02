@@ -12,9 +12,11 @@ import {
   type AtomEntry,
   type RssItem,
 } from "@better-seo/crawl"
+import { runContent } from "./cli-content.js"
 import { runAnalyze, runPreview, runSnapshot } from "./cli-devtools.js"
 import { executeIcons, executeOg, parseDisplayString, parseThemeString } from "./cli-execute.js"
 import { runDoctor, runInit, runMigrate } from "./cli-subcommands.js"
+import { runTemplate } from "./cli-templates.js"
 import { runInteractiveLauncher, shouldOfferTui } from "./launch-interactive.js"
 
 function printGlobalHelp(): void {
@@ -29,10 +31,12 @@ Commands:
   icons <file>            Generate favicon / PWA icons (+ optional manifest.json)
   crawl robots|sitemap|rss|atom|llms|sitemap-index   Crawl / syndication helpers (@better-seo/crawl)
   snapshot                Tag snapshot + compare (Wave 8)
-  preview                 HTML head preview (Wave 8)
+  preview                 HTML head + social approximations; optional --open (Wave 8)
   analyze                 validateSEO gate (Wave 10)
+  content from-mdx        MDX/Markdown + frontmatter → seo.json (@better-seo/compiler)
+  template list|print|preview   Industry SEO presets + defineSEO (Wave 9)
   doctor                  Environment + package.json adapter hints (--json)
-  init                    Print install + starter snippet (--framework next|react)
+  init                    Install lines + snippet; auto-detect --framework; optional --preset
   migrate                 Migration hints (e.g. from-next-seo)
 
 Usage:
@@ -582,7 +586,7 @@ export { runDoctor, runInit, runMigrate }
 
 function printUnknown(program: string): void {
   console.error(
-    `Unknown command "${program}". Expected: og | icons | crawl | snapshot | preview | analyze | doctor | init | migrate  (better-seo --help)`,
+    `Unknown command "${program}". Expected: og | icons | crawl | snapshot | preview | analyze | content | template | doctor | init | migrate  (better-seo --help)`,
   )
 }
 
@@ -628,6 +632,14 @@ export async function runCli(argv: readonly string[]): Promise<number> {
 
   if (program === "analyze") {
     return runAnalyze(rest.slice(1))
+  }
+
+  if (program === "content") {
+    return runContent(rest.slice(1))
+  }
+
+  if (program === "template") {
+    return runTemplate(rest.slice(1))
   }
 
   if (program === "doctor") {

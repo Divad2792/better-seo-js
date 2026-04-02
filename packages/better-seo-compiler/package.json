@@ -1,0 +1,45 @@
+{
+  "name": "@better-seo/compiler",
+  "version": "0.0.1",
+  "description": "Optional MDX / frontmatter → @better-seo/core SEOInput: Wave 7 C17. Uses gray-matter; keeps zero-dep guarantees for @better-seo/core.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@better-seo/core": "0.0.1",
+    "gray-matter": "4.0.3"
+  },
+  "scripts": {
+    "build": "node ../../scripts/run-tsup.mjs",
+    "test": "npm exec -- vitest run",
+    "test:coverage": "npm exec -- vitest run --coverage",
+    "lint": "npm exec -- eslint .",
+    "typecheck": "npm exec -- tsc -p tsconfig.json --noEmit"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "25.5.0",
+    "@vitest/coverage-v8": "4.1.2",
+    "tsup": "8.5.1",
+    "typescript": "6.0.2",
+    "vitest": "4.1.2"
+  }
+}

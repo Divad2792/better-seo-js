@@ -9,12 +9,12 @@ description: Programmable SEO for Next.js and modern apps — one model for meta
 
 ## What to read next
 
-| Layer (PRD §8.6) | Start here                                                               |
-| ---------------- | ------------------------------------------------------------------------ |
-| **~60 seconds**  | [Get started](./getting-started/index.md) — install and `seo({ title })` |
-| **Mental model** | [Concepts](./concepts/seo-document.md) — the `SEO` object and pipeline   |
-| **Copy-paste**   | [Recipes](./recipes/index.md) — layout merge, rules, OG, icons, React    |
-| **Reference**    | [API overview](./api/index.md), [CLI commands](./commands.md)            |
+| Layer (PRD §8.6) | Start here                                                                                 |
+| ---------------- | ------------------------------------------------------------------------------------------ |
+| **~60 seconds**  | [Get started](./getting-started/index.md) — install and `seo({ title })`                   |
+| **Mental model** | [Concepts](./concepts/seo-document.md) — the `SEO` object and pipeline                     |
+| **Copy-paste**   | [Recipes](./recipes/index.md) — layout merge, rules, OG, icons, React                      |
+| **Reference**    | [API overview](./api/index.md), [CLI overview](./cli/index.md) → [commands](./commands.md) |
 
 This site is built with **Next.js + Nextra** and uses **`@better-seo/next`** for root metadata and JSON-LD (see monorepo **`apps/docs`**).
 

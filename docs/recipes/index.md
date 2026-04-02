@@ -6,7 +6,7 @@ asIndexPage: true
 
 # Recipes
 
-Next-first patterns. **CLI command matrix:** [CLI commands](../commands.md). Maintainer roadmap and feature IDs live in-repo for contributors (see **CONTRIBUTING.md** at the repo root).
+Next-first patterns. **CLI:** [overview](../cli/index.md) · [full command matrix](../commands.md). Maintainer roadmap and feature IDs live in-repo for contributors (see **CONTRIBUTING.md** at the repo root).
 
 | Topic                                           | File                                                                                                             | FEATURES                |
 | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------------- |
