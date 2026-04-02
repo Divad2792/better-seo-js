@@ -1,6 +1,6 @@
 {
   "name": "@better-seo/assets",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Optional Node-side asset helpers for Better SEO: generate Open Graph PNGs (1200x630) from titles and themes with Satori and Resvg, embed logos, render light or dark card templates, and build favicon.ico plus PWA icon sizes and manifest data from a single source image using Sharp. Intended for build scripts, servers, and the @better-seo/cli—not for importing from Edge or lightweight client bundles.",
   "license": "MIT",
   "type": "module",

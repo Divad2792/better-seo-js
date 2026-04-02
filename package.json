@@ -1,6 +1,6 @@
 {
   "name": "better-seo-js-monorepo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "Development workspace for Better SEO (@better-seo): typed SEO core (@better-seo/core), Next.js adapter (@better-seo/next), React + react-helmet-async (@better-seo/react), assets + CLI (@better-seo/assets, @better-seo/cli). CI runs Vitest coverage, Playwright (Next + Vite examples), Changesets, and core size-limit. Private meta-package; not published to npm.",
   "license": "MIT",

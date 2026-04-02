@@ -1,6 +1,6 @@
 {
   "name": "nextjs-app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "Reference Next.js App Router application for @better-seo/core and @better-seo/next: demonstrates Metadata, NextJsonLd, layout and page SEO merging, dynamic routes, and Playwright end-to-end checks. Used only inside the monorepo for development, docs, and CI; not published to npm.",
   "scripts": {
@@ -15,8 +15,8 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@better-seo/next": "0.0.1",
-    "@better-seo/core": "0.0.1",
+    "@better-seo/next": "0.0.2",
+    "@better-seo/core": "0.0.2",
     "next": "16.2.2",
     "react": "19.2.4",
     "react-dom": "19.2.4",

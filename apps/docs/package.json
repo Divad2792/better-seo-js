@@ -1,6 +1,6 @@
 {
   "name": "better-seo-docs-site",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "description": "Nextra documentation site for better-seo.js; dogfoods @better-seo/next. Content is synced from repo-root docs/.",
@@ -13,8 +13,8 @@
     "typecheck": "npm exec -- tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@better-seo/core": "0.0.1",
-    "@better-seo/next": "0.0.1",
+    "@better-seo/core": "0.0.2",
+    "@better-seo/next": "0.0.2",
     "next": "16.2.2",
     "styled-jsx": "5.1.7",
     "nextra": "4.6.1",
