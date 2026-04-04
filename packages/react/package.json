@@ -1,6 +1,6 @@
 {
   "name": "@better-seo/react",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "React SPA integration for @better-seo/core: map SEO documents to react-helmet-async (toHelmetProps, BetterSEOHelmet), request-scoped SEOProvider + useSEO, and register the 'react' adapter for seoForFramework. Peers: react, react-dom, react-helmet-async.",
   "license": "MIT",
   "type": "module",
@@ -19,7 +19,7 @@
     "dist"
   ],
   "dependencies": {
-    "@better-seo/core": "0.1.0"
+    "@better-seo/core": "0.1.2"
   },
   "peerDependencies": {
     "react": ">=18.2.0",

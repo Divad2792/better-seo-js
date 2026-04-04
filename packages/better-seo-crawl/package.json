@@ -1,6 +1,6 @@
 {
   "name": "@better-seo/crawl",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "npm @better-seo/crawl — crawl/index helpers aligned with @better-seo/core: robots.txt and sitemap XML builders (pure strings, no network). Optional syndication depth in later roadmap waves.",
   "license": "MIT",
   "type": "module",
@@ -19,7 +19,7 @@
     "dist"
   ],
   "dependencies": {
-    "@better-seo/core": "0.1.0"
+    "@better-seo/core": "0.1.2"
   },
   "scripts": {
     "build": "node ../../scripts/run-tsup.mjs",

@@ -1,6 +1,6 @@
 {
   "name": "@better-seo/core",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Framework-agnostic SEO core for JavaScript and TypeScript: build a canonical SEO document with createSEO and mergeSEO, emit HTML-safe JSON-LD via serializeJSONLD, validate in development, render plain meta tag descriptors, and plug in frameworks through a small adapter registry. Ships with zero runtime npm dependencies so Node, Edge, and browser bundles avoid heavy transitive deps. Use with @better-seo/next or your own adapter; optional OG and icons stay in @better-seo/assets.",
   "license": "MIT",
   "type": "module",

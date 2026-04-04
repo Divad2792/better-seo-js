@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.2 (2026-04-04)
+
+### Bug Fixes
+
+- **@better-seo/core**: Fix plugin test type errors and sync example deps to v0.1.0. Add typecheck script to react-seo-vite example.
+
+## 0.1.1 (2026-04-04)
+
+### Bug Fixes
+
+- **@better-seo/core**: Fix plugin test type errors and sync example deps to v0.1.0. Add typecheck script to react-seo-vite example.
+
 ## 0.1.0 (2026-04-04)
 
 ### Features
