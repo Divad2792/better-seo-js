@@ -38,4 +38,42 @@ Second.`,
     expect(input.title).toBeUndefined()
     expect(input.description).toContain("First paragraph")
   })
+
+  it("infers title from first line when no H1 exists", () => {
+    const input = fromContent(`This is the first line with no heading.
+
+Second paragraph here.`)
+    expect(input.title).toBe("This is the first line with no heading.")
+    expect(input.description).toContain("Second paragraph")
+  })
+
+  it("infers title from first non-empty line with HTML stripped", () => {
+    const input = fromContent(`<strong>Bold title</strong>
+
+Content here.`)
+    expect(input.title).toBe("Bold title")
+  })
+
+  it("returns Untitled when body and frontmatter are both empty", () => {
+    const input = fromContent("")
+    expect(input.title).toBe("Untitled")
+    expect(input.description).toBeUndefined()
+  })
+
+  it("respects maxDescriptionLength option", () => {
+    const longText = `# Title\n\n${"a".repeat(500)}`
+    const input = fromContent(longText, { maxDescriptionLength: 50 })
+    expect(input.description).toHaveLength(50)
+  })
+
+  it("strips import lines before inference", () => {
+    const input = fromContent(`import Component from "./component"
+import type { Props } from "./types"
+
+# My Post
+
+Content here.`)
+    expect(input.title).toBe("My Post")
+    expect(input.description).toContain("Content here")
+  })
 })

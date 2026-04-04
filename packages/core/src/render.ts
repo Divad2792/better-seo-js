@@ -163,5 +163,22 @@ export function renderTags(seo: SEO, config?: SEOConfig): TagDescriptor[] {
   for (const node of seo.schema) {
     tags.push({ kind: "script-jsonld", json: serializeJSONLD(node) })
   }
-  return runOnRenderTagPlugins(tags, seo, config)
+  const afterRenderTags = runOnRenderTagPlugins(tags, seo, config)
+  // Run extendChannels hooks (P3)
+  const extended = runExtendChannelsPlugins(afterRenderTags, seo, config)
+  return extended
+}
+
+function runExtendChannelsPlugins(
+  tags: readonly TagDescriptor[],
+  seo: SEO,
+  config?: SEOConfig,
+): TagDescriptor[] {
+  const list = config?.plugins ?? []
+  let acc: TagDescriptor[] = [...tags]
+  for (const p of list) {
+    const next = p.extendChannels?.(seo, { config })
+    if (next !== undefined) acc = [...acc, ...next]
+  }
+  return acc
 }

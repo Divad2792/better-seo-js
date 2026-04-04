@@ -15,7 +15,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `Post: ${slug}`,
       description: "Async generateMetadata (FEATURES N6 / e2e).",
       canonical: `/blog/${slug}`,
-      openGraph: { type: "article" },
+      openGraph: {
+        type: "article",
+        // Illustrative published time for rich results testing
+        publishedTime: "2025-01-15T08:00:00Z",
+      },
       schema: [
         article({
           headline: `Post: ${slug}`,

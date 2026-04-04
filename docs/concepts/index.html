@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concepts — better-seo.js</title>
+  <meta name="description" content="The SEO document model, pipeline, merge strategy, JSON-LD serialization, and adapter contract.">
+  <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/concepts/">
+  <meta property="og:type" content="article"><meta property="og:title" content="Concepts — better-seo.js"><meta property="og:description" content="The SEO document model, pipeline, merge strategy, and adapter contract.">
+  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="Concepts — better-seo.js">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="site-header">
+    <a href="../" class="site-logo">better-seo<span>.js</span></a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+    <div class="header-right">
+      <nav class="header-links"><a href="https://github.com/0xMilord/better-seo-js">GitHub</a><a href="https://www.npmjs.com/package/@better-seo/core">npm</a></nav>
+      <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
+    </div>
+  </header>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="site-layout">
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Getting Started</div>
+        <a class="sidebar-link" href="../">Home</a>
+        <a class="sidebar-link" href="../getting-started/">Install &amp; Setup</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Core</div>
+        <a class="sidebar-link active" href="./">Concepts</a>
+        <a class="sidebar-link" href="../api/">API Reference</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Guides</div>
+        <a class="sidebar-link" href="../recipes/">Recipes</a>
+        <a class="sidebar-link" href="../cli/">CLI</a>
+        <a class="sidebar-link" href="../commands.html">All Commands</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">More</div>
+        <a class="sidebar-link" href="../adapters/">Adapters</a>
+        <a class="sidebar-link" href="../assets/">Assets</a>
+        <a class="sidebar-link" href="../compare/">Compare</a>
+      </div>
+    </nav>
+    <main class="main-content">
+      <div class="breadcrumbs"><a href="../">Home</a> <span>›</span> Concepts</div>
+      <h1>Concepts</h1>
+
+      <h2>The SEO Object</h2>
+      <p>The <code>SEO</code> type is the single source of truth after <code>createSEO</code>:</p>
+      <div class="code-block-wrapper"><pre><code>SEO = {
+  meta: {
+    title: string           // required after normalize
+    description?: string
+    canonical?: string
+    robots?: string
+    alternates?: { languages?: Record&lt;string,string&gt;, canonical?: string }
+    pagination?: { prev?: string, next?: string }
+    verification?: { google?: string, bing?: string, ... }
+  }
+  openGraph?: { title?, description?, images[], type?, url?, siteName?, locale? }
+  twitter?: { card?, title?, description?, image?, site?, creator? }
+  schema?: JSONLD[]         // structured data nodes
+}</code></pre></div>
+
+      <h2>The Pipeline</h2>
+      <div class="code-block-wrapper"><pre><code>Partial&lt;SEO&gt; + SEOConfig
+  → applyRules (optional, needs route string)
+  → createSEO (normalize + fallbacks)
+  → run plugins (beforeMerge / afterMerge)
+  → SEO (canonical document)
+  → Adapter.render(seo) → framework metadata | Helmet props | TagDescriptor[]</code></pre></div>
+
+      <h2>Merge Strategy</h2>
+      <p><code>mergeSEO(parent, child, config?)</code>:</p>
+      <table>
+        <thead><tr><th>Field</th><th>Strategy</th></tr></thead>
+        <tbody>
+          <tr><td><code>meta.title</code></td><td>Child overrides</td></tr>
+          <tr><td><code>meta.description</code></td><td>Child overrides</td></tr>
+          <tr><td><code>meta.alternates.languages</code></td><td>Deep merge (incl. x-default)</td></tr>
+          <tr><td><code>openGraph.images</code></td><td>Replace array (child wins)</td></tr>
+          <tr><td><code>schema</code></td><td>Concatenate; optional dedupeByIdAndType</td></tr>
+          <tr><td>All other scalars</td><td>Child overrides</td></tr>
+        </tbody>
+      </table>
+
+      <h2>JSON-LD Serialization</h2>
+      <p>All structured data goes through <strong><code>serializeJSONLD</code></strong> — never ad-hoc string concat. This prevents <code>&lt;/script&gt;</code> injection and U+2028/U+2029 breaks.</p>
+      <div class="code-block-wrapper"><pre><code>import { serializeJSONLD, article } from "@better-seo/core"
+
+// Safe for embedding in &lt;script type="application/ld+json"&gt;
+const json = serializeJSONLD(article({ headline: title, url }))</code></pre></div>
+
+      <h2>Config &amp; Context</h2>
+      <p><code>SEOConfig</code> controls defaults:</p>
+      <div class="code-block-wrapper"><pre><code>type SEOConfig = {
+  defaultTitle: string
+  description?: string
+  baseUrl?: string
+  titleTemplate?: string     // "%s | Site Name"
+  defaultRobots?: string
+  schemaMerge?: "concat" | "dedupeByIdAndType"
+  rules?: SEORule[]
+  plugins?: SEOPlugin[]
+}</code></pre></div>
+      <p>For Edge/Workers/multi-tenant: use <code>createSEOContext(explicitConfig)</code> per request — no filesystem reads.</p>
+
+      <h2>Adapter Contract</h2>
+      <p>Every adapter maps <code>SEO → framework output</code>:</p>
+      <div class="code-block-wrapper"><pre><code>interface SEOAdapter&lt;TOutput&gt; {
+  id: string
+  toFramework(seo: SEO): TOutput
+}</code></pre></div>
+      <ul>
+        <li><strong>Next.js:</strong> <code>toNextMetadata(seo): Metadata</code></li>
+        <li><strong>React:</strong> <code>toHelmetProps(seo): HelmetProps</code></li>
+        <li><strong>Vanilla:</strong> <code>renderTags(seo): TagDescriptor[]</code></li>
+      </ul>
+
+      <h2>Next</h2>
+      <ul>
+        <li><a href="../api/">API Reference</a> — full symbol documentation</li>
+        <li><a href="../recipes/">Recipes</a> — practical patterns</li>
+      </ul>
+    </main>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-links">
+      <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
+      <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md">Contributing</a>
+    </div>
+    <div>MIT <span id="year"></span> © better-seo.js contributors.</div>
+  </footer>
+  <script src="../script.js"></script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear()</script>
+</body>
+</html>

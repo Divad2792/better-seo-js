@@ -27,6 +27,15 @@ export interface SEOPlugin {
     tags: readonly TagDescriptor[],
     ctx: { readonly seo: SEO; readonly config?: SEOConfig },
   ) => readonly TagDescriptor[]
+  /**
+   * Extend channels with custom meta namespaces (P3).
+   * Returns additional TagDescriptor[] that get appended to the output.
+   * Use case: Add custom meta tags for new preview surfaces without breaking types.
+   */
+  readonly extendChannels?: (
+    seo: SEO,
+    ctx: { readonly config?: SEOConfig },
+  ) => readonly TagDescriptor[]
 }
 
 /**
@@ -63,6 +72,10 @@ export interface SEOConfig {
    * Ignored by plain `createSEO` — use route-aware APIs when you need rules applied.
    */
   readonly rules?: readonly SEORule[]
+  /** Validation options for dev-only checks (PRD §3.5). */
+  readonly requireDescription?: boolean
+  readonly titleMaxLength?: number
+  readonly descriptionMaxLength?: number
 }
 
 /** hreflang → absolute or path URL (adapter maps to framework expectations). */

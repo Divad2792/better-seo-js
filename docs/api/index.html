@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Reference — better-seo.js</title>
+  <meta name="description" content="createSEO, mergeSEO, serializeJSONLD, schema helpers, validateSEO, plugins, renderTags — full API surface.">
+  <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/api/">
+  <meta property="og:type" content="article"><meta property="og:title" content="API Reference — better-seo.js">
+  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="API Reference — better-seo.js">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="site-header">
+    <a href="../" class="site-logo">better-seo<span>.js</span></a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+    <div class="header-right">
+      <nav class="header-links"><a href="https://github.com/0xMilord/better-seo-js">GitHub</a><a href="https://www.npmjs.com/package/@better-seo/core">npm</a></nav>
+      <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
+    </div>
+  </header>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="site-layout">
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Getting Started</div>
+        <a class="sidebar-link" href="../">Home</a>
+        <a class="sidebar-link" href="../getting-started/">Install &amp; Setup</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Core</div>
+        <a class="sidebar-link" href="../concepts/">Concepts</a>
+        <a class="sidebar-link active" href="./">API Reference</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Guides</div>
+        <a class="sidebar-link" href="../recipes/">Recipes</a>
+        <a class="sidebar-link" href="../cli/">CLI</a>
+        <a class="sidebar-link" href="../commands.html">All Commands</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">More</div>
+        <a class="sidebar-link" href="../adapters/">Adapters</a>
+        <a class="sidebar-link" href="../assets/">Assets</a>
+        <a class="sidebar-link" href="../compare/">Compare</a>
+      </div>
+    </nav>
+    <main class="main-content">
+      <div class="breadcrumbs"><a href="../">Home</a> <span>›</span> API Reference</div>
+      <h1>API Reference</h1>
+
+      <h2>@better-seo/core</h2>
+      <p>Zero runtime dependency — pure transforms.</p>
+
+      <h3>Model</h3>
+      <table>
+        <thead><tr><th>Symbol</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>createSEO(input, config)</code></td><td>Normalize + fallbacks → canonical <code>SEO</code></td></tr>
+          <tr><td><code>mergeSEO(parent, child, config?)</code></td><td>Layout + page composition, deterministic merge</td></tr>
+          <tr><td><code>withSEO(parent, child, config?)</code></td><td>Alias: mergeSEO + adapter output</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Schema Helpers</h3>
+      <table>
+        <thead><tr><th>Helper</th><th>Sets</th></tr></thead>
+        <tbody>
+          <tr><td><code>webPage(parts)</code></td><td><code>@type: "WebPage"</code></td></tr>
+          <tr><td><code>article(parts)</code></td><td><code>@type: "Article"</code></td></tr>
+          <tr><td><code>techArticle(parts)</code></td><td><code>@type: "TechArticle"</code></td></tr>
+          <tr><td><code>organization(parts)</code></td><td><code>@type: "Organization"</code></td></tr>
+          <tr><td><code>person(parts)</code></td><td><code>@type: "Person"</code></td></tr>
+          <tr><td><code>product(parts)</code></td><td><code>@type: "Product"</code></td></tr>
+          <tr><td><code>breadcrumbList(parts)</code></td><td><code>@type: "BreadcrumbList"</code></td></tr>
+          <tr><td><code>faqPage(parts)</code></td><td><code>@type: "FAQPage"</code></td></tr>
+          <tr><td><code>customSchema(node)</code></td><th>Escape hatch for any schema.org type</th></tr>
+        </tbody>
+      </table>
+
+      <h3>JSON-LD / Tags</h3>
+      <table>
+        <thead><tr><th>Symbol</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>serializeJSONLD(graph)</code></td><td>HTML-safe JSON for <code>&lt;script&gt;</code> embedding</td></tr>
+          <tr><td><code>renderTags(seo, config?)</code></td><td>Vanilla <code>TagDescriptor[]</code> for non-framework use</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Validation (Dev)</h3>
+      <table>
+        <thead><tr><th>Symbol</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>validateSEO(seo, opts?)</code></td><td>Dev warnings: title length, missing description, OG image dimensions</td></tr>
+        </tbody>
+      </table>
+      <p>Options: <code>requireDescription</code> (error if missing), <code>titleMaxLength</code> (default 60), <code>descriptionMaxLength</code> (default 165). Returns <code>[]</code> in production.</p>
+
+      <h3>Rules</h3>
+      <table>
+        <thead><tr><th>Symbol</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>applyRules(route, rules)</code></td><td>Pure: glob match → merge partial SEO</td></tr>
+          <tr><td><code>createSEOForRoute(route, input, config)</code></td><td>Apply rules + createSEO in one call</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Context / Globals</h3>
+      <table>
+        <thead><tr><th>Symbol</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>createSEOContext(config)</code></td><td>Request-scoped config (Edge/multi-tenant safe)</td></tr>
+          <tr><td><code>initSEO(config)</code></td><td>Global default (Node only — avoid for SSR)</td></tr>
+          <tr><td><code>registerAdapter(id, impl)</code></td><td>Register framework adapter</td></tr>
+          <tr><td><code>getAdapter(id)</code></td><td>Get registered adapter</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Plugins</h3>
+      <table>
+        <thead><tr><th>Hook</th><th>When</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td><code>beforeMerge</code></td><td>Rules + layout + page merged</td><td>Strip tracking params, normalize URLs</td></tr>
+          <tr><td><code>afterMerge</code></td><td>Final SEO before adapter</td><td>Enforce tenant @id, locale fallbacks</td></tr>
+          <tr><td><code>onRenderTags</code></td><td>Vanilla render path</td><td>Extra &lt;link&gt;, dns-prefetch, preconnect</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Migration / Content</h3>
+      <table>
+        <thead><tr><th>Symbol</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>fromNextSeo(props)</code></td><td>Map next-seo DefaultSeo props → SEOInput</td></tr>
+          <tr><td><code>fromContent(title, body?)</code></td><td>Infer SEOInput from string (no parsers in core)</td></tr>
+          <tr><td><code>fromMdxString(mdx)</code></td><td>Alias for fromContent with MDX import stripping</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Node-Only Export</h3>
+      <p>Import from <code>@better-seo/core/node</code> (never in Edge bundles):</p>
+      <table>
+        <thead><tr><th>Symbol</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>readPackageJsonForSEO()</code></td><td>Read name, homepage, description from package.json</td></tr>
+          <tr><td><code>inferSEOConfigFromEnvAndPackageJson()</code></td><td>Build SEOConfig from env vars + package hints</td></tr>
+          <tr><td><code>initSEOFromPackageJson()</code></td><td>Infer + initSEO (global — prefer createSEOContext)</td></tr>
+        </tbody>
+      </table>
+
+      <h2>@better-seo/next</h2>
+      <table>
+        <thead><tr><th>Symbol</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>seo(input, config?)</code></td><td>Voilà shorthand → <code>Metadata</code> export</td></tr>
+          <tr><td><code>prepareNextSeo(input, config)</code></td><td>Full config + <code>SEO</code> for <code>NextJsonLd</code></td></tr>
+          <tr><td><code>withSEO(parent, child, config?)</code></td><td>Layered metadata</td></tr>
+          <tr><td><code>seoRoute(route, input, config)</code></td><td>Apply rules + prepareNextSeo</td></tr>
+          <tr><td><code>seoLayout(input, config)</code></td><td>Layout-level SEO</td></tr>
+          <tr><td><code>seoPage(input, config?)</code></td><td>Page-level SEO</td></tr>
+        </tbody>
+      </table>
+      <p><strong>JSON-LD:</strong> import <code>NextJsonLd</code> from <code>@better-seo/next/json-ld</code>.</p>
+
+      <h2>@better-seo/react</h2>
+      <table>
+        <thead><tr><th>Symbol</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>BetterSEOHelmet</code></td><td>Drop-in Helmet wrapper</td></tr>
+          <tr><td><code>toHelmetProps(seo)</code></td><td>Map SEO → Helmet props</td></tr>
+          <tr><td><code>SEOProvider</code></td><td>Context provider for <code>useSEO</code></td></tr>
+          <tr><td><code>useSEO()</code></td><td>Hook — must be inside SEOProvider</td></tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-links">
+      <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
+      <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md">Contributing</a>
+    </div>
+    <div>MIT <span id="year"></span> © better-seo.js contributors.</div>
+  </footer>
+  <script src="../script.js"></script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear()</script>
+</body>
+</html>

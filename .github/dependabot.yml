@@ -1,12 +1,25 @@
-# npm dependencies are bumped manually (exact pins in package.json + committed lockfile).
-# Only GitHub Actions versions are proposed automatically.
 version: 2
 updates:
-  - package-ecosystem: github-actions
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: monthly
-    open-pull-requests-limit: 3
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore"
+      include: "scope"
     labels:
-      - dependencies
-      - github-actions
+      - "dependencies"
+    target-branch: "develop"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "ci"
+    target-branch: "develop"

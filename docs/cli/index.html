@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLI — better-seo.js</title>
+  <meta name="description" content="Companion CLI tooling for better-seo.js: OG images, icons, crawl helpers, doctor, init, migrate, snapshot, preview, analyze, template.">
+  <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/cli/">
+  <meta property="og:type" content="article"><meta property="og:title" content="CLI — better-seo.js">
+  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="CLI — better-seo.js">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="site-header">
+    <a href="../" class="site-logo">better-seo<span>.js</span></a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+    <div class="header-right">
+      <nav class="header-links"><a href="https://github.com/0xMilord/better-seo-js">GitHub</a><a href="https://www.npmjs.com/package/@better-seo/core">npm</a></nav>
+      <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
+    </div>
+  </header>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="site-layout">
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Getting Started</div>
+        <a class="sidebar-link" href="../">Home</a>
+        <a class="sidebar-link" href="../getting-started/">Install &amp; Setup</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Core</div>
+        <a class="sidebar-link" href="../concepts/">Concepts</a>
+        <a class="sidebar-link" href="../api/">API Reference</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Guides</div>
+        <a class="sidebar-link" href="../recipes/">Recipes</a>
+        <a class="sidebar-link active" href="./">CLI</a>
+        <a class="sidebar-link" href="../commands.html">All Commands</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">More</div>
+        <a class="sidebar-link" href="../adapters/">Adapters</a>
+        <a class="sidebar-link" href="../assets/">Assets</a>
+        <a class="sidebar-link" href="../compare/">Compare</a>
+      </div>
+    </nav>
+    <main class="main-content">
+      <div class="breadcrumbs"><a href="../">Home</a> <span>›</span> CLI</div>
+      <h1>CLI Overview</h1>
+      <p>Companion tooling for better-seo.js — asset generation, crawl helpers, doctor checks, and migration support. Runs in TTY with an interactive TUI, or non-interactively in CI.</p>
+      <div class="code-block-wrapper"><pre><code>npx @better-seo/cli --help</code></pre></div>
+
+      <h2>Interactive TUI</h2>
+      <p>When run with no subcommand in a TTY, the CLI opens an interactive menu (built with <code>@clack/prompts</code>):</p>
+      <ul>
+        <li><strong>Quick start</strong> — detect framework, print install snippet</li>
+        <li><strong>Generate OG</strong> — collect answers, call <code>generateOG</code></li>
+        <li><strong>Generate icons</strong> — collect input path, write favicon set</li>
+        <li><strong>Doctor</strong> — validate config + adapter registration</li>
+        <li><strong>Crawl stubs</strong> — robots + sitemap hints</li>
+      </ul>
+
+      <h2>Non-Interactive / CI</h2>
+      <p>In CI or piped output, the TUI is disabled. Pass <code>--no-interactive</code> or <code>-y</code> to force:</p>
+      <div class="code-block-wrapper"><pre><code>CI=1 npx @better-seo/cli og "Hello" -o ./public/og.png
+npx @better-seo/cli --no-interactive icons --input ./logo.png --out ./public</code></pre></div>
+      <p>Env vars that disable TUI: <code>CI=true</code>, <code>BETTER_SEO_CI=1</code>, <code>BETTER_SEO_NO_TUI=1</code>.</p>
+
+      <h2>Command Categories</h2>
+      <table>
+        <thead><tr><th>Category</th><th>Commands</th><th>Library</th></tr></thead>
+        <tbody>
+          <tr><td>Assets</td><td><code>og</code>, <code>icons</code></td><td>@better-seo/assets</td></tr>
+          <tr><td>Crawl</td><td><code>crawl robots</code>, <code>crawl sitemap</code></td><td>@better-seo/crawl</td></tr>
+          <tr><td>Content</td><td><code>content from-mdx</code></td><td>@better-seo/compiler</td></tr>
+          <tr><td>Trust</td><td><code>snapshot</code>, <code>preview</code>, <code>analyze</code></td><td>@better-seo/cli</td></tr>
+          <tr><td>Setup</td><td><code>init</code>, <code>doctor</code>, <code>migrate</code></td><td>@better-seo/cli</td></tr>
+          <tr><td>Automation</td><td><code>scan</code>, <code>fix</code>, <code>add</code></td><td>@better-seo/cli</td></tr>
+          <tr><td>Templates</td><td><code>template</code>, <code>template switch</code>, <code>template preview</code></td><td>@better-seo/cli</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Next</h2>
+      <ul>
+        <li><a href="../commands.html">Full command reference</a> — all flags, exit codes</li>
+        <li><a href="../recipes/">Recipes</a> — OG, icons, MDX, sitemap/robots</li>
+      </ul>
+    </main>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-links">
+      <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
+      <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md">Contributing</a>
+    </div>
+    <div>MIT <span id="year"></span> © better-seo.js contributors.</div>
+  </footer>
+  <script src="../script.js"></script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear()</script>
+</body>
+</html>

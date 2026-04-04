@@ -259,7 +259,18 @@ export async function runAnalyze(rest: string[]): Promise<number> {
     let config: SEOConfig | undefined
     if (values.config) config = await readJson<SEOConfig>(values.config)
     const seo = createSEO(input, config)
-    const issues = validateSEO(seo, { log: false })
+    // Config can have validation options at root level or nested
+    const validationConfig = {
+      log: false,
+      ...(config?.requireDescription !== undefined
+        ? { requireDescription: config.requireDescription }
+        : {}),
+      ...(config?.titleMaxLength !== undefined ? { titleMaxLength: config.titleMaxLength } : {}),
+      ...(config?.descriptionMaxLength !== undefined
+        ? { descriptionMaxLength: config.descriptionMaxLength }
+        : {}),
+    }
+    const issues = validateSEO(seo, validationConfig)
     const errors = issues.filter((i) => i.severity === "error")
     if (errors.length) {
       for (const i of issues) console.error(`[${i.severity}] ${i.code} ${i.field}: ${i.message}`)

@@ -161,4 +161,30 @@ describe("renderTags", () => {
       "https://ex.test/b.png",
     ])
   })
+
+  it("runs onRenderTags plugin hook when config.plugins provided", () => {
+    const customPlugin = {
+      id: "custom",
+      onRenderTags: (tags: readonly import("./types.js").TagDescriptor[]) => [
+        ...tags,
+        { kind: "meta" as const, name: "custom", content: "injected" },
+      ],
+    }
+    const seo = createSEO({ title: "T" })
+    const tags = renderTags(seo, { plugins: [customPlugin] })
+    expect(
+      tags.some((t) => t.kind === "meta" && t.name === "custom" && t.content === "injected"),
+    ).toBe(true)
+  })
+
+  it("onRenderTags plugin can filter tags", () => {
+    const filterPlugin = {
+      id: "filter",
+      onRenderTags: (tags: readonly import("./types.js").TagDescriptor[]) =>
+        tags.filter((t) => t.kind !== "meta" || t.name !== "robots"),
+    }
+    const seo = createSEO({ title: "T", meta: { robots: "noindex" } })
+    const tags = renderTags(seo, { plugins: [filterPlugin] })
+    expect(tags.some((t) => t.kind === "meta" && t.name === "robots")).toBe(false)
+  })
 })

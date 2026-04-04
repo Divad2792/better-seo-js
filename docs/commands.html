@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLI Commands — better-seo.js</title>
+  <meta name="description" content="Full CLI command reference: og, icons, init, doctor, migrate, snapshot, preview, analyze, crawl, template — all flags and exit codes.">
+  <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/commands.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="CLI Commands — better-seo.js">
+  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="CLI Commands — better-seo.js">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="site-header">
+    <a href="./" class="site-logo">better-seo<span>.js</span></a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+    <div class="header-right">
+      <nav class="header-links"><a href="https://github.com/0xMilord/better-seo-js">GitHub</a><a href="https://www.npmjs.com/package/@better-seo/core">npm</a></nav>
+      <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
+    </div>
+  </header>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="site-layout">
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Getting Started</div>
+        <a class="sidebar-link" href="./">Home</a>
+        <a class="sidebar-link" href="getting-started/">Install &amp; Setup</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Core</div>
+        <a class="sidebar-link" href="concepts/">Concepts</a>
+        <a class="sidebar-link" href="api/">API Reference</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Guides</div>
+        <a class="sidebar-link" href="recipes/">Recipes</a>
+        <a class="sidebar-link" href="cli/">CLI</a>
+        <a class="sidebar-link active" href="commands.html">All Commands</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">More</div>
+        <a class="sidebar-link" href="adapters/">Adapters</a>
+        <a class="sidebar-link" href="assets/">Assets</a>
+        <a class="sidebar-link" href="compare/">Compare</a>
+      </div>
+    </nav>
+    <main class="main-content">
+      <div class="breadcrumbs"><a href="./">Home</a> <span>›</span> CLI Commands</div>
+      <h1>CLI Command Reference</h1>
+
+      <h2>TUI (Interactive Launcher)</h2>
+      <p>Run <code>npx better-seo</code> with no subcommand in a TTY → opens interactive menu. Disabled in CI or with <code>--no-interactive</code> / <code>-y</code> / <code>CI=true</code> / <code>BETTER_SEO_CI=1</code> / <code>BETTER_SEO_NO_TUI=1</code>.</p>
+
+      <h2>Assets</h2>
+      <h3><code>og</code></h3>
+      <p>Generate Open Graph card (1200×630 PNG).</p>
+      <div class="code-block-wrapper"><pre><code>better-seo og "Title" -o ./public/og.png --site-name "Brand" [--theme dark] [--template ./card.mjs]</code></pre></div>
+      <table>
+        <thead><tr><th>Flag</th><th>Default</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><code>-o, --output</code></td><td><code>./og.png</code></td><td>Output path</td></tr>
+          <tr><td><code>--site-name</code></td><td>—</td><td>Brand name on card</td></tr>
+          <tr><td><code>--theme</code></td><td><code>light</code></td><td><code>light</code> | <code>dark</code> | <code>auto</code></td></tr>
+          <tr><td><code>--template</code></td><td>built-in</td><td>Compiled .js/.mjs module</td></tr>
+          <tr><td><code>--logo</code></td><td>—</td><td>Local path or URL</td></tr>
+        </tbody>
+      </table>
+
+      <h3><code>icons</code></h3>
+      <p>Generate favicon set + web manifest.</p>
+      <div class="code-block-wrapper"><pre><code>better-seo icons --input ./logo.png --out ./public [--manifest]</code></pre></div>
+      <table>
+        <thead><tr><th>Flag</th><th>Default</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><code>--input</code></td><td>required</td><td>Source image (PNG, SVG, etc.)</td></tr>
+          <tr><td><code>--output</code></td><td><code>./public</code></td><td>Output directory</td></tr>
+          <tr><td><code>--manifest</code></td><td>false</td><td>Write manifest.json</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Setup</h2>
+      <h3><code>init</code></h3>
+      <p>Print install snippet + framework-specific setup instructions.</p>
+      <div class="code-block-wrapper"><pre><code>better-seo init [--framework next|react]</code></pre></div>
+
+      <h3><code>doctor</code></h3>
+      <p>Validate environment: Node version, peer dependencies, adapter registration.</p>
+      <div class="code-block-wrapper"><pre><code>better-seo doctor [--json]</code></pre></div>
+
+      <h3><code>migrate</code></h3>
+      <p>Migration hints from next-seo or other tools.</p>
+      <div class="code-block-wrapper"><pre><code>better-seo migrate from-next-seo</code></pre></div>
+
+      <h2>Content</h2>
+      <h3><code>content from-mdx</code></h3>
+      <p>Extract SEOInput from MDX frontmatter.</p>
+      <div class="code-block-wrapper"><pre><code>better-seo content from-mdx --input ./post.mdx --out ./seo-input.json</code></pre></div>
+
+      <h2>Trust &amp; Debug</h2>
+      <h3><code>snapshot</code></h3>
+      <p>Write current SEO tags to JSON for diffing.</p>
+      <div class="code-block-wrapper"><pre><code>better-seo snapshot --url http://localhost:3000 --output ./snapshot-a.json</code></pre></div>
+      <h3><code>snapshot compare</code></h3>
+      <div class="code-block-wrapper"><pre><code>better-seo snapshot compare ./snapshot-a.json ./snapshot-b.json</code></pre></div>
+
+      <h3><code>preview</code></h3>
+      <p>Generate static HTML preview of head tags.</p>
+      <div class="code-block-wrapper"><pre><code>better-seo preview --input ./seo-input.json [--open]</code></pre></div>
+
+      <h3><code>analyze</code></h3>
+      <p>Run validateSEO with exit codes (CI-friendly).</p>
+      <div class="code-block-wrapper"><pre><code>better-seo analyze --input ./seo-input.json</code></pre></div>
+      <p>Exit 1 if errors found (warnings don't fail by default).</p>
+
+      <h2>Crawl</h2>
+      <h3><code>crawl robots</code></h3>
+      <p>Generate robots.txt.</p>
+      <div class="code-block-wrapper"><pre><code>better-seo crawl robots --out ./public/robots.txt --sitemap https://example.com/sitemap.xml</code></pre></div>
+
+      <h3><code>crawl sitemap</code></h3>
+      <p>Generate sitemap.xml from URL list.</p>
+      <div class="code-block-wrapper"><pre><code>better-seo crawl sitemap --out ./public/sitemap.xml --urls https://example.com/,https://example.com/about</code></pre></div>
+
+      <h2>Templates</h2>
+      <h3><code>template list</code></h3>
+      <p>List available industry presets (blog, docs, SaaS, ecommerce, portfolio).</p>
+      <h3><code>template preview</code></h3>
+      <p>Show template bundle (rules, schema presets) without applying.</p>
+      <h3><code>template switch</code></h3>
+      <p>Apply template to existing config (non-destructive merge).</p>
+
+      <h2>Automation</h2>
+      <h3><code>scan</code></h3>
+      <p>Detect SEO issues in codebase (missing titles, descriptions, canonicals).</p>
+      <div class="code-block-wrapper"><pre><code>better-seo scan ./src --framework next</code></pre></div>
+      <h3><code>fix</code></h3>
+      <p>Auto-fix detected issues (idempotent, --dry-run available).</p>
+      <div class="code-block-wrapper"><pre><code>better-seo fix ./src --dry-run</code></pre></div>
+      <h3><code>add</code></h3>
+      <p>Add SEO boilerplate to a project (config file, adapter setup).</p>
+
+      <h2>Global Flags</h2>
+      <table>
+        <thead><tr><th>Flag</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>--no-interactive</code>, <code>-y</code>, <code>--yes</code></td><td>Skip TUI</td></tr>
+          <tr><td><code>--no-interactive</code> (on bare invoke)</td><td>Print help, exit 1</td></tr>
+          <tr><td><code>--help</code></td><td>Show command help</td></tr>
+          <tr><td><code>--version</code></td><td>Print CLI version</td></tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-links">
+      <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
+      <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md">Contributing</a>
+    </div>
+    <div>MIT <span id="year"></span> © better-seo.js contributors.</div>
+  </footer>
+  <script src="script.js"></script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear()</script>
+</body>
+</html>

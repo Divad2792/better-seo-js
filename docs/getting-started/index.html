@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Started — better-seo.js</title>
+  <meta name="description" content="Install and set up better-seo.js in under 60 seconds. Next.js App Router quick start with seo() helper.">
+  <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/getting-started/">
+  <meta property="og:type" content="article"><meta property="og:title" content="Getting Started — better-seo.js"><meta property="og:description" content="Install and set up better-seo.js in under 60 seconds.">
+  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="Getting Started — better-seo.js">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="site-header">
+    <a href="../" class="site-logo">better-seo<span>.js</span></a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+    <div class="header-right">
+      <nav class="header-links"><a href="https://github.com/0xMilord/better-seo-js">GitHub</a><a href="https://www.npmjs.com/package/@better-seo/core">npm</a></nav>
+      <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
+    </div>
+  </header>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="site-layout">
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Getting Started</div>
+        <a class="sidebar-link" href="../">Home</a>
+        <a class="sidebar-link active" href="./">Install &amp; Setup</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Core</div>
+        <a class="sidebar-link" href="../concepts/">Concepts</a>
+        <a class="sidebar-link" href="../api/">API Reference</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Guides</div>
+        <a class="sidebar-link" href="../recipes/">Recipes</a>
+        <a class="sidebar-link" href="../cli/">CLI</a>
+        <a class="sidebar-link" href="../commands.html">All Commands</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">More</div>
+        <a class="sidebar-link" href="../adapters/">Adapters</a>
+        <a class="sidebar-link" href="../assets/">Assets</a>
+        <a class="sidebar-link" href="../compare/">Compare</a>
+      </div>
+    </nav>
+    <main class="main-content">
+      <div class="breadcrumbs"><a href="../">Home</a> <span>›</span> Getting Started</div>
+      <h1>Getting Started</h1>
+
+      <h2>1. Install</h2>
+      <div class="code-block-wrapper"><pre><code>npm install @better-seo/core @better-seo/next</code></pre></div>
+      <p><code>@better-seo/core</code> has <strong>zero runtime dependencies</strong>. <code>@better-seo/next</code> declares <code>next</code> and <code>react</code> as peer dependencies.</p>
+
+      <h2>2. First Metadata (Next.js App Router)</h2>
+      <div class="code-block-wrapper"><pre><code class="language-ts">// app/page.tsx
+import { seo } from "@better-seo/next"
+
+export const metadata = seo({ title: "Home" })</code></pre></div>
+      <p>That's it. Your page now renders with correct <code>&lt;title&gt;</code>, Open Graph, Twitter cards, and canonical tags — all from one object.</p>
+
+      <h2>3. Full Config + JSON-LD</h2>
+      <div class="code-block-wrapper"><pre><code class="language-tsx">// app/page.tsx
+import { NextJsonLd } from "@better-seo/next/json-ld"
+import { prepareNextSeo } from "@better-seo/next"
+import { webPage } from "@better-seo/core"
+
+const site = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+
+const { metadata, seo } = prepareNextSeo(
+  {
+    title: "Hello",
+    description: "World",
+    canonical: "/",
+    schema: [webPage({ name: "Hello", description: "World", url: site })],
+  },
+  { baseUrl: site },
+)
+
+export { metadata }
+
+export default function Page() {
+  return (
+    &lt;main&gt;
+      &lt;NextJsonLd seo={seo} /&gt;
+      &lt;h1&gt;Hello&lt;/h1&gt;
+    &lt;/main&gt;
+  )
+}</code></pre></div>
+
+      <h2>4. Verify in the Browser</h2>
+      <ul>
+        <li>Open DevTools → Elements tab → check <code>&lt;head&gt;</code> for your title, description, OG tags</li>
+        <li>View page source → verify <code>&lt;script type="application/ld+json"&gt;</code> contains valid JSON-LD</li>
+        <li>Use <a href="https://search.google.com/test/rich-results">Google Rich Results Test</a> to validate structured data</li>
+      </ul>
+
+      <h2>What You Get</h2>
+      <table>
+        <thead><tr><th>Channel</th><th>Auto-filled from</th></tr></thead>
+        <tbody>
+          <tr><td><code>&lt;title&gt;</code></td><td><code>meta.title</code></td></tr>
+          <tr><td><code>og:title</code></td><td><code>meta.title</code> fallback</td></tr>
+          <tr><td><code>twitter:card</code></td><td>default <code>summary_large_image</code></td></tr>
+          <tr><td><code>og:image</code></td><td><code>openGraph.images</code></td></tr>
+          <tr><td><code>twitter:image</code></td><td>first <code>openGraph.images[].url</code></td></tr>
+          <tr><td>canonical link</td><td><code>baseUrl + path</code></td></tr>
+          <tr><td>robots</td><td><code>index,follow</code> default</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="../concepts/">Concepts</a> — understand the SEO object and pipeline</li>
+        <li><a href="../recipes/">Recipes</a> — layout merge, route rules, OG images, icons</li>
+        <li><a href="../api/">API Reference</a> — createSEO, mergeSEO, serializeJSONLD</li>
+      </ul>
+    </main>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-links">
+      <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
+      <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md">Contributing</a>
+    </div>
+    <div>MIT <span id="year"></span> © better-seo.js contributors.</div>
+  </footer>
+  <script src="../script.js"></script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear()</script>
+</body>
+</html>

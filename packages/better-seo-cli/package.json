@@ -1,6 +1,6 @@
 {
   "name": "@better-seo/cli",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Command-line interface for Better SEO workflows: create Open Graph PNGs with the og command and generate favicon plus PWA icon sets (and optional web app manifest) with the icons command, powered by @better-seo/assets. Exposes both better-seo and better-seo-cli binaries so you can run npx @better-seo/cli or wire stable script names in CI and local npm scripts.",
   "license": "MIT",
   "type": "module",
@@ -21,10 +21,10 @@
     "dist"
   ],
   "dependencies": {
-    "@better-seo/assets": "0.0.2",
-    "@better-seo/compiler": "0.0.2",
-    "@better-seo/core": "0.0.2",
-    "@better-seo/crawl": "0.0.2",
+    "@better-seo/assets": "0.1.0",
+    "@better-seo/compiler": "0.1.0",
+    "@better-seo/core": "0.1.0",
+    "@better-seo/crawl": "0.1.0",
     "@clack/prompts": "1.2.0"
   },
   "scripts": {

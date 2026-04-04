@@ -19,3 +19,5 @@ export {
   formatWebManifest,
   generateIcons,
 } from "./icons/generate-icons.js"
+export type { SplashOptions, SplashSize } from "./icons/generate-splash.js"
+export { generateSplash, SPLASH_SIZES } from "./icons/generate-splash.js"

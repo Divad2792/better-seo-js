@@ -308,6 +308,8 @@ export async function runInteractiveLauncher(): Promise<number> {
     | "og"
     | "icons"
     | "trust"
+    | "scan"
+    | "fix"
     | "content"
     | "template"
     | "crawl"
@@ -321,6 +323,8 @@ export async function runInteractiveLauncher(): Promise<number> {
       { value: "og", label: "Generate OG image (1200×630)", hint: "Wave L2" },
       { value: "icons", label: "Generate favicon + PWA icons", hint: "Wave L3" },
       { value: "trust", label: "Snapshot / preview / analyze (trust tools)", hint: "Wave 8–10" },
+      { value: "scan", label: "Scan codebase for missing SEO", hint: "Wave 10 · L3" },
+      { value: "fix", label: "Auto-fix SEO issues (add/scan/fix)", hint: "Wave 10 · L3" },
       { value: "content", label: "MDX → SEO JSON (@better-seo/compiler)", hint: "Wave 7 · C17" },
       { value: "template", label: "Industry SEO preset (defineSEO snippet)", hint: "Wave 9 · L9" },
       { value: "crawl", label: "Robots / sitemap (commands + docs)", hint: "Wave 12 + CLI" },
@@ -347,6 +351,16 @@ export async function runInteractiveLauncher(): Promise<number> {
     case "trust":
       code = await flowTrustTools()
       break
+    case "scan": {
+      const { runScan } = await import("./cli-fix.js")
+      code = await runScan([])
+      break
+    }
+    case "fix": {
+      const { runFix } = await import("./cli-fix.js")
+      code = await runFix([])
+      break
+    }
     case "content":
       code = await flowContentFromMdx()
       break

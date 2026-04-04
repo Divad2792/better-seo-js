@@ -37,4 +37,46 @@ describe("seoRoute", () => {
     expect(doc.meta.title).toBe("API | App")
     expect(doc.meta.description).toBe("Docs section")
   })
+
+  it("works without rules in config", () => {
+    const cfg = {
+      baseUrl: "https://app.test",
+      titleTemplate: "%s | App",
+    } as const
+    const doc = seoRoute("/page", { title: "Page" }, cfg)
+    expect(doc.meta.title).toBe("Page | App")
+  })
+
+  it("passes config to createSEO for fallbacks", () => {
+    const cfg = {
+      baseUrl: "https://app.test",
+      titleTemplate: "%s | App",
+      rules: [],
+    } as const
+    const doc = seoRoute("/page", { title: "Page" }, cfg)
+    expect(doc.meta.title).toBe("Page | App")
+    expect(doc.meta.description).toBeUndefined()
+  })
+})
+
+describe("voila.ts edge cases", () => {
+  it("seoForFramework error message includes adapter id", () => {
+    try {
+      seoForFramework("missing-adapter", { title: "t" })
+      expect.fail("Should have thrown")
+    } catch (e) {
+      expect(e).toBeInstanceOf(SEOError)
+      expect((e as SEOError).message).toContain("missing-adapter")
+    }
+  })
+
+  it("useSEO error code is USE_SEO_NOT_AVAILABLE", () => {
+    try {
+      useSEO()
+      expect.fail("Should have thrown")
+    } catch (e) {
+      expect(e).toBeInstanceOf(SEOError)
+      expect((e as SEOError).code).toBe("USE_SEO_NOT_AVAILABLE")
+    }
+  })
 })

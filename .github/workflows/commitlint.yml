@@ -1,17 +1,12 @@
-# Enforce Conventional Commits on every PR (commit messages, not just title).
 name: Commitlint
 
 on:
   pull_request:
-    branches: [main]
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    branches: [develop]
 
 jobs:
   commitlint:
-    name: Lint commits
+    name: Conventional Commits
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

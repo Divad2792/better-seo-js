@@ -1,3 +1,4 @@
 export default {
-  "future-frameworks": "Future frameworks",
+  index: "Overview",
+  "future-frameworks": "Adding frameworks",
 }

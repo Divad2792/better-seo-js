@@ -422,6 +422,43 @@ describe("runCli", () => {
     err.mockRestore()
   })
 
+  it("snapshot with --config applies titleTemplate", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    const input = join(tmpdir(), `snap-cfg-in-${Date.now()}.json`)
+    const config = join(tmpdir(), `snap-cfg-${Date.now()}.json`)
+    const out = join(tmpdir(), `snap-cfg-out-${Date.now()}.json`)
+    created.push(input, config, out)
+    writeFileSync(input, JSON.stringify({ title: "Page" }, null, 2), "utf8")
+    writeFileSync(config, JSON.stringify({ titleTemplate: "%s | Site" }, null, 2), "utf8")
+    expect(
+      await runCli(["node", "cli", "snapshot", "--input", input, "--config", config, "--out", out]),
+    ).toBe(0)
+    const j = JSON.parse(readFileSync(out, "utf8")) as unknown[]
+    expect(JSON.stringify(j)).toContain("Page | Site")
+    log.mockRestore()
+  })
+
+  it("preview with --config applies baseUrl for canonical", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {})
+    const input = join(tmpdir(), `prev-cfg-in-${Date.now()}.json`)
+    const config = join(tmpdir(), `prev-cfg-${Date.now()}.json`)
+    const out = join(tmpdir(), `prev-cfg-out-${Date.now()}.html`)
+    created.push(input, config, out)
+    writeFileSync(
+      input,
+      JSON.stringify({ title: "Page", meta: { canonical: "/page" } }, null, 2),
+      "utf8",
+    )
+    writeFileSync(config, JSON.stringify({ baseUrl: "https://example.com" }, null, 2), "utf8")
+    expect(
+      await runCli(["node", "cli", "preview", "--input", input, "--config", config, "--out", out]),
+    ).toBe(0)
+    const html = readFileSync(out, "utf8")
+    expect(html).toContain('rel="canonical"')
+    expect(html).toContain("https://example.com/page")
+    log.mockRestore()
+  })
+
   it("preview writes html with head tags", async () => {
     const log = vi.spyOn(console, "log").mockImplementation(() => {})
     const input = join(tmpdir(), `prev-in-${Date.now()}.json`)
@@ -573,5 +610,18 @@ Body`,
     writeFileSync(input, JSON.stringify({ title: "", description: "x" }), "utf8")
     expect(await runCli(["node", "cli", "analyze", "--input", input])).toBe(1)
     err.mockRestore()
+  })
+
+  it("analyze with --config requireDescription exits 1 when missing description", async () => {
+    const err = vi.spyOn(console, "error").mockImplementation(() => {})
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {})
+    const input = join(tmpdir(), `an-desc-in-${Date.now()}.json`)
+    const config = join(tmpdir(), `an-desc-cfg-${Date.now()}.json`)
+    created.push(input, config)
+    writeFileSync(input, JSON.stringify({ title: "No desc" }), "utf8")
+    writeFileSync(config, JSON.stringify({ requireDescription: true }), "utf8")
+    expect(await runCli(["node", "cli", "analyze", "--input", input, "--config", config])).toBe(1)
+    err.mockRestore()
+    warn.mockRestore()
   })
 })

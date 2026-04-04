@@ -9,13 +9,12 @@
   },
   "workspaces": [
     "packages/*",
-    "examples/*",
-    "apps/*"
+    "examples/*"
   ],
   "scripts": {
-    "build": "npm run build -w @better-seo/core && npm run build -w @better-seo/assets && npm run build -w @better-seo/compiler && npm run build -w @better-seo/crawl && npm run build -w @better-seo/cli && npm run build -w @better-seo/next && npm run build -w @better-seo/react && npm run build -w nextjs-app && npm run build -w react-seo-vite-example && npm run build -w better-seo-docs-site",
+    "build": "npm run build -w @better-seo/core && npm run build -w @better-seo/assets && npm run build -w @better-seo/compiler && npm run build -w @better-seo/crawl && npm run build -w @better-seo/cli && npm run build -w @better-seo/next && npm run build -w @better-seo/react && npm run build -w nextjs-app && npm run build -w react-seo-vite-example",
     "test": "npm run test --workspaces --if-present",
-    "test:coverage": "npm run test:coverage --workspaces --if-present",
+    "test:coverage": "npm run build -w @better-seo/core && npm run build -w @better-seo/assets && npm run build -w @better-seo/compiler && npm run build -w @better-seo/crawl && npm run test:coverage --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "typecheck": "npm run build -w @better-seo/core && npm run build -w @better-seo/assets && npm run build -w @better-seo/compiler && npm run build -w @better-seo/crawl && npm run build -w @better-seo/next && npm run build -w @better-seo/react && npm run typecheck --workspaces --if-present",
     "test:e2e": "npm run test:e2e --workspaces --if-present",
@@ -27,11 +26,10 @@
     "commitlint": "commitlint --edit",
     "commitlint:last": "commitlint --last --verbose",
     "commitlint:since-tag": "commitlint --from-last-tag --to HEAD --verbose",
-    "changeset": "changeset",
-    "release": "node scripts/release-menu.mjs",
-    "release:version": "changeset version",
-    "release:publish": "npm run ci && changeset publish",
-    "publish": "npm run release:publish",
+    "changeset": "node scripts/new-changeset.js",
+    "release": "node scripts/release.js",
+    "release:dry-run": "node scripts/release.js --dry-run",
+    "release:publish": "npx changeset publish --no-git-tag",
     "prepare": "husky",
     "size": "npm run size -w @better-seo/core"
   },

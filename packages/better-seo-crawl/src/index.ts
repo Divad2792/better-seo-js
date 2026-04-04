@@ -42,6 +42,8 @@ export interface SitemapUrlEntry {
   readonly lastmod?: string
   readonly changefreq?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never"
   readonly priority?: number
+  /** Hreflang alternates for i18n (FEATURES W2 / Wave 12). */
+  readonly alternates?: ReadonlyArray<{ readonly hreflang: string; readonly href: string }>
 }
 
 function escXml(s: string): string {
@@ -56,7 +58,7 @@ function escXml(s: string): string {
 export function renderSitemapXml(entries: readonly SitemapUrlEntry[]): string {
   const lines: string[] = [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
   ]
   for (const e of entries) {
     lines.push("  <url>")
@@ -65,6 +67,13 @@ export function renderSitemapXml(entries: readonly SitemapUrlEntry[]): string {
     if (e.changefreq) lines.push(`    <changefreq>${e.changefreq}</changefreq>`)
     if (e.priority !== undefined) {
       lines.push(`    <priority>${String(Math.min(1, Math.max(0, e.priority)))}</priority>`)
+    }
+    if (e.alternates?.length) {
+      for (const alt of e.alternates) {
+        lines.push(
+          `    <xhtml:link rel="alternate" hreflang="${escXml(alt.hreflang)}" href="${escXml(alt.href)}"/>`,
+        )
+      }
     }
     lines.push("  </url>")
   }

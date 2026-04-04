@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compare — better-seo.js vs next-seo, Next.js Metadata, React Helmet</title>
+  <meta name="description" content="Detailed comparison: better-seo.js vs next-seo, vs Next.js Metadata API, vs React Helmet. Why better-seo.js wins on completeness.">
+  <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/compare/">
+  <meta property="og:type" content="article"><meta property="og:title" content="Compare — better-seo.js">
+  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="Compare — better-seo.js">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="site-header">
+    <a href="../" class="site-logo">better-seo<span>.js</span></a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+    <div class="header-right">
+      <nav class="header-links"><a href="https://github.com/0xMilord/better-seo-js">GitHub</a><a href="https://www.npmjs.com/package/@better-seo/core">npm</a></nav>
+      <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
+    </div>
+  </header>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="site-layout">
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Getting Started</div>
+        <a class="sidebar-link" href="../">Home</a>
+        <a class="sidebar-link" href="../getting-started/">Install &amp; Setup</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Core</div>
+        <a class="sidebar-link" href="../concepts/">Concepts</a>
+        <a class="sidebar-link" href="../api/">API Reference</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Guides</div>
+        <a class="sidebar-link" href="../recipes/">Recipes</a>
+        <a class="sidebar-link" href="../cli/">CLI</a>
+        <a class="sidebar-link" href="../commands.html">All Commands</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">More</div>
+        <a class="sidebar-link" href="../adapters/">Adapters</a>
+        <a class="sidebar-link" href="../assets/">Assets</a>
+        <a class="sidebar-link active" href="./">Compare</a>
+      </div>
+    </nav>
+    <main class="main-content">
+      <div class="breadcrumbs"><a href="../">Home</a> <span>›</span> Compare</div>
+      <h1>Compare</h1>
+
+      <h2>vs next-seo</h2>
+      <table>
+        <thead><tr><th>Dimension</th><th>next-seo</th><th>@better-seo</th></tr></thead>
+        <tbody>
+          <tr><td>Core model</td><td>Component + props</td><td>Single SEO document + merge</td></tr>
+          <tr><td>Runtime deps</td><td>React + own deps</td><td><strong>0</strong> (core)</td></tr>
+          <tr><td>Bundle size</td><td>~15KB+</td><td><strong>~5KB gzip</strong></td></tr>
+          <tr><td>JSON-LD</td><td>Manual</td><td>serializeJSONLD — single hardened path</td></tr>
+          <tr><td>Next App Router</td><td>Patterns vary</td><td>seo(), prepareNextSeo, NextJsonLd</td></tr>
+          <tr><td>OG images</td><td>External</td><td>assets + CLI og command</td></tr>
+          <tr><td>Route rules</td><td>None</td><td>Glob-based SEORule engine</td></tr>
+          <tr><td>Plugins</td><td>None</td><td>beforeMerge, afterMerge, onRenderTags</td></tr>
+          <tr><td>Multi-framework</td><td>Next only</td><td>Next, React, Remix, Astro, Nuxt</td></tr>
+          <tr><td>CLI</td><td>None</td><td>og, icons, doctor, scan, fix, crawl</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Migration:</strong> <code>fromNextSeo()</code> maps common props. CLI: <code>npx better-seo migrate from-next-seo</code>.</p>
+      <h3>When to Switch</h3>
+      <ul>
+        <li>You use or plan to use <strong>Next.js App Router</strong></li>
+        <li>You need <strong>JSON-LD</strong> for rich results</li>
+        <li>You want <strong>OG images</strong> without manual setup</li>
+        <li>You need <strong>route-based rules</strong></li>
+        <li>You want a <strong>single source of truth</strong></li>
+      </ul>
+
+      <h2>vs Next.js Metadata API</h2>
+      <p><strong>Next.js Metadata</strong> is the rendering layer — it maps config to <code>&lt;head&gt;</code> tags. <strong>better-seo.js</strong> is the document model + pipeline that sits on top. They're <strong>complementary</strong>.</p>
+      <table>
+        <thead><tr><th>Feature</th><th>Next.js Metadata</th><th>+ better-seo.js</th></tr></thead>
+        <tbody>
+          <tr><td>Basic meta tags</td><td>✅</td><td>✅</td></tr>
+          <tr><td>Open Graph</td><td>✅</td><td>✅ + fallback bridging</td></tr>
+          <tr><td>JSON-LD</td><td>⚠️ Manual via <code>other</code></td><td>✅ Helpers + safe serialization</td></tr>
+          <tr><td>Merge strategy</td><td>❌ Opaque</td><td>✅ Deterministic mergeSEO</td></tr>
+          <tr><td>Validation</td><td>❌</td><td>✅ validateSEO (dev)</td></tr>
+          <tr><td>Route rules</td><td>❌</td><td>✅ Glob-based rules</td></tr>
+          <tr><td>OG generation</td><td>❌</td><td>✅ CLI + library</td></tr>
+          <tr><td>Cross-framework</td><td>❌ Next only</td><td>✅ Adapters</td></tr>
+        </tbody>
+      </table>
+      <p>You don't choose between them. You use better-seo.js <strong>to get</strong> correct Next.js Metadata.</p>
+
+      <h2>vs React Helmet</h2>
+      <p><strong>React Helmet</strong> is tag injection — you pass JSX, it renders to <code>&lt;head&gt;</code>. No model, no merge strategy, no validation. <code>@better-seo/react</code> maps the unified SEO document to Helmet props.</p>
+      <table>
+        <thead><tr><th>Feature</th><th>react-helmet</th><th>@better-seo/react</th></tr></thead>
+        <tbody>
+          <tr><td>Model</td><td>Props on component</td><td>Unified SEO document → Helmet props</td></tr>
+          <tr><td>JSON-LD</td><td>Manual &lt;script&gt;</td><td>serializeJSONLD + helpers</td></tr>
+          <tr><td>Fallbacks</td><td>None</td><td>Title templates, OG → Twitter bridging</td></tr>
+          <tr><td>Merge</td><td>Last-mounted wins</td><td>Explicit mergeSEO with rules</td></tr>
+          <tr><td>Validation</td><td>None</td><td>validateSEO with dev warnings</td></tr>
+          <tr><td>Cross-framework</td><td>React only</td><td>Core + adapters</td></tr>
+        </tbody>
+      </table>
+      <p>They work <strong>together</strong>. Helmet is the mechanism; better-seo.js is the document model that feeds it.</p>
+    </main>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-links">
+      <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
+      <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md">Contributing</a>
+    </div>
+    <div>MIT <span id="year"></span> © better-seo.js contributors.</div>
+  </footer>
+  <script src="../script.js"></script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear()</script>
+</body>
+</html>

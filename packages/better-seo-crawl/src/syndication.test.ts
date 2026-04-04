@@ -5,6 +5,7 @@ import {
   renderRssXml,
   renderSitemapIndexXml,
 } from "./syndication.js"
+import { renderSitemapXml, type SitemapUrlEntry } from "./index.js"
 
 describe("syndication (Wave 12)", () => {
   it("renderRssXml includes item guid and title", () => {
@@ -52,5 +53,43 @@ describe("syndication (Wave 12)", () => {
   it("renderSitemapIndexXml escapes loc", () => {
     const x = renderSitemapIndexXml(["https://ex.test/a&b", "https://ex.test/c"])
     expect(x).toContain("https://ex.test/a&amp;b")
+  })
+
+  it("renderSitemapXml includes hreflang alternates (W2)", () => {
+    const entries: SitemapUrlEntry[] = [
+      {
+        loc: "https://ex.test/page",
+        alternates: [
+          { hreflang: "en", href: "https://ex.test/en/page" },
+          { hreflang: "de", href: "https://ex.test/de/page" },
+          { hreflang: "x-default", href: "https://ex.test/page" },
+        ],
+      },
+    ]
+    const xml = renderSitemapXml(entries)
+    expect(xml).toContain('xmlns:xhtml="http://www.w3.org/1999/xhtml"')
+    expect(xml).toContain('rel="alternate" hreflang="en"')
+    expect(xml).toContain('rel="alternate" hreflang="de"')
+    expect(xml).toContain('rel="alternate" hreflang="x-default"')
+    expect(xml).toContain("https://ex.test/en/page")
+    expect(xml).toContain("https://ex.test/de/page")
+  })
+
+  it("renderSitemapXml without alternates omits alternate links", () => {
+    const entries: SitemapUrlEntry[] = [{ loc: "https://ex.test/page" }]
+    const xml = renderSitemapXml(entries)
+    expect(xml).not.toContain("alternate")
+    expect(xml).toContain("<loc>https://ex.test/page</loc>")
+  })
+
+  it("renderSitemapXml escapes hreflang hrefs", () => {
+    const entries: SitemapUrlEntry[] = [
+      {
+        loc: "https://ex.test/page",
+        alternates: [{ hreflang: "en", href: "https://ex.test/page?a=1&b=2" }],
+      },
+    ]
+    const xml = renderSitemapXml(entries)
+    expect(xml).toContain("https://ex.test/page?a=1&amp;b=2")
   })
 })

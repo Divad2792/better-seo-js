@@ -1,0 +1,11 @@
+{
+  "meta": {
+    "title": "Test Page",
+    "description": "A test page for snapshot"
+  },
+  "openGraph": {
+    "title": "OG Title",
+    "images": [{ "url": "https://example.com/og.png", "width": 1200, "height": 630 }]
+  },
+  "schema": [{ "@context": "https://schema.org", "@type": "WebPage", "name": "Test" }]
+}

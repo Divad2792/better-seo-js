@@ -146,12 +146,10 @@ import { createSEO, webPage } from "@better-seo/core"
 
 // Page
 const seo = createSEO({ title: "Dashboard", schema: [webPage({ name: "Dashboard" })] }, config)
-&lt;BetterSEOHelmet seo={seo} /&gt;</code></pre>
-      </div>
+&lt;BetterSEOHelmet seo={seo} /&gt;</code></pre></div>
 
       <h2>Robots + Sitemap (Next.js)</h2>
-      <div class="code-block-wrapper">
-        <pre><code class="language-ts">// app/robots.ts
+      <div class="code-block-wrapper"><pre><code class="language-ts">// app/robots.ts
 import { renderRobotsTxt } from "@better-seo/crawl"
 export default function robots() {
   return renderRobotsTxt({ sitemap: [`${process.env.SITE_URL}/sitemap.xml`] })

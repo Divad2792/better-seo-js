@@ -1,0 +1,61 @@
+[
+  {
+    "kind": "meta",
+    "name": "title",
+    "content": "Test Page"
+  },
+  {
+    "kind": "meta",
+    "name": "description",
+    "content": "A test page for snapshot"
+  },
+  {
+    "kind": "meta",
+    "property": "og:title",
+    "content": "OG Title"
+  },
+  {
+    "kind": "meta",
+    "property": "og:description",
+    "content": "A test page for snapshot"
+  },
+  {
+    "kind": "meta",
+    "property": "og:image",
+    "content": "https://example.com/og.png"
+  },
+  {
+    "kind": "meta",
+    "property": "og:image:width",
+    "content": "1200"
+  },
+  {
+    "kind": "meta",
+    "property": "og:image:height",
+    "content": "630"
+  },
+  {
+    "kind": "meta",
+    "name": "twitter:card",
+    "content": "summary_large_image"
+  },
+  {
+    "kind": "meta",
+    "name": "twitter:title",
+    "content": "Test Page"
+  },
+  {
+    "kind": "meta",
+    "name": "twitter:description",
+    "content": "A test page for snapshot"
+  },
+  {
+    "kind": "meta",
+    "name": "twitter:image",
+    "content": "https://example.com/og.png"
+  },
+  {
+    "kind": "script-jsonld",
+    "json": "{\"@context\":\"https://schema.org\",\"@type\":\"WebPage\",\"name\":\"Test\"}"
+  }
+]

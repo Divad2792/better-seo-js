@@ -12,9 +12,11 @@ import {
   type AtomEntry,
   type RssItem,
 } from "@better-seo/crawl"
+import { runAdd, runFix, runScan } from "./cli-fix.js"
 import { runContent } from "./cli-content.js"
 import { runAnalyze, runPreview, runSnapshot } from "./cli-devtools.js"
 import { executeIcons, executeOg, parseDisplayString, parseThemeString } from "./cli-execute.js"
+import { runSplash } from "./cli-splash.js"
 import { runDoctor, runInit, runMigrate } from "./cli-subcommands.js"
 import { runTemplate } from "./cli-templates.js"
 import { runInteractiveLauncher, shouldOfferTui } from "./launch-interactive.js"
@@ -30,6 +32,10 @@ Commands:
   og <title>              Generate a 1200×630 Open Graph PNG
   icons <file>            Generate favicon / PWA icons (+ optional manifest.json)
   crawl robots|sitemap|rss|atom|llms|sitemap-index   Crawl / syndication helpers (@better-seo/crawl)
+  scan                    Scan codebase for missing SEO (Wave 10)
+  add <file>              Add SEO to a specific file (Wave 10)
+  fix                     Auto-fix SEO issues across codebase (Wave 10)
+  splash <icon>           Generate PWA splash screens (Wave 11)
   snapshot                Tag snapshot + compare (Wave 8)
   preview                 HTML head + social approximations; optional --open (Wave 8)
   analyze                 validateSEO gate (Wave 10)
@@ -44,7 +50,9 @@ Usage:
   better-seo og <title> [options]
   better-seo icons <source.{svg,png,...}> [options]
   better-seo crawl robots [--out path] [--sitemap url]...
-  better-seo crawl sitemap [--out path] --loc url [--loc url]...
+  better-seo scan
+  better-seo add <file> [--title "..." --description "..."]
+  better-seo fix [--dry-run]
   better-seo doctor [--json]
   better-seo init [--framework next|react]
   better-seo migrate from-next-seo
@@ -632,6 +640,22 @@ export async function runCli(argv: readonly string[]): Promise<number> {
 
   if (program === "analyze") {
     return runAnalyze(rest.slice(1))
+  }
+
+  if (program === "scan") {
+    return runScan(rest.slice(1))
+  }
+
+  if (program === "add") {
+    return runAdd(rest.slice(1))
+  }
+
+  if (program === "fix") {
+    return runFix(rest.slice(1))
+  }
+
+  if (program === "splash") {
+    return runSplash(rest.slice(1))
   }
 
   if (program === "content") {

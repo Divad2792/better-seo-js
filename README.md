@@ -1,5 +1,6 @@
 # better-seo.js
 
+[![Docs](https://img.shields.io/badge/docs-0xmilord.github.io/better--seo--js-00ff9d?style=flat-square&logo=github&logoColor=white)](https://0xmilord.github.io/better-seo-js/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](./LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D24-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.x-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -18,17 +19,17 @@
 
 [![Vitest](https://img.shields.io/badge/unit%20tests-Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev/)
 [![Playwright E2E](https://img.shields.io/badge/E2E-Playwright-2EAD33?style=flat-square&logo=playwright&logoColor=white)](./examples/nextjs-app)
-[![Coverage — core](https://img.shields.io/badge/coverage-@better--seo%2Fcore%20≥90%25%20lines-informational?style=flat-square)](./packages/core/README.md#coverage)
-[![Coverage — next](https://img.shields.io/badge/coverage-@better--seo%2Fnext%20≥82%25%20lines-informational?style=flat-square)](./packages/next/README.md#coverage)
-[![Coverage — assets](https://img.shields.io/badge/coverage-@better--seo%2Fassets%20≥85%25%20lines-informational?style=flat-square)](./packages/better-seo-assets/README.md#coverage)
-[![Coverage — cli](https://img.shields.io/badge/coverage-@better--seo%2Fcli%20≥80%25%20lines-informational?style=flat-square)](./packages/better-seo-cli/README.md#coverage)
-[![Coverage — react](https://img.shields.io/badge/coverage-@better--seo%2Freact%20≥85%25%20lines-informational?style=flat-square)](./packages/react/README.md)
-[![Coverage — crawl](https://img.shields.io/badge/coverage-@better--seo%2Fcrawl-Vitest-informational?style=flat-square)](./packages/better-seo-crawl/)
-[![Coverage — compiler](https://img.shields.io/badge/coverage-@better--seo%2Fcompiler-Vitest-informational?style=flat-square)](./packages/better-seo-compiler/)
+[![Coverage — core](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/0xMilord/YOUR_GIST_ID/raw/better-seo-core-coverage.json&style=flat-square)](./packages/core/README.md#coverage)
+[![Coverage — next](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/0xMilord/YOUR_GIST_ID/raw/better-seo-next-coverage.json&style=flat-square)](./packages/next/README.md#coverage)
+[![Coverage — assets](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/0xMilord/YOUR_GIST_ID/raw/better-seo-assets-coverage.json&style=flat-square)](./packages/better-seo-assets/README.md#coverage)
+[![Coverage — cli](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/0xMilord/YOUR_GIST_ID/raw/better-seo-cli-coverage.json&style=flat-square)](./packages/better-seo-cli/README.md#coverage)
+[![Coverage — react](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/0xMilord/YOUR_GIST_ID/raw/better-seo-react-coverage.json&style=flat-square)](./packages/react/README.md)
+[![Coverage — crawl](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/0xMilord/YOUR_GIST_ID/raw/better-seo-crawl-coverage.json&style=flat-square)](./packages/better-seo-crawl/)
+[![Coverage — compiler](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/0xMilord/YOUR_GIST_ID/raw/better-seo-compiler-coverage.json&style=flat-square)](./packages/better-seo-compiler/)
 
 ### CI and test results (badges, tables, reports)
 
-Workflow badges use GitHub’s **`/actions/workflows/<file>.yml/badge.svg`** URLs, so they update automatically after each run on **`main`**. This monorepo does **not** wire [Codecov](https://codecov.io/) / [Coveralls](https://coveralls.io/) badges; **`npm run test:coverage`** enforces per-package thresholds in CI, and selected **`lcov.info`** files are uploaded as workflow artifacts ([`ci.yml`](./.github/workflows/ci.yml)).
+Workflow badges use GitHub’s **`/actions/workflows/<file>.yml/badge.svg`** URLs, so they update automatically after each run on **`main`**. Coverage badges are **live**; they are powered by GitHub Actions sending metrics to a GitHub Gist, which Shields.io then renders dynamically. **`npm run test:coverage`** enforces per-package thresholds in CI, and **`lcov.info`** files are uploaded as workflow artifacts ([`ci.yml`](./.github/workflows/ci.yml)).
 
 | What                      | How                                                                        | Where to look                                                                                                                                                        |
 | ------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -63,6 +64,7 @@ Public guides: **[`docs/`](./docs/index.md)** (including **Nextra site** in **`a
 ---
 
 <p align="center">
+  <a href="https://0xmilord.github.io/better-seo-js/"><strong>📖 Documentation</strong></a> ·
   <a href="./docs/recipes/index.md"><strong>Recipes</strong></a> ·
   <a href="./apps/docs/README.md"><strong>Docs site dev</strong></a> ·
   <a href="./docs/commands.md"><strong>CLI commands</strong></a> ·

@@ -49,4 +49,49 @@ describe("fromNextSeo", () => {
     expect(seo.twitter?.site).toBe("@corp")
     expect(seo.twitter?.creator).toBe("@author")
   })
+
+  it("rejects arrays and primitives with VALIDATION error", () => {
+    expect(() => fromNextSeo([])).toThrow(SEOError)
+    expect(() => fromNextSeo([])).toThrow(/VALIDATION/)
+    expect(() => fromNextSeo("string")).toThrow(SEOError)
+    expect(() => fromNextSeo(123)).toThrow(SEOError)
+  })
+
+  it("handles openGraph.images with mixed valid and invalid items", () => {
+    const input = fromNextSeo({
+      title: "Post",
+      openGraph: {
+        images: [
+          { url: "https://ex.test/valid.png", width: 1200 },
+          null,
+          "string-url.png",
+          { url: "" }, // invalid - empty url
+          { url: "https://ex.test/valid2.png", alt: "Alt text" },
+        ],
+      },
+    })
+    const seo = createSEO(input)
+    expect(seo.openGraph?.images).toHaveLength(3)
+    expect(seo.openGraph?.images?.[0]?.url).toBe("https://ex.test/valid.png")
+    expect(seo.openGraph?.images?.[1]?.url).toBe("string-url.png")
+    expect(seo.openGraph?.images?.[2]?.alt).toBe("Alt text")
+  })
+
+  it("handles twitter with imageSrc fallback", () => {
+    const input = fromNextSeo({
+      title: "Post",
+      twitter: { imageSrc: "https://ex.test/fallback.jpg" },
+    })
+    const seo = createSEO(input)
+    expect(seo.twitter?.image).toBe("https://ex.test/fallback.jpg")
+  })
+
+  it("handles nofollow without noindex", () => {
+    const input = fromNextSeo({
+      title: "Post",
+      nofollow: true,
+    })
+    const seo = createSEO(input)
+    expect(seo.meta.robots).toBe("index, nofollow")
+  })
 })

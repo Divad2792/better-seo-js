@@ -4,14 +4,13 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+    branches: [develop]
   schedule:
-    # Run weekly on Mondays at 00:00 UTC
     - cron: "0 0 * * 1"
 
 jobs:
   audit:
-    name: Dependency Audit
+    name: npm audit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,15 +26,7 @@ jobs:
         run: npm ci
 
       - name: Run npm audit
-        run: |
-          npm audit --audit-level=high --json > audit-results.json 2>&1 || true
-          # Display summary
-          if [ -f audit-results.json ]; then
-            echo "## 🔒 Security Audit Results" >> $GITHUB_STEP_SUMMARY
-            echo '```json' >> $GITHUB_STEP_SUMMARY
-            jq '.metadata.vulnerabilities' audit-results.json >> $GITHUB_STEP_SUMMARY 2>/dev/null || cat audit-results.json >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          fi
+        run: npm audit --audit-level=high --json > audit-results.json 2>&1 || true
         continue-on-error: true
 
       - name: Upload audit results
@@ -43,9 +34,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: npm-audit-results
-          path: |
-            audit-results.json
-            packages/*/audit-results.json
+          path: audit-results.json
           retention-days: 30
 
   codeql:
@@ -55,12 +44,10 @@ jobs:
       actions: read
       contents: read
       security-events: write
-
     strategy:
       fail-fast: false
       matrix:
         language: ["javascript-typescript"]
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -76,4 +63,4 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:${{matrix.language}}"
+          category: "/language:${{ matrix.language }}"

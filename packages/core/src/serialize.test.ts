@@ -137,4 +137,68 @@ describe("serializeJSONLD", () => {
       expect(() => serializeJSONLD(true as unknown as JSONLD)).toThrow(SEOError)
     })
   })
+
+  describe("Edge Cases - Coverage", () => {
+    it("rejects @type with angle brackets", () => {
+      expect(() =>
+        serializeJSONLD({
+          "@context": "https://schema.org",
+          "@type": "<div>Bad</div>",
+        }),
+      ).toThrow(SEOError)
+      expect(() =>
+        serializeJSONLD({
+          "@context": "https://schema.org",
+          "@type": "Type>",
+        }),
+      ).toThrow(SEOError)
+    })
+
+    it("rejects nested null values in objects", () => {
+      // Should not throw for null values, only null root nodes
+      const result = serializeJSONLD({
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        name: null as unknown as string,
+      })
+      expect(result).toContain("null")
+    })
+
+    it("validates deeply nested objects", () => {
+      // Create object with __proto__ as own property using Object.defineProperty
+      const deep = {
+        "@context": "https://schema.org" as const,
+        "@type": "Thing",
+        author: {
+          "@type": "Person",
+          name: "Alice",
+        },
+      } as unknown as JSONLD
+      // Add __proto__ as own property to nested object
+      Object.defineProperty(deep.author, "__proto__", {
+        value: { polluted: true },
+        enumerable: true,
+        configurable: true,
+        writable: true,
+      })
+      expect(() => serializeJSONLD(deep)).toThrow(SEOError)
+      expect(() => serializeJSONLD(deep)).toThrow(/__proto__/)
+    })
+
+    it("handles empty arrays", () => {
+      const result = serializeJSONLD([])
+      expect(result).toBe("[]")
+    })
+
+    it("handles arrays with mixed valid nodes", () => {
+      const result = serializeJSONLD([
+        { "@context": "https://schema.org", "@type": "Thing", name: "A" },
+        { "@context": "https://schema.org", "@type": "Thing", name: "B" },
+      ])
+      const parsed = JSON.parse(result) as Array<{ "@type": string; name: string }>
+      expect(parsed).toHaveLength(2)
+      expect(parsed[0]!.name).toBe("A")
+      expect(parsed[1]!.name).toBe("B")
+    })
+  })
 })

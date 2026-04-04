@@ -117,4 +117,77 @@ Intro text for SEO.
     const input = fromMdx(src)
     expect(input.description).toContain("Intro text")
   })
+
+  it("handles empty frontmatter with body only", () => {
+    const src = `# Just a heading
+
+Some body content here.`
+    const input = fromMdx(src)
+    expect(input.title).toBe("Just a heading")
+    expect(input.description).toContain("Some body content")
+  })
+
+  it("handles JSON frontmatter", () => {
+    const src = `---
+title: JSON FM
+description: JSON desc
+---
+
+Body.`
+    const input = fromMdx(src)
+    expect(input.title).toBe("JSON FM")
+    expect(input.description).toBe("JSON desc")
+  })
+
+  it("handles excerpt option", () => {
+    const src = `---
+title: With excerpt
+---
+
+First paragraph.
+
+Second paragraph.`
+    const input = fromMdx(src, { matter: { excerpt: true } })
+    expect(input.title).toBe("With excerpt")
+    expect(input.description).toContain("First paragraph")
+  })
+
+  it("handles schema with multiple nodes", () => {
+    const src = `---
+title: Multi schema
+schema:
+  - "@context": "https://schema.org"
+    "@type": "Article"
+    headline: Article
+  - "@context": "https://schema.org"
+    "@type": "BreadcrumbList"
+    itemListElement: []
+---
+
+x
+`
+    const input = fromMdx(src)
+    expect(Array.isArray(input.schema)).toBe(true)
+    expect(input.schema).toHaveLength(2)
+    expect(input.schema?.[0]?.["@type"]).toBe("Article")
+    expect(input.schema?.[1]?.["@type"]).toBe("BreadcrumbList")
+  })
+
+  it("handles openGraph with nested images array", () => {
+    const src = `---
+title: OG
+openGraph:
+  title: OG Title
+  images:
+    - url: https://ex.test/og.png
+      width: 1200
+---
+
+Hi
+`
+    const input = fromMdx(src)
+    expect(input.openGraph?.title).toBe("OG Title")
+    expect(Array.isArray(input.openGraph?.images)).toBe(true)
+    expect(input.openGraph?.images?.[0]?.url).toBe("https://ex.test/og.png")
+  })
 })

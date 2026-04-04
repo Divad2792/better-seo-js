@@ -1,30 +1,21 @@
-# Semver + CHANGELOG via Changesets; Version PR merges to main → npm publish.
-# Requires: NPM_TOKEN (npm granular access token with publish) in repo secrets.
-
 name: Release
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch: {}
-
-concurrency:
-  group: release-${{ github.ref }}
-  cancel-in-progress: false
+    tags: ["v*"]
 
 jobs:
-  release:
-    name: Version or publish
+  publish:
+    name: Publish to npm
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
       id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: main
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -36,23 +27,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build packages (release step also runs full CI via npm run publish)
+      - name: Build all packages
         run: npm run build
 
-      # Provenance requires GitHub OIDC + id-token: write; local `changeset publish` must not set publishConfig.provenance.
-      - name: Enable npm publish provenance (GitHub Actions only)
-        run: npm config set provenance true
-
-      # Creates or updates "Version Packages" PR when .changeset/*.md exist;
-      # After that PR is merged (no pending changesets), runs publish (same as local: npm run publish).
-      - name: Changesets — version PR + npm publish
-        uses: changesets/action@v1
-        with:
-          title: "chore: version packages"
-          commit: "chore: version packages"
-          version: npm run release:version
-          publish: npm run publish
+      - name: Publish all packages
+        run: npx changeset publish --no-git-tag
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+      - name: Verify install — @better-seo/core
+        run: |
+          cd /tmp && mkdir _v && cd _v
+          npm init -y
+          npm install @better-seo/core
+          node -e "const { createSEO, webPage, serializeJSONLD } = require('@better-seo/core'); const s = createSEO({ title: 'verify' }, { baseUrl: 'https://x.com' }); console.log('OK:', s.meta.title)"
+          cd / && rm -rf /tmp/_v
+
+      - name: Verify install — @better-seo/next
+        run: |
+          cd /tmp && mkdir _v2 && cd _v2
+          npm init -y
+          npm install @better-seo/core @better-seo/next
+          node -e "const { seo } = require('@better-seo/next'); console.log('OK: next adapter loaded')"
+          cd / && rm -rf /tmp/_v2
