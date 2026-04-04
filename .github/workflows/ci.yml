@@ -55,120 +55,27 @@ jobs:
           [ "$SIZE" -le 10240 ] || { echo "FAIL: Core bundle ${SIZE}B exceeds 10KB"; exit 1; }
 
       - name: Extract coverage metrics
-        if: github.ref == 'refs/heads/main'
         id: coverage
         run: |
-          echo "core=$(jq -r '.total.lines.pct' packages/core/coverage/coverage-summary.json)" >> $GITHUB_OUTPUT
-          echo "next=$(jq -r '.total.lines.pct' packages/next/coverage/coverage-summary.json)" >> $GITHUB_OUTPUT
-          echo "assets=$(jq -r '.total.lines.pct' packages/better-seo-assets/coverage/coverage-summary.json)" >> $GITHUB_OUTPUT
-          echo "cli=$(jq -r '.total.lines.pct' packages/better-seo-cli/coverage/coverage-summary.json)" >> $GITHUB_OUTPUT
-          echo "react=$(jq -r '.total.lines.pct' packages/react/coverage/coverage-summary.json)" >> $GITHUB_OUTPUT
-          echo "crawl=$(jq -r '.total.lines.pct' packages/better-seo-crawl/coverage/coverage-summary.json)" >> $GITHUB_OUTPUT
-          echo "compiler=$(jq -r '.total.lines.pct' packages/better-seo-compiler/coverage/coverage-summary.json)" >> $GITHUB_OUTPUT
+          mkdir -p badges
+          for pkg in core next better-seo-assets better-seo-cli react better-seo-crawl better-seo-compiler; do
+            SHORT=${pkg#better-seo-}
+            SHORT=${SHORT%-assets}
+            SHORT=${SHORT%-crawl}
+            SHORT=${SHORT%-compiler}
+            SUMMARY="packages/${pkg}/coverage/coverage-summary.json"
+            if [ -f "$SUMMARY" ]; then
+              LINES=$(jq -r '.total.lines.pct' "$SUMMARY")
+              echo "{\"schemaVersion\":1,\"label\":\"coverage (${SHORT})\",\"message\":\"${LINES}%\",\"color\":\"green\"}" > "badges/${SHORT}.json"
+              echo "${SHORT}=${LINES}" >> $GITHUB_OUTPUT
+            fi
+          done
 
-      - name: Upload coverage reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: packages/*/coverage/lcov.info
-          if-no-files-found: ignore
-          retention-days: 30
-
-      - name: Update coverage badges (Core)
-        if: github.ref == 'refs/heads/main' && secrets.GIST_ID != ''
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: ${{ secrets.GIST_ID }}
-          filename: better-seo-core-coverage.json
-          label: coverage (core)
-          message: ${{ steps.coverage.outputs.core }}%
-          color: green
-          valColorRange: ${{ steps.coverage.outputs.core }}
-          maxColorRange: 100
-          minColorRange: 0
-
-      - name: Update coverage badges (Next)
-        if: github.ref == 'refs/heads/main' && secrets.GIST_ID != ''
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: ${{ secrets.GIST_ID }}
-          filename: better-seo-next-coverage.json
-          label: coverage (next)
-          message: ${{ steps.coverage.outputs.next }}%
-          color: green
-          valColorRange: ${{ steps.coverage.outputs.next }}
-          maxColorRange: 100
-          minColorRange: 0
-
-      - name: Update coverage badges (Assets)
-        if: github.ref == 'refs/heads/main' && secrets.GIST_ID != ''
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: ${{ secrets.GIST_ID }}
-          filename: better-seo-assets-coverage.json
-          label: coverage (assets)
-          message: ${{ steps.coverage.outputs.assets }}%
-          color: green
-          valColorRange: ${{ steps.coverage.outputs.assets }}
-          maxColorRange: 100
-          minColorRange: 0
-
-      - name: Update coverage badges (CLI)
-        if: github.ref == 'refs/heads/main' && secrets.GIST_ID != ''
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: ${{ secrets.GIST_ID }}
-          filename: better-seo-cli-coverage.json
-          label: coverage (cli)
-          message: ${{ steps.coverage.outputs.cli }}%
-          color: green
-          valColorRange: ${{ steps.coverage.outputs.cli }}
-          maxColorRange: 100
-          minColorRange: 0
-
-      - name: Update coverage badges (React)
-        if: github.ref == 'refs/heads/main' && secrets.GIST_ID != ''
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: ${{ secrets.GIST_ID }}
-          filename: better-seo-react-coverage.json
-          label: coverage (react)
-          message: ${{ steps.coverage.outputs.react }}%
-          color: green
-          valColorRange: ${{ steps.coverage.outputs.react }}
-          maxColorRange: 100
-          minColorRange: 0
-
-      - name: Update coverage badges (Crawl)
-        if: github.ref == 'refs/heads/main' && secrets.GIST_ID != ''
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: ${{ secrets.GIST_ID }}
-          filename: better-seo-crawl-coverage.json
-          label: coverage (crawl)
-          message: ${{ steps.coverage.outputs.crawl }}%
-          color: green
-          valColorRange: ${{ steps.coverage.outputs.crawl }}
-          maxColorRange: 100
-          minColorRange: 0
-
-      - name: Update coverage badges (Compiler)
-        if: github.ref == 'refs/heads/main' && secrets.GIST_ID != ''
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: ${{ secrets.GIST_ID }}
-          filename: better-seo-compiler-coverage.json
-          label: coverage (compiler)
-          message: ${{ steps.coverage.outputs.compiler }}%
-          color: green
-          valColorRange: ${{ steps.coverage.outputs.compiler }}
-          maxColorRange: 100
-          minColorRange: 0
+      - name: Commit coverage badges
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add badges/
+          git diff --staged --quiet || git commit -m "ci: update coverage badges"
+          git push origin main

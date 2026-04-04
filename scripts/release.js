@@ -351,6 +351,10 @@ async function main() {
   console.log("\n[7/10] Updating CHANGELOG.md...")
   updateChangelog(newVersion, entries)
 
+  console.log("\n[7b/10] Regenerating package-lock.json...")
+  run("npm install")
+  console.log("  ✅ package-lock.json synced")
+
   console.log("\n[8/10] Cleaning changesets...")
   cleanChangesets(entries)
 
