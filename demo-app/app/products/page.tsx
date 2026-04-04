@@ -7,7 +7,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3001"
 
 export const metadata: Metadata = seo({
   title: "Products — Better SEO.js",
-  description: "Explore the Better SEO.js ecosystem: core library, adapters, CLI tools, and optional packages.",
+  description:
+    "Explore the Better SEO.js ecosystem: core library, adapters, CLI tools, and optional packages.",
   canonical: "/products",
   openGraph: {
     title: "Products — Better SEO.js",
@@ -34,7 +35,8 @@ const products = [
   },
   {
     name: "@better-seo/cli",
-    description: "CLI tools: og, icons, splash, scan, add, fix, snapshot, preview, analyze, doctor, init.",
+    description:
+      "CLI tools: og, icons, splash, scan, add, fix, snapshot, preview, analyze, doctor, init.",
     url: `${siteUrl}/products#cli`,
   },
   {
@@ -80,7 +82,10 @@ export default function ProductsPage() {
 
       <div style={{ display: "grid", gap: "1rem", marginTop: "2rem" }}>
         {products.map((p) => (
-          <div key={p.name} style={{ border: "1px solid #eee", padding: "1.5rem", borderRadius: "8px" }}>
+          <div
+            key={p.name}
+            style={{ border: "1px solid #eee", padding: "1.5rem", borderRadius: "8px" }}
+          >
             <h2 style={{ fontSize: "1.25rem", marginTop: 0 }}>{p.name}</h2>
             <p>{p.description}</p>
           </div>

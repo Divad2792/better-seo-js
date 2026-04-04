@@ -63,7 +63,7 @@ async function main() {
   console.log("  [4] none   — docs / chore / test only")
 
   const choice = await question("\nType a number: ")
-  const typeMap = { "1": "patch", "2": "minor", "3": "major", "4": "none" }
+  const typeMap = { 1: "patch", 2: "minor", 3: "major", 4: "none" }
   const bumpType = typeMap[choice.trim()] || "patch"
 
   // 2. Pick package(s)

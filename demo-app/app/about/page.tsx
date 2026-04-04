@@ -10,7 +10,8 @@ export default function AboutPage() {
   const seo = createSEO(
     {
       title: "About — Better SEO.js",
-      description: "Learn about the team behind Better SEO.js and our mission to make SEO infrastructure for modern apps.",
+      description:
+        "Learn about the team behind Better SEO.js and our mission to make SEO infrastructure for modern apps.",
       canonical: "/about",
       openGraph: {
         title: "About Better SEO.js",
@@ -24,10 +25,7 @@ export default function AboutPage() {
           name: "Better SEO.js",
           url: siteUrl,
           logo: `${siteUrl}/og.png`,
-          sameAs: [
-            "https://github.com/OWNER/better-seo-js",
-            "https://twitter.com/better_seo_js",
-          ],
+          sameAs: ["https://github.com/OWNER/better-seo-js", "https://twitter.com/better_seo_js"],
         }),
         person({
           name: "Jane Smith",
@@ -54,7 +52,7 @@ export default function AboutPage() {
         Open Graph, Twitter Cards, and JSON-LD into a single source of truth.
       </p>
       <pre style={{ background: "#f5f5f5", padding: "1rem", borderRadius: "8px" }}>
-{`import { createSEO, organization, person } from "@better-seo/core"
+        {`import { createSEO, organization, person } from "@better-seo/core"
 
 const seo = createSEO({
   title: "About — Better SEO.js",

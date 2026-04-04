@@ -15,8 +15,8 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@better-seo/next": "0.0.2",
-    "@better-seo/core": "0.0.2",
+    "@better-seo/next": "0.1.0",
+    "@better-seo/core": "0.1.0",
     "next": "16.2.2",
     "react": "19.2.4",
     "react-dom": "19.2.4",

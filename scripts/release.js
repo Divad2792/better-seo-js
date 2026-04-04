@@ -35,22 +35,10 @@ const DRY_RUN = process.argv.includes("--dry-run")
 const PACKAGES_DIR = path.join(__dirname, "..", "packages")
 
 // Packages that get published (in dependency order)
-const PUBLISH_ORDER = [
-  "core",
-  "compiler",
-  "crawl",
-  "assets",
-  "cli",
-  "next",
-  "react",
-]
+const PUBLISH_ORDER = ["core", "compiler", "crawl", "assets", "cli", "next", "react"]
 
 // Packages to ignore for changesets (examples, docs, etc.)
-const IGNORED = new Set([
-  "nextjs-app",
-  "vanilla-render-tags-example",
-  "react-seo-vite-example",
-])
+const IGNORED = new Set(["nextjs-app", "vanilla-render-tags-example", "react-seo-vite-example"])
 
 // --- Helpers ---
 
@@ -58,7 +46,9 @@ function run(cmd, opts = {}) {
   console.log(`  > ${cmd}`)
   if (DRY_RUN) return ""
   try {
-    return execSync(cmd, { stdio: "pipe", ...opts }).toString().trim()
+    return execSync(cmd, { stdio: "pipe", ...opts })
+      .toString()
+      .trim()
   } catch (err) {
     console.error(`\n❌ Command failed: ${cmd}`)
     if (err.stderr) console.error(err.stderr.toString())
@@ -105,9 +95,7 @@ function parseChangesets() {
     return { bump: "patch", entries: [] }
   }
 
-  const files = fs
-    .readdirSync(CHANGES_DIR)
-    .filter((f) => f.endsWith(".md") && f !== "README.md")
+  const files = fs.readdirSync(CHANGES_DIR).filter((f) => f.endsWith(".md") && f !== "README.md")
 
   if (files.length === 0) {
     return { bump: "patch", entries: [] }
@@ -151,15 +139,10 @@ function parseChangesets() {
 function getPublishablePackages() {
   const packages = []
   for (const name of PUBLISH_ORDER) {
-    const dirs = [
-      path.join(PACKAGES_DIR, name),
-      path.join(PACKAGES_DIR, `better-seo-${name}`),
-    ]
+    const dirs = [path.join(PACKAGES_DIR, name), path.join(PACKAGES_DIR, `better-seo-${name}`)]
     for (const dir of dirs) {
       if (fs.existsSync(path.join(dir, "package.json"))) {
-        const pkg = JSON.parse(
-          fs.readFileSync(path.join(dir, "package.json"), "utf-8"),
-        )
+        const pkg = JSON.parse(fs.readFileSync(path.join(dir, "package.json"), "utf-8"))
         if (!pkg.private) {
           packages.push({ name: pkg.name, dir })
         }
@@ -231,10 +214,7 @@ function updateChangelog(newVersion, entries) {
 
   if (fs.existsSync(changelogPath)) {
     const existing = fs.readFileSync(changelogPath, "utf-8")
-    const updated = existing.replace(
-      /^(# Changelog\n)/,
-      `$1\n${header}${body}`,
-    )
+    const updated = existing.replace(/^(# Changelog\n)/, `$1\n${header}${body}`)
     fs.writeFileSync(changelogPath, updated)
   } else {
     fs.writeFileSync(changelogPath, `# Changelog\n\n${header}${body}`)
@@ -259,9 +239,7 @@ function cleanChangesets(entries) {
 // --- Main ---
 
 async function main() {
-  console.log(
-    `\n🚀 @better-seo release${DRY_RUN ? " (dry run)" : ""}\n`,
-  )
+  console.log(`\n🚀 @better-seo release${DRY_RUN ? " (dry run)" : ""}\n`)
   console.log("─".repeat(60))
 
   // Step 0: Checkout main
@@ -342,7 +320,9 @@ async function main() {
 
   // Get packages
   const packages = getPublishablePackages()
-  console.log(`  📦 ${packages.length} publishable package(s): ${packages.map(p => p.name).join(", ")}`)
+  console.log(
+    `  📦 ${packages.length} publishable package(s): ${packages.map((p) => p.name).join(", ")}`,
+  )
 
   // Update all package.json versions
   updatePackageVersions(packages, newVersion)

@@ -7,7 +7,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3001"
 const posts = [
   { slug: "introducing-better-seo", title: "Introducing Better SEO.js", date: "2026-01-15" },
   { slug: "why-jsonld-matters", title: "Why JSON-LD Structured Data Matters", date: "2026-02-01" },
-  { slug: "open-graph-deep-dive", title: "Open Graph Deep Dive: Perfect Social Previews", date: "2026-03-10" },
+  {
+    slug: "open-graph-deep-dive",
+    title: "Open Graph Deep Dive: Perfect Social Previews",
+    date: "2026-03-10",
+  },
 ]
 
 export async function generateMetadata(): Promise<Metadata> {

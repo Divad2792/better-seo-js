@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -13,41 +13,95 @@
     <meta name="twitter:title" content="Test Page" />
     <meta name="twitter:description" content="A test page for snapshot" />
     <meta name="twitter:image" content="https://example.com/og.png" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Test"}</script>
+    <script type="application/ld+json">
+      { "@context": "https://schema.org", "@type": "WebPage", "name": "Test" }
+    </script>
   </head>
   <body>
-    <p><em>Head tags below are emitted by <code>renderTags</code>; blocks further down approximate Google / Twitter / LinkedIn (Wave 8 / L6).</em></p>
-    
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; color: #111; }
-    h2 { font-size: 1rem; color: #555; margin-top: 2rem; }
-    .card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin: 0.75rem 0; background: #fafafa; }
-    .g-title { color: #1a0dab; font-size: 1.125rem; margin: 0 0 0.25rem; }
-    .g-url { color: #006621; font-size: 0.875rem; margin: 0; }
-    .g-desc { color: #545454; font-size: 0.875rem; margin: 0.5rem 0 0; line-height: 1.4; }
-    .tw { border: 1px solid #cfd9de; border-radius: 12px; overflow: hidden; max-width: 400px; }
-    .tw-h { padding: 0.75rem; background: #fff; }
-    .tw-t { font-weight: 600; margin: 0 0 0.25rem; }
-    .tw-d { font-size: 0.875rem; color: #536471; margin: 0; }
-    .li { font-size: 0.9rem; color: #333; }
-  </style>
-  <h2>Google (approximate)</h2>
-  <div class="card">
-    <p class="g-title">OG Title</p>
-    <p class="g-url">https://example.com/page</p>
-    <p class="g-desc">A test page for snapshot</p>
-  </div>
-  <h2>Twitter / X (summary_large_image)</h2>
-  <div class="card tw"><div class="tw-h">
-    <p class="tw-t">Test Page</p>
-    <p class="tw-d">A test page for snapshot</p>
-  </div></div>
-  <h2>LinkedIn / Slack (rich unfurl)</h2>
-  <div class="card li">
-    <strong>OG Title</strong><br />
-    <span style="color:#666">A test page for snapshot</span><br />
-    <small style="color:#888">https://example.com/page</small>
-  </div>
+    <p>
+      <em
+        >Head tags below are emitted by <code>renderTags</code>; blocks further down approximate
+        Google / Twitter / LinkedIn (Wave 8 / L6).</em
+      >
+    </p>
 
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 720px;
+        margin: 2rem auto;
+        color: #111;
+      }
+      h2 {
+        font-size: 1rem;
+        color: #555;
+        margin-top: 2rem;
+      }
+      .card {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 0.75rem 0;
+        background: #fafafa;
+      }
+      .g-title {
+        color: #1a0dab;
+        font-size: 1.125rem;
+        margin: 0 0 0.25rem;
+      }
+      .g-url {
+        color: #006621;
+        font-size: 0.875rem;
+        margin: 0;
+      }
+      .g-desc {
+        color: #545454;
+        font-size: 0.875rem;
+        margin: 0.5rem 0 0;
+        line-height: 1.4;
+      }
+      .tw {
+        border: 1px solid #cfd9de;
+        border-radius: 12px;
+        overflow: hidden;
+        max-width: 400px;
+      }
+      .tw-h {
+        padding: 0.75rem;
+        background: #fff;
+      }
+      .tw-t {
+        font-weight: 600;
+        margin: 0 0 0.25rem;
+      }
+      .tw-d {
+        font-size: 0.875rem;
+        color: #536471;
+        margin: 0;
+      }
+      .li {
+        font-size: 0.9rem;
+        color: #333;
+      }
+    </style>
+    <h2>Google (approximate)</h2>
+    <div class="card">
+      <p class="g-title">OG Title</p>
+      <p class="g-url">https://example.com/page</p>
+      <p class="g-desc">A test page for snapshot</p>
+    </div>
+    <h2>Twitter / X (summary_large_image)</h2>
+    <div class="card tw">
+      <div class="tw-h">
+        <p class="tw-t">Test Page</p>
+        <p class="tw-d">A test page for snapshot</p>
+      </div>
+    </div>
+    <h2>LinkedIn / Slack (rich unfurl)</h2>
+    <div class="card li">
+      <strong>OG Title</strong><br />
+      <span style="color: #666">A test page for snapshot</span><br />
+      <small style="color: #888">https://example.com/page</small>
+    </div>
   </body>
 </html>

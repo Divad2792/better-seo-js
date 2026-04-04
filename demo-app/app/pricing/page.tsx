@@ -41,7 +41,8 @@ export default function PricingPage() {
             },
             {
               question: "Can I self-host?",
-              answer: "Absolutely. The entire library works offline — no hosted dependency required.",
+              answer:
+                "Absolutely. The entire library works offline — no hosted dependency required.",
             },
           ],
         }),
@@ -80,13 +81,19 @@ export default function PricingPage() {
 
       <h2 style={{ marginTop: "3rem" }}>Frequently Asked Questions</h2>
       <dl>
-        <dt><strong>Is there a free tier?</strong></dt>
+        <dt>
+          <strong>Is there a free tier?</strong>
+        </dt>
         <dd>Yes! The core library is completely free and open source under MIT license.</dd>
 
-        <dt><strong>What does the Pro plan include?</strong></dt>
+        <dt>
+          <strong>What does the Pro plan include?</strong>
+        </dt>
         <dd>Pro includes hosted OG generation, team workflows, and priority support.</dd>
 
-        <dt><strong>Can I self-host?</strong></dt>
+        <dt>
+          <strong>Can I self-host?</strong>
+        </dt>
         <dd>Absolutely. The entire library works offline — no hosted dependency required.</dd>
       </dl>
 

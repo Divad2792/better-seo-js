@@ -26,7 +26,8 @@ const postDB: Record<string, { title: string; date: string; author: string; cont
     title: "Open Graph Deep Dive: Perfect Social Previews",
     date: "2026-03-10",
     author: "John Doe",
-    content: "Open Graph tags control how your links look when shared on Facebook, LinkedIn, and more.",
+    content:
+      "Open Graph tags control how your links look when shared on Facebook, LinkedIn, and more.",
   },
 }
 
@@ -79,7 +80,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
-  const post = postDB[slug] ?? { title: slug, date: "2026-01-01", author: "Unknown", content: "Post not found." }
+  const post = postDB[slug] ?? {
+    title: slug,
+    date: "2026-01-01",
+    author: "Unknown",
+    content: "Post not found.",
+  }
 
   const seo = createSEO(
     {

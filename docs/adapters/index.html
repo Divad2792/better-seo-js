@@ -1,93 +1,152 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Adapters — better-seo.js</title>
-  <meta name="description" content="Framework adapter pattern: Next.js, React, Remix, Astro, Nuxt — one SEO document model, multiple framework outputs.">
-  <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/adapters/">
-  <meta property="og:type" content="article"><meta property="og:title" content="Adapters — better-seo.js">
-  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="Adapters — better-seo.js">
-  <link rel="stylesheet" href="../style.css">
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-</head>
-<body>
-  <header class="site-header">
-    <a href="../" class="site-logo">better-seo<span>.js</span></a>
-    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
-    <div class="header-right">
-      <nav class="header-links"><a href="https://github.com/0xMilord/better-seo-js">GitHub</a><a href="https://www.npmjs.com/package/@better-seo/core">npm</a></nav>
-      <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
-    </div>
-  </header>
-  <div class="sidebar-overlay" id="sidebar-overlay"></div>
-  <div class="site-layout">
-    <nav class="sidebar" id="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Getting Started</div>
-        <a class="sidebar-link" href="../">Home</a>
-        <a class="sidebar-link" href="../getting-started/">Install &amp; Setup</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adapters — better-seo.js</title>
+    <meta
+      name="description"
+      content="Framework adapter pattern: Next.js, React, Remix, Astro, Nuxt — one SEO document model, multiple framework outputs."
+    />
+    <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/adapters/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Adapters — better-seo.js" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Adapters — better-seo.js" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="../" class="site-logo">better-seo<span>.js</span></a>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+      <div class="header-right">
+        <nav class="header-links">
+          <a href="https://github.com/0xMilord/better-seo-js">GitHub</a
+          ><a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+        </nav>
+        <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
       </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Core</div>
-        <a class="sidebar-link" href="../concepts/">Concepts</a>
-        <a class="sidebar-link" href="../api/">API Reference</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Guides</div>
-        <a class="sidebar-link" href="../recipes/">Recipes</a>
-        <a class="sidebar-link" href="../cli/">CLI</a>
-        <a class="sidebar-link" href="../commands.html">All Commands</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">More</div>
-        <a class="sidebar-link active" href="./">Adapters</a>
-        <a class="sidebar-link" href="../assets/">Assets</a>
-        <a class="sidebar-link" href="../compare/">Compare</a>
-      </div>
-    </nav>
-    <main class="main-content">
-      <div class="breadcrumbs"><a href="../">Home</a> <span>›</span> Adapters</div>
-      <h1>Framework Adapters</h1>
-      <p>One SEO document model, multiple framework outputs. Every adapter implements:</p>
-      <div class="code-block-wrapper"><pre><code>interface SEOAdapter&lt;TOutput&gt; {
+    </header>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <div class="site-layout">
+      <nav class="sidebar" id="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Getting Started</div>
+          <a class="sidebar-link" href="../">Home</a>
+          <a class="sidebar-link" href="../getting-started/">Install &amp; Setup</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Core</div>
+          <a class="sidebar-link" href="../concepts/">Concepts</a>
+          <a class="sidebar-link" href="../api/">API Reference</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Guides</div>
+          <a class="sidebar-link" href="../recipes/">Recipes</a>
+          <a class="sidebar-link" href="../cli/">CLI</a>
+          <a class="sidebar-link" href="../commands.html">All Commands</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">More</div>
+          <a class="sidebar-link active" href="./">Adapters</a>
+          <a class="sidebar-link" href="../assets/">Assets</a>
+          <a class="sidebar-link" href="../compare/">Compare</a>
+        </div>
+      </nav>
+      <main class="main-content">
+        <div class="breadcrumbs"><a href="../">Home</a> <span>›</span> Adapters</div>
+        <h1>Framework Adapters</h1>
+        <p>One SEO document model, multiple framework outputs. Every adapter implements:</p>
+        <div class="code-block-wrapper">
+          <pre><code>interface SEOAdapter&lt;TOutput&gt; {
   id: string
   toFramework(seo: SEO): TOutput
-}</code></pre></div>
+}</code></pre>
+        </div>
 
-      <h2>Adapter Matrix</h2>
-      <table>
-        <thead><tr><th>Framework</th><th>Package</th><th>Output</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr><td>Next.js (App Router)</td><td><code>@better-seo/next</code></td><td><code>Metadata</code></td><td>✅ Shipped</td></tr>
-          <tr><td>Next.js (Pages Router)</td><td><code>@better-seo/next</code></td><td><code>&lt;NextSeo /&gt;</code> patterns</td><td>✅ Documented</td></tr>
-          <tr><td>React (SPA / Vite)</td><td><code>@better-seo/react</code></td><td>Helmet props</td><td>✅ Shipped</td></tr>
-          <tr><td>Remix</td><td><code>@better-seo/remix</code></td><td><code>meta</code> / <code>links</code></td><td>Planned</td></tr>
-          <tr><td>Astro</td><td><code>@better-seo/astro</code></td><td>Frontmatter</td><td>Planned</td></tr>
-          <tr><td>Nuxt</td><td><code>@better-seo/nuxt</code></td><td><code>useHead</code> bridge</td><td>Planned</td></tr>
-          <tr><td>Vanilla</td><td><code>@better-seo/core</code></td><td><code>renderTags()</code></td><td>✅ Shipped</td></tr>
-        </tbody>
-      </table>
+        <h2>Adapter Matrix</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Framework</th>
+              <th>Package</th>
+              <th>Output</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Next.js (App Router)</td>
+              <td><code>@better-seo/next</code></td>
+              <td><code>Metadata</code></td>
+              <td>✅ Shipped</td>
+            </tr>
+            <tr>
+              <td>Next.js (Pages Router)</td>
+              <td><code>@better-seo/next</code></td>
+              <td><code>&lt;NextSeo /&gt;</code> patterns</td>
+              <td>✅ Documented</td>
+            </tr>
+            <tr>
+              <td>React (SPA / Vite)</td>
+              <td><code>@better-seo/react</code></td>
+              <td>Helmet props</td>
+              <td>✅ Shipped</td>
+            </tr>
+            <tr>
+              <td>Remix</td>
+              <td><code>@better-seo/remix</code></td>
+              <td><code>meta</code> / <code>links</code></td>
+              <td>Planned</td>
+            </tr>
+            <tr>
+              <td>Astro</td>
+              <td><code>@better-seo/astro</code></td>
+              <td>Frontmatter</td>
+              <td>Planned</td>
+            </tr>
+            <tr>
+              <td>Nuxt</td>
+              <td><code>@better-seo/nuxt</code></td>
+              <td><code>useHead</code> bridge</td>
+              <td>Planned</td>
+            </tr>
+            <tr>
+              <td>Vanilla</td>
+              <td><code>@better-seo/core</code></td>
+              <td><code>renderTags()</code></td>
+              <td>✅ Shipped</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <h2>Explicit Registration (Production)</h2>
-      <div class="code-block-wrapper"><pre><code class="language-ts">import { registerAdapter, seoForFramework } from "@better-seo/core"
+        <h2>Explicit Registration (Production)</h2>
+        <div class="code-block-wrapper">
+          <pre><code class="language-ts">import { registerAdapter, seoForFramework } from "@better-seo/core"
 import { adapter as nextAdapter } from "@better-seo/next"
 
 registerAdapter("next", nextAdapter)
-const metadata = seoForFramework("next", { title: "Home" })</code></pre></div>
+const metadata = seoForFramework("next", { title: "Home" })</code></pre>
+        </div>
 
-      <h2>Auto-Registration (Dev Convenience)</h2>
-      <div class="code-block-wrapper"><pre><code class="language-ts">import { seo } from "@better-seo/next" // self-registers
-export const metadata = seo({ title: "Home" })</code></pre></div>
+        <h2>Auto-Registration (Dev Convenience)</h2>
+        <div class="code-block-wrapper">
+          <pre><code class="language-ts">import { seo } from "@better-seo/next" // self-registers
+export const metadata = seo({ title: "Home" })</code></pre>
+        </div>
 
-      <h2>Vanilla / Non-Framework</h2>
-      <div class="code-block-wrapper"><pre><code class="language-ts">import { createSEO, renderTags } from "@better-seo/core"
+        <h2>Vanilla / Non-Framework</h2>
+        <div class="code-block-wrapper">
+          <pre><code class="language-ts">import { createSEO, renderTags } from "@better-seo/core"
 const seo = createSEO({ title: "Home" }, config)
 const tags = renderTags(seo)
-// → [{ kind: "meta", name: "title", content: "Home" }, ...]</code></pre></div>
+// → [{ kind: "meta", name: "title", content: "Home" }, ...]</code></pre>
+        </div>
 
-      <h2>Building a Custom Adapter</h2>
-      <div class="code-block-wrapper"><pre><code class="language-ts">import type { SEOAdapter, SEO } from "@better-seo/core"
+        <h2>Building a Custom Adapter</h2>
+        <div class="code-block-wrapper">
+          <pre><code class="language-ts">import type { SEOAdapter, SEO } from "@better-seo/core"
 
 const myAdapter: SEOAdapter&lt;string&gt; = {
   id: "my-framework",
@@ -96,20 +155,25 @@ const myAdapter: SEOAdapter&lt;string&gt; = {
   },
 }
 
-registerAdapter("my-framework", myAdapter)</code></pre></div>
-      <p>See <a href="future-frameworks.html">Adding frameworks</a> for the full guide.</p>
-    </main>
-  </div>
-  <footer class="site-footer">
-    <div class="site-footer-links">
-      <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
-      <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
-      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
-      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md">Contributing</a>
+registerAdapter("my-framework", myAdapter)</code></pre>
+        </div>
+        <p>See <a href="future-frameworks.html">Adding frameworks</a> for the full guide.</p>
+      </main>
     </div>
-    <div>MIT <span id="year"></span> © better-seo.js contributors.</div>
-  </footer>
-  <script src="../script.js"></script>
-  <script>document.getElementById("year").textContent = new Date().getFullYear()</script>
-</body>
+    <footer class="site-footer">
+      <div class="site-footer-links">
+        <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+        <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
+        <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md"
+          >Contributing</a
+        >
+      </div>
+      <div>MIT <span id="year"></span> © better-seo.js contributors.</div>
+    </footer>
+    <script src="../script.js"></script>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear()
+    </script>
+  </body>
 </html>

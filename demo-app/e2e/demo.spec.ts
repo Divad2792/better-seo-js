@@ -25,20 +25,44 @@ test.describe("Better SEO.js Demo — E2E", () => {
     })
 
     test("has complete Open Graph tags", async ({ page }) => {
-      await expect(page.locator('meta[property="og:title"]')).toHaveAttribute("content", /Better SEO\.js/)
+      await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+        "content",
+        /Better SEO\.js/,
+      )
       await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "website")
-      await expect(page.locator('meta[property="og:site_name"]')).toHaveAttribute("content", "Better SEO\.js")
+      await expect(page.locator('meta[property="og:site_name"]')).toHaveAttribute(
+        "content",
+        "Better SEO\.js",
+      )
       await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute("content", "en_US")
       await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /og\.png/)
-      await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute("content", "1200")
-      await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute("content", "630")
-      await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute("content", /Programmable SEO/)
+      await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
+        "content",
+        "1200",
+      )
+      await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute(
+        "content",
+        "630",
+      )
+      await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute(
+        "content",
+        /Programmable SEO/,
+      )
     })
 
     test("has Twitter Card tags", async ({ page }) => {
-      await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute("content", "summary_large_image")
-      await expect(page.locator('meta[name="twitter:site"]')).toHaveAttribute("content", "@better_seo_js")
-      await expect(page.locator('meta[name="twitter:creator"]')).toHaveAttribute("content", "@better_seo_js")
+      await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+        "content",
+        "summary_large_image",
+      )
+      await expect(page.locator('meta[name="twitter:site"]')).toHaveAttribute(
+        "content",
+        "@better_seo_js",
+      )
+      await expect(page.locator('meta[name="twitter:creator"]')).toHaveAttribute(
+        "content",
+        "@better_seo_js",
+      )
     })
   })
 
@@ -123,8 +147,14 @@ test.describe("Better SEO.js Demo — E2E", () => {
 
       // Article OG type
       await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "article")
-      await expect(page.locator('meta[property="article:published_time"]')).toHaveAttribute("content", "2026-01-15")
-      await expect(page.locator('meta[property="article:author"]')).toHaveAttribute("content", "Jane Smith")
+      await expect(page.locator('meta[property="article:published_time"]')).toHaveAttribute(
+        "content",
+        "2026-01-15",
+      )
+      await expect(page.locator('meta[property="article:author"]')).toHaveAttribute(
+        "content",
+        "Jane Smith",
+      )
 
       // JSON-LD with Article + BreadcrumbList
       const ld = page.locator('script[type="application/ld+json"]')

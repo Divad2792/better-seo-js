@@ -1,230 +1,326 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>better-seo.js — Programmable SEO Engine for Next.js &amp; Modern Apps</title>
-  <meta name="description" content="A zero-dependency, type-safe SEO engine for Next.js, React, and modern frameworks. Unified model for metadata, Open Graph, Twitter cards, and JSON-LD. Install → working SEO in under 60 seconds.">
-  <meta name="keywords" content="seo, next.js, react, open graph, json-ld, structured data, metadata, typescript, zero-dependency">
-  <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="better-seo.js — Programmable SEO Engine">
-  <meta property="og:description" content="A zero-dependency, type-safe SEO engine. Unified model for metadata, Open Graph, Twitter cards, and JSON-LD.">
-  <meta property="og:site_name" content="better-seo.js">
-  <meta property="og:locale" content="en_US">
-  <meta property="og:url" content="https://0xmilord.github.io/better-seo-js/">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="better-seo.js — Programmable SEO Engine">
-  <meta name="twitter:description" content="A zero-dependency, type-safe SEO engine for Next.js and modern apps.">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "better-seo.js",
-    "url": "https://github.com/0xMilord/better-seo-js",
-    "description": "A programmable SEO engine for Next.js and modern apps.",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Node.js >= 24",
-    "offers": [{ "@type": "Offer", "price": "0", "priceCurrency": "USD" }]
-  }
-  </script>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-</head>
-<body>
-  <header class="site-header">
-    <a href="./" class="site-logo">better-seo<span>.js</span></a>
-    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">&#9776;</button>
-    <div class="header-right">
-      <nav class="header-links">
-        <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
-        <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>better-seo.js — Programmable SEO Engine for Next.js &amp; Modern Apps</title>
+    <meta
+      name="description"
+      content="A zero-dependency, type-safe SEO engine for Next.js, React, and modern frameworks. Unified model for metadata, Open Graph, Twitter cards, and JSON-LD. Install → working SEO in under 60 seconds."
+    />
+    <meta
+      name="keywords"
+      content="seo, next.js, react, open graph, json-ld, structured data, metadata, typescript, zero-dependency"
+    />
+    <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="better-seo.js — Programmable SEO Engine" />
+    <meta
+      property="og:description"
+      content="A zero-dependency, type-safe SEO engine. Unified model for metadata, Open Graph, Twitter cards, and JSON-LD."
+    />
+    <meta property="og:site_name" content="better-seo.js" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://0xmilord.github.io/better-seo-js/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="better-seo.js — Programmable SEO Engine" />
+    <meta
+      name="twitter:description"
+      content="A zero-dependency, type-safe SEO engine for Next.js and modern apps."
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "better-seo.js",
+        "url": "https://github.com/0xMilord/better-seo-js",
+        "description": "A programmable SEO engine for Next.js and modern apps.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Node.js >= 24",
+        "offers": [{ "@type": "Offer", "price": "0", "priceCurrency": "USD" }]
+      }
+    </script>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="./" class="site-logo">better-seo<span>.js</span></a>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">&#9776;</button>
+      <div class="header-right">
+        <nav class="header-links">
+          <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
+          <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+        </nav>
+        <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
+      </div>
+    </header>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <div class="site-layout">
+      <nav class="sidebar" id="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Getting Started</div>
+          <a class="sidebar-link active" href="./">Home</a>
+          <a class="sidebar-link" href="getting-started/">Install &amp; Setup</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Core</div>
+          <a class="sidebar-link" href="concepts/">Concepts</a>
+          <a class="sidebar-link" href="api/">API Reference</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Guides</div>
+          <a class="sidebar-link" href="recipes/">Recipes</a>
+          <a class="sidebar-link" href="cli/">CLI</a>
+          <a class="sidebar-link" href="commands.html">All Commands</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">More</div>
+          <a class="sidebar-link" href="adapters/">Adapters</a>
+          <a class="sidebar-link" href="assets/">Assets</a>
+          <a class="sidebar-link" href="compare/">Compare</a>
+        </div>
       </nav>
-      <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
-    </div>
-  </header>
-  <div class="sidebar-overlay" id="sidebar-overlay"></div>
-  <div class="site-layout">
-    <nav class="sidebar" id="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Getting Started</div>
-        <a class="sidebar-link active" href="./">Home</a>
-        <a class="sidebar-link" href="getting-started/">Install &amp; Setup</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Core</div>
-        <a class="sidebar-link" href="concepts/">Concepts</a>
-        <a class="sidebar-link" href="api/">API Reference</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Guides</div>
-        <a class="sidebar-link" href="recipes/">Recipes</a>
-        <a class="sidebar-link" href="cli/">CLI</a>
-        <a class="sidebar-link" href="commands.html">All Commands</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">More</div>
-        <a class="sidebar-link" href="adapters/">Adapters</a>
-        <a class="sidebar-link" href="assets/">Assets</a>
-        <a class="sidebar-link" href="compare/">Compare</a>
-      </div>
-    </nav>
-    <main class="main-content">
-      <h1>better-seo.js</h1>
-      <p><strong>A programmable SEO engine for modern apps.</strong> Not just tags — structured discoverability. One source of truth for metadata, Open Graph, Twitter cards, and JSON-LD. Map to Next.js <code>Metadata</code>, React Helmet, or plain tags — without five parallel sources of truth.</p>
+      <main class="main-content">
+        <h1>better-seo.js</h1>
+        <p>
+          <strong>A programmable SEO engine for modern apps.</strong> Not just tags — structured
+          discoverability. One source of truth for metadata, Open Graph, Twitter cards, and JSON-LD.
+          Map to Next.js <code>Metadata</code>, React Helmet, or plain tags — without five parallel
+          sources of truth.
+        </p>
 
-      <div class="hero-stats">
-        <div class="hero-stat"><strong>0</strong><small>runtime deps</small></div>
-        <div class="hero-stat"><strong>~5KB</strong><small>gzip</small></div>
-        <div class="hero-stat"><strong>354</strong><small>unit tests</small></div>
-        <div class="hero-stat"><strong>94%+</strong><small>core coverage</small></div>
-        <div class="hero-stat"><strong>7</strong><small>packages</small></div>
-        <div class="hero-stat"><strong>60s</strong><small>to first SEO</small></div>
-      </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><strong>0</strong><small>runtime deps</small></div>
+          <div class="hero-stat"><strong>~5KB</strong><small>gzip</small></div>
+          <div class="hero-stat"><strong>354</strong><small>unit tests</small></div>
+          <div class="hero-stat"><strong>94%+</strong><small>core coverage</small></div>
+          <div class="hero-stat"><strong>7</strong><small>packages</small></div>
+          <div class="hero-stat"><strong>60s</strong><small>to first SEO</small></div>
+        </div>
 
-      <h2>The Problem</h2>
-      <div class="table-wrapper">
-      <table>
-        <thead><tr><th>Approach</th><th>Problem</th></tr></thead>
-        <tbody>
-          <tr><td>next-seo</td><td>Static config, no system thinking, zero feedback loop</td></tr>
-          <tr><td>React Helmet</td><td>Manual everything, no abstraction, no structured data</td></tr>
-          <tr><td>Next.js Metadata</td><td>Low-level primitive, no schema system, rendering only</td></tr>
-        </tbody>
-      </table>
-      </div>
-      <p><strong>Result:</strong> Developers have helpers, not infrastructure. No unified model. No extensibility.</p>
+        <h2>The Problem</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Approach</th>
+                <th>Problem</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>next-seo</td>
+                <td>Static config, no system thinking, zero feedback loop</td>
+              </tr>
+              <tr>
+                <td>React Helmet</td>
+                <td>Manual everything, no abstraction, no structured data</td>
+              </tr>
+              <tr>
+                <td>Next.js Metadata</td>
+                <td>Low-level primitive, no schema system, rendering only</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>Result:</strong> Developers have helpers, not infrastructure. No unified model. No
+          extensibility.
+        </p>
 
-      <h2>The Solution</h2>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <h3>One Source of Truth</h3>
-          <p>Describe SEO once → render to Next.js Metadata, React Helmet, or vanilla tags. No drift between channels.</p>
-          <span class="tag">Core</span>
+        <h2>The Solution</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>One Source of Truth</h3>
+            <p>
+              Describe SEO once → render to Next.js Metadata, React Helmet, or vanilla tags. No
+              drift between channels.
+            </p>
+            <span class="tag">Core</span>
+          </div>
+          <div class="feature-card">
+            <h3>JSON-LD First-Class</h3>
+            <p>
+              Structured data isn't an addon — it's built in. 8 schema.org helpers + custom escape
+              hatch. HTML-safe serialization.
+            </p>
+            <span class="tag">Security</span>
+          </div>
+          <div class="feature-card">
+            <h3>Zero-Dependency Core</h3>
+            <p>
+              @better-seo/core ships with zero runtime npm dependencies. Edge-safe, Worker-safe,
+              Browser-safe.
+            </p>
+            <span class="tag">~5KB gzip</span>
+          </div>
+          <div class="feature-card">
+            <h3>Framework Adapters</h3>
+            <p>
+              Next.js (App + Pages Router), React/Helmet. One contract — Remix, Astro, Nuxt planned.
+            </p>
+            <span class="tag">P0: Next.js</span>
+          </div>
+          <div class="feature-card">
+            <h3>Rules &amp; Plugins</h3>
+            <p>
+              Glob-based route rules. 4 plugin hooks: beforeMerge, afterMerge, onRenderTags,
+              extendChannels.
+            </p>
+            <span class="tag">Scale</span>
+          </div>
+          <div class="feature-card">
+            <h3>CLI + Asset Pipeline</h3>
+            <p>
+              OG image generation (Satori), favicon/icon pipeline, splash screens, crawl artifacts
+              (robots, sitemap, RSS/Atom, llms.txt).
+            </p>
+            <span class="tag">Automation</span>
+          </div>
         </div>
-        <div class="feature-card">
-          <h3>JSON-LD First-Class</h3>
-          <p>Structured data isn't an addon — it's built in. 8 schema.org helpers + custom escape hatch. HTML-safe serialization.</p>
-          <span class="tag">Security</span>
-        </div>
-        <div class="feature-card">
-          <h3>Zero-Dependency Core</h3>
-          <p>@better-seo/core ships with zero runtime npm dependencies. Edge-safe, Worker-safe, Browser-safe.</p>
-          <span class="tag">~5KB gzip</span>
-        </div>
-        <div class="feature-card">
-          <h3>Framework Adapters</h3>
-          <p>Next.js (App + Pages Router), React/Helmet. One contract — Remix, Astro, Nuxt planned.</p>
-          <span class="tag">P0: Next.js</span>
-        </div>
-        <div class="feature-card">
-          <h3>Rules &amp; Plugins</h3>
-          <p>Glob-based route rules. 4 plugin hooks: beforeMerge, afterMerge, onRenderTags, extendChannels.</p>
-          <span class="tag">Scale</span>
-        </div>
-        <div class="feature-card">
-          <h3>CLI + Asset Pipeline</h3>
-          <p>OG image generation (Satori), favicon/icon pipeline, splash screens, crawl artifacts (robots, sitemap, RSS/Atom, llms.txt).</p>
-          <span class="tag">Automation</span>
-        </div>
-      </div>
 
-      <h2>The "Voilà" Principle</h2>
-      <blockquote>Time-to-value = everything. If a dev can't go from install → working SEO in under 60 seconds, they'll leave.</blockquote>
-      <div class="code-block-wrapper"><pre><code>npm install @better-seo/core @better-seo/next</code></pre></div>
-      <div class="code-block-wrapper"><pre><code class="language-ts">// app/page.tsx (Next.js App Router)
+        <h2>The "Voilà" Principle</h2>
+        <blockquote>
+          Time-to-value = everything. If a dev can't go from install → working SEO in under 60
+          seconds, they'll leave.
+        </blockquote>
+        <div class="code-block-wrapper">
+          <pre><code>npm install @better-seo/core @better-seo/next</code></pre>
+        </div>
+        <div class="code-block-wrapper">
+          <pre><code class="language-ts">// app/page.tsx (Next.js App Router)
 import { seo } from "@better-seo/next"
 
-export const metadata = seo({ title: "Home" })</code></pre></div>
-      <p><strong>It must just work.</strong> No config ceremony. No mental overhead.</p>
+export const metadata = seo({ title: "Home" })</code></pre>
+        </div>
+        <p><strong>It must just work.</strong> No config ceremony. No mental overhead.</p>
 
-      <h2>3 Levels of Depth (Same API)</h2>
-      <div class="table-wrapper">
-      <table>
-        <thead><tr><th>Level</th><th>Code</th><th>Use Case</th></tr></thead>
-        <tbody>
-          <tr><td>&#128994; Lazy</td><td><code>seo({ title: "…" })</code></td><td>Defaults from env + package.json (Node)</td></tr>
-          <tr><td>&#128992; Normal</td><td><code>seo({ title: "Dashboard" })</code></td><td>Override title, keep defaults</td></tr>
-          <tr><td>&#128308; Power</td><td><code>seo({ meta, openGraph, schema })</code></td><td>Full control over every channel</td></tr>
-        </tbody>
-      </table>
-      </div>
+        <h2>3 Levels of Depth (Same API)</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Level</th>
+                <th>Code</th>
+                <th>Use Case</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>&#128994; Lazy</td>
+                <td><code>seo({ title: "…" })</code></td>
+                <td>Defaults from env + package.json (Node)</td>
+              </tr>
+              <tr>
+                <td>&#128992; Normal</td>
+                <td><code>seo({ title: "Dashboard" })</code></td>
+                <td>Override title, keep defaults</td>
+              </tr>
+              <tr>
+                <td>&#128308; Power</td>
+                <td><code>seo({ meta, openGraph, schema })</code></td>
+                <td>Full control over every channel</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <h2>What Ships (v0.0.2)</h2>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <h3>@better-seo/core</h3>
-          <p>createSEO, mergeSEO, 8 schema helpers, serializeJSONLD, validateSEO, renderTags, rules engine, plugin system, adapter registry, createSEOContext, fromNextSeo, fromContent, defineSEO</p>
-          <span class="tag">0 deps · 18 features</span>
+        <h2>What Ships (v0.0.2)</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>@better-seo/core</h3>
+            <p>
+              createSEO, mergeSEO, 8 schema helpers, serializeJSONLD, validateSEO, renderTags, rules
+              engine, plugin system, adapter registry, createSEOContext, fromNextSeo, fromContent,
+              defineSEO
+            </p>
+            <span class="tag">0 deps · 18 features</span>
+          </div>
+          <div class="feature-card">
+            <h3>@better-seo/next</h3>
+            <p>
+              seo(), prepareNextSeo, withSEO, seoLayout, seoPage, seoRoute, toNextMetadata,
+              NextJsonLd — full App Router support
+            </p>
+            <span class="tag">10 features</span>
+          </div>
+          <div class="feature-card">
+            <h3>@better-seo/react</h3>
+            <p>
+              BetterSEOHelmet, toHelmetProps, SEOProvider, useSEO — React SPA / Vite integration
+            </p>
+            <span class="tag">Wave 5</span>
+          </div>
+          <div class="feature-card">
+            <h3>@better-seo/assets</h3>
+            <p>
+              generateOG (Satori), generateIcons (Sharp), generateSplash, buildWebAppManifest,
+              ogPaletteFromTokens
+            </p>
+            <span class="tag">5 features</span>
+          </div>
+          <div class="feature-card">
+            <h3>@better-seo/cli</h3>
+            <p>
+              Interactive TUI, og, icons, splash, init, doctor, migrate, snapshot, preview, analyze,
+              scan, fix, crawl (robots/sitemap/rss/atom/llms/sitemap-index), template
+              (list/print/preview)
+            </p>
+            <span class="tag">17 commands</span>
+          </div>
+          <div class="feature-card">
+            <h3>@better-seo/crawl</h3>
+            <p>
+              renderRobotsTxt, renderSitemapXml, renderSitemapIndexXml, renderRssXml,
+              renderAtomFeed, renderLlmsTxt
+            </p>
+            <span class="tag">Wave 12</span>
+          </div>
+          <div class="feature-card">
+            <h3>@better-seo/compiler</h3>
+            <p>fromMdx — gray-matter frontmatter + body → SEOInput (fromContent delegate)</p>
+            <span class="tag">Wave 7</span>
+          </div>
         </div>
-        <div class="feature-card">
-          <h3>@better-seo/next</h3>
-          <p>seo(), prepareNextSeo, withSEO, seoLayout, seoPage, seoRoute, toNextMetadata, NextJsonLd — full App Router support</p>
-          <span class="tag">10 features</span>
-        </div>
-        <div class="feature-card">
-          <h3>@better-seo/react</h3>
-          <p>BetterSEOHelmet, toHelmetProps, SEOProvider, useSEO — React SPA / Vite integration</p>
-          <span class="tag">Wave 5</span>
-        </div>
-        <div class="feature-card">
-          <h3>@better-seo/assets</h3>
-          <p>generateOG (Satori), generateIcons (Sharp), generateSplash, buildWebAppManifest, ogPaletteFromTokens</p>
-          <span class="tag">5 features</span>
-        </div>
-        <div class="feature-card">
-          <h3>@better-seo/cli</h3>
-          <p>Interactive TUI, og, icons, splash, init, doctor, migrate, snapshot, preview, analyze, scan, fix, crawl (robots/sitemap/rss/atom/llms/sitemap-index), template (list/print/preview)</p>
-          <span class="tag">17 commands</span>
-        </div>
-        <div class="feature-card">
-          <h3>@better-seo/crawl</h3>
-          <p>renderRobotsTxt, renderSitemapXml, renderSitemapIndexXml, renderRssXml, renderAtomFeed, renderLlmsTxt</p>
-          <span class="tag">Wave 12</span>
-        </div>
-        <div class="feature-card">
-          <h3>@better-seo/compiler</h3>
-          <p>fromMdx — gray-matter frontmatter + body → SEOInput (fromContent delegate)</p>
-          <span class="tag">Wave 7</span>
-        </div>
-      </div>
 
-      <h2>Quick Links</h2>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <h3>Get Started (~60s)</h3>
-          <p>Install, configure, and have working SEO on your first page.</p>
-          <span class="tag">→ getting-started</span>
+        <h2>Quick Links</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>Get Started (~60s)</h3>
+            <p>Install, configure, and have working SEO on your first page.</p>
+            <span class="tag">→ getting-started</span>
+          </div>
+          <div class="feature-card">
+            <h3>Concepts</h3>
+            <p>The SEO object, pipeline, merge strategy, serialization, adapters.</p>
+            <span class="tag">→ concepts</span>
+          </div>
+          <div class="feature-card">
+            <h3>API Reference</h3>
+            <p>createSEO, mergeSEO, serializeJSONLD, schema helpers, validateSEO, plugins.</p>
+            <span class="tag">→ api</span>
+          </div>
+          <div class="feature-card">
+            <h3>Recipes</h3>
+            <p>Layout merge, route rules, OG, icons, MDX, React SPA, sitemap/robots.</p>
+            <span class="tag">→ recipes</span>
+          </div>
+          <div class="feature-card">
+            <h3>CLI Commands</h3>
+            <p>og, icons, init, doctor, scan, fix, snapshot, preview, analyze, crawl, template.</p>
+            <span class="tag">→ cli</span>
+          </div>
+          <div class="feature-card">
+            <h3>Compare</h3>
+            <p>vs next-seo, vs Next.js Metadata, vs react-helmet — why better-seo.js wins.</p>
+            <span class="tag">→ compare</span>
+          </div>
         </div>
-        <div class="feature-card">
-          <h3>Concepts</h3>
-          <p>The SEO object, pipeline, merge strategy, serialization, adapters.</p>
-          <span class="tag">→ concepts</span>
-        </div>
-        <div class="feature-card">
-          <h3>API Reference</h3>
-          <p>createSEO, mergeSEO, serializeJSONLD, schema helpers, validateSEO, plugins.</p>
-          <span class="tag">→ api</span>
-        </div>
-        <div class="feature-card">
-          <h3>Recipes</h3>
-          <p>Layout merge, route rules, OG, icons, MDX, React SPA, sitemap/robots.</p>
-          <span class="tag">→ recipes</span>
-        </div>
-        <div class="feature-card">
-          <h3>CLI Commands</h3>
-          <p>og, icons, init, doctor, scan, fix, snapshot, preview, analyze, crawl, template.</p>
-          <span class="tag">→ cli</span>
-        </div>
-        <div class="feature-card">
-          <h3>Compare</h3>
-          <p>vs next-seo, vs Next.js Metadata, vs react-helmet — why better-seo.js wins.</p>
-          <span class="tag">→ compare</span>
-        </div>
-      </div>
 
-      <h2>Architecture at a Glance</h2>
-      <div class="code-block-wrapper"><pre><code>Your App (Next.js / React / Remix / …)
+        <h2>Architecture at a Glance</h2>
+        <div class="code-block-wrapper">
+          <pre><code>Your App (Next.js / React / Remix / …)
   → @better-seo/&lt;adapter&gt;   (framework output)
        → @better-seo/core   (0 deps: model + merge + serialize + plugins)
 
@@ -232,35 +328,52 @@ Optional:
   @better-seo/assets   → OG images, icons, splash
   @better-seo/cli      → init, og, icons, doctor, scan, fix, crawl
   @better-seo/crawl    → robots.txt, sitemap.xml, RSS/Atom, llms.txt
-  @better-seo/compiler → fromMdx (frontmatter + body → SEO)</code></pre></div>
+  @better-seo/compiler → fromMdx (frontmatter + body → SEO)</code></pre>
+        </div>
 
-      <h2>Ecosystem</h2>
-      <ul>
-        <li><strong>Source:</strong> <a href="https://github.com/0xMilord/better-seo-js">github.com/0xMilord/better-seo-js</a></li>
-        <li><strong>npm:</strong> <a href="https://www.npmjs.com/package/@better-seo/core">@better-seo/core</a>, <a href="https://www.npmjs.com/package/@better-seo/next">@better-seo/next</a>, <a href="https://www.npmjs.com/package/@better-seo/react">@better-seo/react</a></li>
-        <li><strong>Golden example:</strong> <code>examples/nextjs-app</code> (Playwright E2E)</li>
-        <li><strong>License:</strong> MIT</li>
-      </ul>
+        <h2>Ecosystem</h2>
+        <ul>
+          <li>
+            <strong>Source:</strong>
+            <a href="https://github.com/0xMilord/better-seo-js"
+              >github.com/0xMilord/better-seo-js</a
+            >
+          </li>
+          <li>
+            <strong>npm:</strong>
+            <a href="https://www.npmjs.com/package/@better-seo/core">@better-seo/core</a>,
+            <a href="https://www.npmjs.com/package/@better-seo/next">@better-seo/next</a>,
+            <a href="https://www.npmjs.com/package/@better-seo/react">@better-seo/react</a>
+          </li>
+          <li>
+            <strong>Golden example:</strong> <code>examples/nextjs-app</code> (Playwright E2E)
+          </li>
+          <li><strong>License:</strong> MIT</li>
+        </ul>
 
-      <div class="page-nav">
-        <div></div>
-        <a class="next" href="getting-started/">
-          <span class="nav-label">Next</span>
-          <span class="nav-title">Getting Started →</span>
-        </a>
-      </div>
-    </main>
-  </div>
-  <footer class="site-footer">
-    <div class="site-footer-links">
-      <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
-      <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
-      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
-      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md">Contributing</a>
+        <div class="page-nav">
+          <div></div>
+          <a class="next" href="getting-started/">
+            <span class="nav-label">Next</span>
+            <span class="nav-title">Getting Started →</span>
+          </a>
+        </div>
+      </main>
     </div>
-    <div>MIT <span id="year"></span> &copy; better-seo.js contributors.</div>
-  </footer>
-  <script src="script.js"></script>
-  <script>document.getElementById("year").textContent = new Date().getFullYear()</script>
-</body>
+    <footer class="site-footer">
+      <div class="site-footer-links">
+        <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+        <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
+        <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md"
+          >Contributing</a
+        >
+      </div>
+      <div>MIT <span id="year"></span> &copy; better-seo.js contributors.</div>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear()
+    </script>
+  </body>
 </html>

@@ -75,7 +75,6 @@ const seo = createSEO({
 
 // better-seo.js — hardened serialization
 import { serializeJSONLD, webPage } from "@better-seo/core"
-
 ;<Helmet>
   <script
     type="application/ld+json"

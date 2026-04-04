@@ -62,22 +62,32 @@ export default function DocsPage() {
 
       <h2>Installation</h2>
       <pre style={{ background: "#f5f5f5", padding: "1rem", borderRadius: "8px" }}>
-{`npm install @better-seo/core @better-seo/next`}
+        {`npm install @better-seo/core @better-seo/next`}
       </pre>
 
       <h2>Usage</h2>
       <pre style={{ background: "#f5f5f5", padding: "1rem", borderRadius: "8px" }}>
-{`import { seo } from "@better-seo/next"
+        {`import { seo } from "@better-seo/next"
 export const metadata = seo({ title: "Home" })`}
       </pre>
 
       <h2>Features Demonstrated</h2>
       <ul>
-        <li><strong>mergeSEO</strong> — layout + page composition</li>
-        <li><strong>withSEO</strong> — Next.js metadata export</li>
-        <li><strong>TechArticle schema</strong> — technical documentation markup</li>
-        <li><strong>BreadcrumbList</strong> — navigation hierarchy</li>
-        <li><strong>hreflang alternates</strong> — i18n support</li>
+        <li>
+          <strong>mergeSEO</strong> — layout + page composition
+        </li>
+        <li>
+          <strong>withSEO</strong> — Next.js metadata export
+        </li>
+        <li>
+          <strong>TechArticle schema</strong> — technical documentation markup
+        </li>
+        <li>
+          <strong>BreadcrumbList</strong> — navigation hierarchy
+        </li>
+        <li>
+          <strong>hreflang alternates</strong> — i18n support
+        </li>
       </ul>
 
       <NextJsonLd seo={mergedSeo} />

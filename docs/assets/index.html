@@ -1,58 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Assets — better-seo.js</title>
-  <meta name="description" content="OG image generation, favicon/icon pipeline, splash screens, and web manifest for better-seo.js.">
-  <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/assets/">
-  <meta property="og:type" content="article"><meta property="og:title" content="Assets — better-seo.js">
-  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="Assets — better-seo.js">
-  <link rel="stylesheet" href="../style.css">
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-</head>
-<body>
-  <header class="site-header">
-    <a href="../" class="site-logo">better-seo<span>.js</span></a>
-    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
-    <div class="header-right">
-      <nav class="header-links"><a href="https://github.com/0xMilord/better-seo-js">GitHub</a><a href="https://www.npmjs.com/package/@better-seo/core">npm</a></nav>
-      <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
-    </div>
-  </header>
-  <div class="sidebar-overlay" id="sidebar-overlay"></div>
-  <div class="site-layout">
-    <nav class="sidebar" id="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Getting Started</div>
-        <a class="sidebar-link" href="../">Home</a>
-        <a class="sidebar-link" href="../getting-started/">Install &amp; Setup</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assets — better-seo.js</title>
+    <meta
+      name="description"
+      content="OG image generation, favicon/icon pipeline, splash screens, and web manifest for better-seo.js."
+    />
+    <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/assets/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Assets — better-seo.js" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Assets — better-seo.js" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="../" class="site-logo">better-seo<span>.js</span></a>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+      <div class="header-right">
+        <nav class="header-links">
+          <a href="https://github.com/0xMilord/better-seo-js">GitHub</a
+          ><a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+        </nav>
+        <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
       </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Core</div>
-        <a class="sidebar-link" href="../concepts/">Concepts</a>
-        <a class="sidebar-link" href="../api/">API Reference</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Guides</div>
-        <a class="sidebar-link" href="../recipes/">Recipes</a>
-        <a class="sidebar-link" href="../cli/">CLI</a>
-        <a class="sidebar-link" href="../commands.html">All Commands</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">More</div>
-        <a class="sidebar-link" href="../adapters/">Adapters</a>
-        <a class="sidebar-link active" href="./">Assets</a>
-        <a class="sidebar-link" href="../compare/">Compare</a>
-      </div>
-    </nav>
-    <main class="main-content">
-      <div class="breadcrumbs"><a href="../">Home</a> <span>›</span> Assets</div>
-      <h1>Assets</h1>
+    </header>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <div class="site-layout">
+      <nav class="sidebar" id="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Getting Started</div>
+          <a class="sidebar-link" href="../">Home</a>
+          <a class="sidebar-link" href="../getting-started/">Install &amp; Setup</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Core</div>
+          <a class="sidebar-link" href="../concepts/">Concepts</a>
+          <a class="sidebar-link" href="../api/">API Reference</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Guides</div>
+          <a class="sidebar-link" href="../recipes/">Recipes</a>
+          <a class="sidebar-link" href="../cli/">CLI</a>
+          <a class="sidebar-link" href="../commands.html">All Commands</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">More</div>
+          <a class="sidebar-link" href="../adapters/">Adapters</a>
+          <a class="sidebar-link active" href="./">Assets</a>
+          <a class="sidebar-link" href="../compare/">Compare</a>
+        </div>
+      </nav>
+      <main class="main-content">
+        <div class="breadcrumbs"><a href="../">Home</a> <span>›</span> Assets</div>
+        <h1>Assets</h1>
 
-      <h2>Open Graph Images</h2>
-      <p>Install: <code>npm install @better-seo/assets</code></p>
-      <div class="code-block-wrapper"><pre><code class="language-ts">import { generateOG } from "@better-seo/assets"
+        <h2>Open Graph Images</h2>
+        <p>Install: <code>npm install @better-seo/assets</code></p>
+        <div class="code-block-wrapper">
+          <pre><code class="language-ts">import { generateOG } from "@better-seo/assets"
 import { writeFile } from "node:fs/promises"
 
 const png = await generateOG({
@@ -62,44 +71,66 @@ const png = await generateOG({
   theme: "dark", // "light" | "dark" | "auto"
   // logo: "./public/logo.png" or "https://…"
 })
-await writeFile("./public/og.png", png)</code></pre></div>
-      <p>Output: <strong>1200×630 PNG</strong>. Built-in light/dark card templates. Custom templates via <code>--template ./my-card.mjs</code> (compiled ESM, <code>OgCardProps</code>).</p>
-      <p>CLI: <code>npx @better-seo/cli og "Hello World" -o ./public/og.png --site-name "Brand"</code></p>
+await writeFile("./public/og.png", png)</code></pre>
+        </div>
+        <p>
+          Output: <strong>1200×630 PNG</strong>. Built-in light/dark card templates. Custom
+          templates via <code>--template ./my-card.mjs</code> (compiled ESM,
+          <code>OgCardProps</code>).
+        </p>
+        <p>
+          CLI:
+          <code>npx @better-seo/cli og "Hello World" -o ./public/og.png --site-name "Brand"</code>
+        </p>
 
-      <h2>Icons &amp; Favicon Set</h2>
-      <div class="code-block-wrapper"><pre><code>npx @better-seo/cli icons --input ./logo.png --out ./public</code></pre></div>
-      <p>Generates:</p>
-      <ul>
-        <li><code>favicon.ico</code> (16×16, 32×32)</li>
-        <li>PNG set: 16, 32, 48, 96, 128, 256, 512</li>
-        <li><code>apple-touch-icon.png</code> (180×180)</li>
-        <li><code>maskable-icon-512.png</code></li>
-        <li>Optional <code>manifest.json</code> (PWA web app manifest)</li>
-      </ul>
+        <h2>Icons &amp; Favicon Set</h2>
+        <div class="code-block-wrapper">
+          <pre><code>npx @better-seo/cli icons --input ./logo.png --out ./public</code></pre>
+        </div>
+        <p>Generates:</p>
+        <ul>
+          <li><code>favicon.ico</code> (16×16, 32×32)</li>
+          <li>PNG set: 16, 32, 48, 96, 128, 256, 512</li>
+          <li><code>apple-touch-icon.png</code> (180×180)</li>
+          <li><code>maskable-icon-512.png</code></li>
+          <li>Optional <code>manifest.json</code> (PWA web app manifest)</li>
+        </ul>
 
-      <h2>Splash Screens</h2>
-      <p>iOS / iPadOS splash screen sizes for PWA install prompts. Generated via <code>@better-seo/assets</code> <code>generateSplash</code>.</p>
+        <h2>Splash Screens</h2>
+        <p>
+          iOS / iPadOS splash screen sizes for PWA install prompts. Generated via
+          <code>@better-seo/assets</code> <code>generateSplash</code>.
+        </p>
 
-      <h2>Design System Hooks</h2>
-      <p>Optional Tailwind token parsing for OG card theming. Graceful fallback + warnings if tokens are missing.</p>
+        <h2>Design System Hooks</h2>
+        <p>
+          Optional Tailwind token parsing for OG card theming. Graceful fallback + warnings if
+          tokens are missing.
+        </p>
 
-      <h2>Next</h2>
-      <ul>
-        <li><a href="../recipes/og-wave2.md">OG recipe</a> — detailed setup guide</li>
-        <li><a href="../recipes/icons-wave3.md">Icons recipe</a> — full size matrix + manifest</li>
-      </ul>
-    </main>
-  </div>
-  <footer class="site-footer">
-    <div class="site-footer-links">
-      <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
-      <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
-      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
-      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md">Contributing</a>
+        <h2>Next</h2>
+        <ul>
+          <li><a href="../recipes/og-wave2.md">OG recipe</a> — detailed setup guide</li>
+          <li>
+            <a href="../recipes/icons-wave3.md">Icons recipe</a> — full size matrix + manifest
+          </li>
+        </ul>
+      </main>
     </div>
-    <div>MIT <span id="year"></span> © better-seo.js contributors.</div>
-  </footer>
-  <script src="../script.js"></script>
-  <script>document.getElementById("year").textContent = new Date().getFullYear()</script>
-</body>
+    <footer class="site-footer">
+      <div class="site-footer-links">
+        <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+        <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
+        <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md"
+          >Contributing</a
+        >
+      </div>
+      <div>MIT <span id="year"></span> © better-seo.js contributors.</div>
+    </footer>
+    <script src="../script.js"></script>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear()
+    </script>
+  </body>
 </html>

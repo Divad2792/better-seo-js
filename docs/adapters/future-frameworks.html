@@ -1,59 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Adding Frameworks — better-seo.js</title>
-  <meta name="description" content="How to build a custom adapter for any framework: Remix, Astro, Nuxt, or your own.">
-  <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/adapters/future-frameworks.html">
-  <meta property="og:type" content="article"><meta property="og:title" content="Adding Frameworks — better-seo.js">
-  <meta name="twitter:card" content="summary"><meta name="twitter:title" content="Adding Frameworks — better-seo.js">
-  <link rel="stylesheet" href="../style.css">
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-</head>
-<body>
-  <header class="site-header">
-    <a href="../" class="site-logo">better-seo<span>.js</span></a>
-    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
-    <div class="header-right">
-      <nav class="header-links"><a href="https://github.com/0xMilord/better-seo-js">GitHub</a><a href="https://www.npmjs.com/package/@better-seo/core">npm</a></nav>
-      <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
-    </div>
-  </header>
-  <div class="sidebar-overlay" id="sidebar-overlay"></div>
-  <div class="site-layout">
-    <nav class="sidebar" id="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Getting Started</div>
-        <a class="sidebar-link" href="../">Home</a>
-        <a class="sidebar-link" href="../getting-started/">Install &amp; Setup</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adding Frameworks — better-seo.js</title>
+    <meta
+      name="description"
+      content="How to build a custom adapter for any framework: Remix, Astro, Nuxt, or your own."
+    />
+    <link
+      rel="canonical"
+      href="https://0xmilord.github.io/better-seo-js/adapters/future-frameworks.html"
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Adding Frameworks — better-seo.js" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Adding Frameworks — better-seo.js" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="../" class="site-logo">better-seo<span>.js</span></a>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+      <div class="header-right">
+        <nav class="header-links">
+          <a href="https://github.com/0xMilord/better-seo-js">GitHub</a
+          ><a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+        </nav>
+        <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
       </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Core</div>
-        <a class="sidebar-link" href="../concepts/">Concepts</a>
-        <a class="sidebar-link" href="../api/">API Reference</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Guides</div>
-        <a class="sidebar-link" href="../recipes/">Recipes</a>
-        <a class="sidebar-link" href="../cli/">CLI</a>
-        <a class="sidebar-link" href="../commands.html">All Commands</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">More</div>
-        <a class="sidebar-link" href="./">Adapters</a>
-        <a class="sidebar-link active" href="future-frameworks.html">Adding Frameworks</a>
-        <a class="sidebar-link" href="../assets/">Assets</a>
-        <a class="sidebar-link" href="../compare/">Compare</a>
-      </div>
-    </nav>
-    <main class="main-content">
-      <div class="breadcrumbs"><a href="../">Home</a> <span>›</span> <a href="./">Adapters</a> <span>›</span> Adding Frameworks</div>
-      <h1>Adding Frameworks</h1>
+    </header>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <div class="site-layout">
+      <nav class="sidebar" id="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Getting Started</div>
+          <a class="sidebar-link" href="../">Home</a>
+          <a class="sidebar-link" href="../getting-started/">Install &amp; Setup</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Core</div>
+          <a class="sidebar-link" href="../concepts/">Concepts</a>
+          <a class="sidebar-link" href="../api/">API Reference</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Guides</div>
+          <a class="sidebar-link" href="../recipes/">Recipes</a>
+          <a class="sidebar-link" href="../cli/">CLI</a>
+          <a class="sidebar-link" href="../commands.html">All Commands</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">More</div>
+          <a class="sidebar-link" href="./">Adapters</a>
+          <a class="sidebar-link active" href="future-frameworks.html">Adding Frameworks</a>
+          <a class="sidebar-link" href="../assets/">Assets</a>
+          <a class="sidebar-link" href="../compare/">Compare</a>
+        </div>
+      </nav>
+      <main class="main-content">
+        <div class="breadcrumbs">
+          <a href="../">Home</a> <span>›</span> <a href="./">Adapters</a> <span>›</span> Adding
+          Frameworks
+        </div>
+        <h1>Adding Frameworks</h1>
 
-      <h2>The Adapter Contract</h2>
-      <p>Every adapter is a pure mapping from <code>SEO</code> to a framework's native metadata type:</p>
-      <div class="code-block-wrapper"><pre><code class="language-ts">import type { SEOAdapter, SEO, TagDescriptor } from "@better-seo/core"
+        <h2>The Adapter Contract</h2>
+        <p>
+          Every adapter is a pure mapping from <code>SEO</code> to a framework's native metadata
+          type:
+        </p>
+        <div class="code-block-wrapper">
+          <pre><code class="language-ts">import type { SEOAdapter, SEO, TagDescriptor } from "@better-seo/core"
 
 interface MyFrameworkOutput { /* your framework's metadata type */ }
 
@@ -73,18 +91,28 @@ const myAdapter: SEOAdapter&lt;MyFrameworkOutput&gt; = {
 
 // Register
 import { registerAdapter } from "@better-seo/core"
-registerAdapter("my-framework", myAdapter)</code></pre></div>
+registerAdapter("my-framework", myAdapter)</code></pre>
+        </div>
 
-      <h2>Adapter Responsibilities</h2>
-      <ol>
-        <li><strong>Map all fields</strong> from <code>SEO</code> to framework output — don't skip optional fields</li>
-        <li><strong>Don't re-serialize JSON-LD</strong> — use <code>serializeJSONLD</code> from core</li>
-        <li><strong>Stay typed</strong> — no <code>any</code> in adapter output type</li>
-        <li><strong>Test with golden fixtures</strong> — snapshot <code>SEO</code> input → expected output</li>
-      </ol>
+        <h2>Adapter Responsibilities</h2>
+        <ol>
+          <li>
+            <strong>Map all fields</strong> from <code>SEO</code> to framework output — don't skip
+            optional fields
+          </li>
+          <li>
+            <strong>Don't re-serialize JSON-LD</strong> — use <code>serializeJSONLD</code> from core
+          </li>
+          <li><strong>Stay typed</strong> — no <code>any</code> in adapter output type</li>
+          <li>
+            <strong>Test with golden fixtures</strong> — snapshot <code>SEO</code> input → expected
+            output
+          </li>
+        </ol>
 
-      <h2>Example: Remix Adapter</h2>
-      <div class="code-block-wrapper"><pre><code class="language-ts">// @better-seo/remix
+        <h2>Example: Remix Adapter</h2>
+        <div class="code-block-wrapper">
+          <pre><code class="language-ts">// @better-seo/remix
 import type { SEOAdapter, SEO } from "@better-seo/core"
 
 export const remixAdapter: SEOAdapter&lt;{ meta: object[]; links: object[] }&gt; = {
@@ -100,9 +128,11 @@ export const remixAdapter: SEOAdapter&lt;{ meta: object[]; links: object[] }&gt;
       : []
     return { meta, links }
   },
-}</code></pre></div>
-      <p>Then in a Remix route:</p>
-      <div class="code-block-wrapper"><pre><code class="language-ts">import { remixAdapter } from "@better-seo/remix"
+}</code></pre>
+        </div>
+        <p>Then in a Remix route:</p>
+        <div class="code-block-wrapper">
+          <pre><code class="language-ts">import { remixAdapter } from "@better-seo/remix"
 import { createSEO } from "@better-seo/core"
 
 export const meta = () => {
@@ -113,35 +143,46 @@ export const meta = () => {
 export const links = () => {
   const seo = createSEO({ title: "Home" }, config)
   return remixAdapter.toFramework(seo).links
-}</code></pre></div>
+}</code></pre>
+        </div>
 
-      <h2>Packaging</h2>
-      <p>Published as <code>@better-seo/&lt;framework&gt;</code> with the framework as a <code>peerDependency</code>. The adapter package depends on <code>@better-seo/core</code> only.</p>
-      <div class="code-block-wrapper"><pre><code>{
+        <h2>Packaging</h2>
+        <p>
+          Published as <code>@better-seo/&lt;framework&gt;</code> with the framework as a
+          <code>peerDependency</code>. The adapter package depends on
+          <code>@better-seo/core</code> only.
+        </p>
+        <div class="code-block-wrapper">
+          <pre><code>{
   "name": "@better-seo/remix",
   "peerDependencies": {
     "@remix-run/node": ">= 2.0",
     "@better-seo/core": ">= 0.0.2"
   }
-}</code></pre></div>
+}</code></pre>
+        </div>
 
-      <h2>Next</h2>
-      <ul>
-        <li><a href="./">Adapter overview</a></li>
-        <li><a href="../api/">API reference</a></li>
-      </ul>
-    </main>
-  </div>
-  <footer class="site-footer">
-    <div class="site-footer-links">
-      <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
-      <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
-      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
-      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md">Contributing</a>
+        <h2>Next</h2>
+        <ul>
+          <li><a href="./">Adapter overview</a></li>
+          <li><a href="../api/">API reference</a></li>
+        </ul>
+      </main>
     </div>
-    <div>MIT <span id="year"></span> © better-seo.js contributors.</div>
-  </footer>
-  <script src="../script.js"></script>
-  <script>document.getElementById("year").textContent = new Date().getFullYear()</script>
-</body>
+    <footer class="site-footer">
+      <div class="site-footer-links">
+        <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+        <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
+        <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md"
+          >Contributing</a
+        >
+      </div>
+      <div>MIT <span id="year"></span> © better-seo.js contributors.</div>
+    </footer>
+    <script src="../script.js"></script>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear()
+    </script>
+  </body>
 </html>

@@ -11,7 +11,8 @@ type Props = {
 const productDB: Record<string, { name: string; description: string; price: string }> = {
   core: {
     name: "@better-seo/core",
-    description: "The zero-dependency SEO document model. Pure TypeScript, Edge-safe, ~5KB gzip. The foundation of everything.",
+    description:
+      "The zero-dependency SEO document model. Pure TypeScript, Edge-safe, ~5KB gzip. The foundation of everything.",
     price: "Free",
   },
   next: {
@@ -21,7 +22,8 @@ const productDB: Record<string, { name: string; description: string; price: stri
   },
   cli: {
     name: "@better-seo/cli",
-    description: "CLI toolkit: generate OG images, icons, splash screens, scan/fix codebases, and more.",
+    description:
+      "CLI toolkit: generate OG images, icons, splash screens, scan/fix codebases, and more.",
     price: "Free",
   },
 }
@@ -86,7 +88,9 @@ export default async function ProductDetailPage({ params }: Props) {
     <div>
       <h1>{p.name}</h1>
       <p>{p.description}</p>
-      <p><strong>Price:</strong> {p.price}</p>
+      <p>
+        <strong>Price:</strong> {p.price}
+      </p>
       <p>
         ← <a href="/products">Back to Products</a>
       </p>
