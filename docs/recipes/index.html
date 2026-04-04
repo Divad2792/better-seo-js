@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipes — better-seo.js</title>
+  <meta name="description"
+    content="Copy-paste recipes for better-seo.js: layout merge, route rules, OG images, icons, MDX frontmatter, React SPA, Next.js patterns.">
+  <link rel="canonical" href="https://0xmilord.github.io/better-seo-js/recipes/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Recipes — better-seo.js">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Recipes — better-seo.js">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+
+<body>
+  <header class="site-header">
+    <a href="../" class="site-logo">better-seo<span>.js</span></a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+    <div class="header-right">
+      <nav class="header-links"><a href="https://github.com/0xMilord/better-seo-js">GitHub</a><a
+          href="https://www.npmjs.com/package/@better-seo/core">npm</a></nav>
+      <button class="theme-toggle" aria-label="Toggle theme">&#9790;</button>
+    </div>
+  </header>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="site-layout">
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Getting Started</div>
+        <a class="sidebar-link" href="../">Home</a>
+        <a class="sidebar-link" href="../getting-started/">Install &amp; Setup</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Core</div>
+        <a class="sidebar-link" href="../concepts/">Concepts</a>
+        <a class="sidebar-link" href="../api/">API Reference</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Guides</div>
+        <a class="sidebar-link active" href="./">Recipes</a>
+        <a class="sidebar-link" href="../cli/">CLI</a>
+        <a class="sidebar-link" href="../commands.html">All Commands</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">More</div>
+        <a class="sidebar-link" href="../adapters/">Adapters</a>
+        <a class="sidebar-link" href="../assets/">Assets</a>
+        <a class="sidebar-link" href="../compare/">Compare</a>
+      </div>
+    </nav>
+    <main class="main-content">
+      <div class="breadcrumbs"><a href="../">Home</a> <span>›</span> Recipes</div>
+      <h1>Recipes</h1>
+
+      <h2>Layout + Page Merge (Next.js)</h2>
+      <div class="code-block-wrapper">
+        <pre><code class="language-ts">// app/layout.tsx
+import { seoLayout } from "@better-seo/next"
+export const metadata = seoLayout({ title: "Site" })
+
+// app/about/page.tsx
+import { seoPage } from "@better-seo/next"
+export const metadata = seoPage({ title: "About" })
+// Final title: uses titleTemplate from config</code></pre>
+      </div>
+
+      <h2>Route Rules</h2>
+      <div class="code-block-wrapper">
+        <pre><code class="language-ts">seo({
+  rules: [
+    { match: "/blog/*", schema: [article({ ... })] },
+    { match: "/app/*", meta: { robots: "noindex,nofollow" } },
+    { match: "/docs/**", openGraph: { type: "article" } },
+  ],
+})</code></pre>
+      </div>
+
+      <h2>generateMetadata + Async Data</h2>
+      <div class="code-block-wrapper">
+        <pre><code class="language-ts">import { prepareNextSeo } from "@better-seo/next"
+import { article } from "@better-seo/core"
+
+export async function generateMetadata({ params }) {
+  const post = await fetchPost(params.slug)
+  return prepareNextSeo({
+    title: post.title,
+    description: post.excerpt,
+    canonical: `/blog/${post.slug}`,
+    openGraph: { images: [{ url: post.ogImage }] },
+    schema: [article({
+      headline: post.title,
+      datePublished: post.date,
+      url: `${site}/blog/${post.slug}`,
+    })],
+  }, { baseUrl: site })
+}</code></pre>
+      </div>
+
+      <h2>OG Image Generation</h2>
+      <div class="code-block-wrapper">
+        <pre><code>npm install @better-seo/assets</code></pre>
+      </div>
+      <div class="code-block-wrapper">
+        <pre><code class="language-ts">import { generateOG } from "@better-seo/assets"
+import { writeFile } from "node:fs/promises"
+
+const png = await generateOG({
+  title: "Hello World",
+  siteName: "My Site",
+  theme: "dark",
+})
+await writeFile("./public/og.png", png)</code></pre>
+      </div>
+      <p>CLI: <code>npx @better-seo/cli og "Hello World" -o ./public/og.png --site-name "Brand"</code></p>
+
+      <h2>Icons + Manifest</h2>
+      <div class="code-block-wrapper">
+        <pre><code>npx @better-seo/cli icons --input ./logo.png --out ./public</code></pre>
+      </div>
+      <p>Generates: favicon.ico (16/32), PNG set (16–512), apple-touch-icon, maskable icon, optional manifest.json.</p>
+
+      <h2>MDX Frontmatter → SEO</h2>
+      <div class="code-block-wrapper">
+        <pre><code class="language-ts">import { fromMdx } from "@better-seo/compiler"
+import { readFileSync } from "node:fs"
+import { createSEO } from "@better-seo/core"
+
+const partial = fromMdx(readFileSync("post.mdx", "utf8"))
+const seo = createSEO(partial, { baseUrl: site, defaultTitle: "Blog" })</code></pre>
+      </div>
+      <p>CLI: <code>npx @better-seo/cli content from-mdx --input ./post.mdx --out ./seo-input.json</code></p>
+
+      <h2>React SPA (Vite)</h2>
+      <div class="code-block-wrapper">
+        <pre><code class="language-tsx">import { BetterSEOHelmet, SEOProvider } from "@better-seo/react"
+import { createSEO, webPage } from "@better-seo/core"
+
+// App root
+&lt;SEOProvider config={seoConfig}&gt;
+  &lt;App /&gt;
+&lt;/SEOProvider&gt;
+
+// Page
+const seo = createSEO({ title: "Dashboard", schema: [webPage({ name: "Dashboard" })] }, config)
+&lt;BetterSEOHelmet seo={seo} /&gt;</code></pre>
+      </div>
+
+      <h2>Robots + Sitemap (Next.js)</h2>
+      <div class="code-block-wrapper">
+        <pre><code class="language-ts">// app/robots.ts
+import { renderRobotsTxt } from "@better-seo/crawl"
+export default function robots() {
+  return renderRobotsTxt({ sitemap: [`${process.env.SITE_URL}/sitemap.xml`] })
+}
+
+// app/sitemap.ts
+import { renderSitemapXml } from "@better-seo/crawl"
+export default async function sitemap() {
+  const urls = await getRoutes() // from your route manifest
+  return renderSitemapXml(urls.map(loc => ({ loc })))
+}</code></pre>
+      </div>
+
+      <h2>Next</h2>
+      <ul>
+        <li><a href="../commands.html">Full CLI reference</a></li>
+        <li><a href="../api/">API reference</a></li>
+      </ul>
+    </main>
+  </div>
+  <footer class="site-footer">
+    <div class="site-footer-links">
+      <a href="https://github.com/0xMilord/better-seo-js">GitHub</a>
+      <a href="https://www.npmjs.com/package/@better-seo/core">npm</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CHANGELOG.md">Changelog</a>
+      <a href="https://github.com/0xMilord/better-seo-js/blob/main/CONTRIBUTING.md">Contributing</a>
+    </div>
+    <div>MIT <span id="year"></span> © better-seo.js contributors.</div>
+  </footer>
+  <script src="../script.js"></script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear()</script>
+</body>
+
+</html>
